@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="https://kit.fontawesome.com/fcb86077f9.js" crossorigin="anonymous"></script>
+	<meta name="viewport" content="with=device-width, initial-scale-1.0">
+	<title>University Website Design - Easy Tutorials</title>
+	<link rel="stylesheet" href="style.css">
+	<!-- <link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;600;700@display=swap"
+	rel="stylesheet"> -->
+
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/fontawesome.min.css">
+</head>
+
+<body>
+	<section class="sub-header">
+		<nav>
+			<a href="index.html"><img src="images/wp.jpeg"></a>
+			<div class="nav-links" id="navLinks">
+				<i class="fas fa-angles-right" onclick="hideMenu()"></i>
+				<ul>
+					<li><a href="index.html">HOME</a></li>
+					<li><a href="about.html">ABOUT</a></li>
+					<li><a href="course.html">COURSE</a></li>
+					<li><a href="blog.html">BLOG</a></li>
+					<li><a href="contact.html">CONTACT</a></li>
+				</ul>
+			</div>
+			<i class="fas fa-bars" onclick="showMenu()"></i>
+		</nav>
+		<h1/>Contact Us</h1>
+
+</section>
+
+<!-- Contact Us -->
+<section class="location">
+	<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d28011.150216266335!2d179.98244750056534!3d28.64792588082276!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808fb4571bd377ab%3A0x394d3fe1a3e178b4!2sCupertino%2C%20CA!5e0!3m2!1sen!2sus!4v1658626578018!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+</section>
+
+<section class="contact-us">
+	<div class="row">
+		<div class="contact-col">
+			<div>
+				<i class="fas fa-house"></i>
+				<span>
+					<h5>XYZ Road, ABC Building</h5>
+					<p>Cupertino, CA, USA</p>
+				</span>
+			</div>
+			<div>
+				<i class="fas fa-phone"></i>
+				<span>
+					<h5>+1 0123456789</h5>
+					<p>Monday to Saturday, 10AM to 6PM</p>
+				</span>
+			</div>
+			<div>
+				<i class="fas fa-envelope"></i>
+				<span>
+					<h5>jjasper.llee@gmail.com</h5>
+					<p>Email us your query</p>
+				</span>
+			</div>
+		</div>
+		<div class="contact-col">
+			<form action="form-handler.php" method="post">
+				<input type="text" name="name" placeholder="Enter Your Name" required>
+				<input type="email" name="email" placeholder="Enter Email Address" required>
+				<input type="text" name="subject" placeholder="Enter Your Subject" required>
+				<textarea rows="8" name="message" placeholder="Message" required></textarea>
+				<button type="submit" class="hero-btn red-btn">Send Message</button>
+			</form>
+		</div>
+	</div>
+
+
+</section>
+
+<!-- Footer -->
+<section class="footer">
+	<h4>About Us</h4>
+	<p>Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum</p>
+	<div class="icons">
+		<i class="fab fa-facebook"></i>
+		<i class="fab fa-twitter"></i>
+		<i class="fab fa-instagram"></i>
+		<i class="fab fa-linkedin"></i>
+	</div>
+</section>
+
+<!-- JavaScript to Toggle Menu -->
+<script>
+	var navLinks = document.getElementById("navLinks");
+	function showMenu(){
+		navLinks.style.right = "0";
+	}
+	function hideMenu(){
+		navLinks.style.right = "-200px";
+	}
+</script>
+
+</body>
+</html>
