@@ -6,7 +6,7 @@
 .header{
 	min-height: 100vh;
 	width: 100%;
-	background-image: linear-gradient(rgba(4, 9, 30, 0.7), rgba(4, 9, 30, 0.7)), url(images/wp.jpeg);
+	background-image: linear-gradient(rgba(4, 9, 30, 0.7), rgba(4, 9, 30, 0.7)), url(wp.jpeg);
 	background-position: center;
 	background-size: cover;
 	position: relative;
@@ -292,7 +292,7 @@ h3{
 .cta{
 	margin: 100px auto;
 	width: 80%;
-	background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(images/wp.jpeg);
+	background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(wp.jpeg);
 	background-position: center;
 	background-size: cover;
 	border-radius: 10px;
@@ -325,6 +325,7 @@ h3{
 	margin-top: 20px;
 	font-weight: 600;
 }
+
 .icons .fab{
 	color: #f44336;
 	margin: 0 13px;
@@ -337,7 +338,7 @@ h3{
 .sub-header{
 	height: 50vh;
 	width: 100%;
-	background-image: linear-gradient(rgba(4, 9, 30, 0.7), rgba(4, 9, 30, 0.7)), url(images/wp.jpeg);
+	background-image: linear-gradient(rgba(4, 9, 30, 0.7), rgba(4, 9, 30, 0.7)), url(wp.jpeg);
 	background-position: center;
 	background-size: cover;
 	text-align: center;
