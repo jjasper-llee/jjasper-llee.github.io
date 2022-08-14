@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	$('#nav-'+current_nav).addClass('active');
 	var subhead = $('.subhead');
 	var text = "";
-	if (current_nav == 'violin')
+	if (current_nav == 'about')
 		text = 'violinist';
 	else if (current_nav == 'dev')
 		text = 'developer';
