@@ -3,7 +3,7 @@ import java.applet.*;
 import javafx.scene.shape.*;
 public class home extends Applet {
 
-     public void draw {
+     public void draw() {
 	 Circle c = new Circle(10);
 	 System.out.println("In home.java");
      } 
