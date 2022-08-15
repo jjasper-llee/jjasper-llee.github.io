@@ -1,11 +1,12 @@
 import java.applet.*; 
-import java.awt.*; 
-public class home extends Applet 
-{ 
- public void paint(Graphics g) 
- { 
- g.drawString("this is code from java",10,10); 
- } 
+//import java.awt.*; 
+import javafx.scene.shape.*;
+public class home extends Applet {
+
+     public void draw {
+	 Circle c = new Circle(10);
+	 
+     } 
 } 
 
 
