@@ -1,6 +1,6 @@
 import java.applet.*; 
 impor java.awt.*; 
-public class appletdemo extends Applet 
+public class home extends Applet 
 { 
  public void paint(Graphics g) 
  { 
