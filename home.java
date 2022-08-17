@@ -4,7 +4,7 @@ import javafx.scene.shape.*;
 public class home extends Applet {
 
      public void draw() {
-	 Circle c = new Circle(10);
+	 Circle c = new Circle(50, 50, 10);
 	 System.out.println("In home.java");
      } 
 } 
