@@ -1,15 +1,23 @@
+// import java.applet.*; 
+// //import java.awt.*; 
+// import javafx.scene.shape.*;
+// public class home extends Applet {
+
+//      public void draw() {
+// 	 Circle c = new Circle(50, 50, 10);
+// 	 System.out.println("In home.java");
+//      } 
+// } 
+
 import java.applet.*; 
-//import java.awt.*; 
-import javafx.scene.shape.*;
-public class home extends Applet {
-
-     public void draw() {
-	 Circle c = new Circle(50, 50, 10);
-	 System.out.println("In home.java");
-     } 
+import java.awt.*; 
+public class appletdemo extends Applet 
+{ 
+ public void paint(Graphics g) 
+ { 
+ g.drawString("this is code from java",10,10); 
+ } 
 } 
-
-
 
 
 
