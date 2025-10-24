@@ -6,16 +6,16 @@
     <title>Tyler Lee — Flying Bionic Hand</title>
     <style>
       :root {
-        --bg: transparent;
-        --text: #f7f7f7;
+        --bg: #061021; /* deep blueprint navy */
+        --text: #e8fdf6;
         --accent: #00ffd0;
-        --muted: #999;
+        --muted: #9fb7b0;
       }
       * { box-sizing: border-box; }
       body {
         margin: 0;
         font-family: 'Inter', sans-serif;
-        background-color: #0a0a0a;
+        background-color: var(--bg);
         color: var(--text);
         overflow: hidden;
       }
@@ -26,17 +26,17 @@
         display: flex;
         gap: 1.2rem;
         font-size: 0.95rem;
-        z-index: 20;
+        z-index: 30;
       }
       nav a {
         color: var(--muted);
         text-decoration: none;
         transition: color 0.3s;
         cursor: pointer;
+        padding:6px 8px;border-radius:6px
       }
-      nav a:hover {
-        color: var(--accent);
-      }
+      nav a:hover { color: var(--accent); background: rgba(0,255,208,0.03) }
+
       .window {
         position: absolute;
         top: 0;
@@ -49,25 +49,30 @@
         flex-direction: column;
         text-align: center;
         padding: 0 10vw;
-        background: rgba(10, 10, 10, 0.6);
+        background: rgba(6,16,33,0.55);
         transition: opacity 0.4s ease;
+        z-index: 10;
       }
-      .window.active {
-        display: flex;
-        opacity: 1;
-      }
+      .window.active { display: flex; opacity: 1 }
+
       h1, h2 { margin: 0 0 1rem; }
       p { color: var(--muted); max-width: 700px; line-height: 1.7; }
+
+      /* About page will show canvas behind it */
+      #about { z-index: 20 }
+
       canvas#background {
         position: fixed;
         top: 0;
         left: 0;
         width: 100vw;
         height: 100vh;
-        z-index: -1;
+        z-index: 5; /* behind about content but above page background */
         pointer-events: none;
-        background: transparent;
+        display: none; /* only visible on About */
       }
+
+      @media (max-width:700px){ nav{right:12px} .window{padding:0 6vw} }
     </style>
   </head>
   <body>
@@ -102,81 +107,158 @@
     </div>
 
     <script>
-      window.onload = function() {
-        // switching between windows
+      window.addEventListener('load', ()=>{
+        // window switching
         const navLinks = document.querySelectorAll('nav a');
         const windows = document.querySelectorAll('.window');
-        navLinks.forEach(link => {
-          link.addEventListener('click', () => {
-            windows.forEach(w => w.classList.remove('active'));
-            document.getElementById(link.dataset.target).classList.add('active');
-          });
-        });
-
-        // planetary gear animation background
         const canvas = document.getElementById('background');
-        const ctx = canvas.getContext('2d');
-        let W, H, t = 0;
+        function showWindow(id){
+          windows.forEach(w=>w.classList.remove('active'));
+          document.getElementById(id).classList.add('active');
+          // show canvas only for about
+          if(id === 'about') canvas.style.display = 'block'; else canvas.style.display = 'none';
+        }
+        navLinks.forEach(link=>link.addEventListener('click', ()=> showWindow(link.dataset.target)));
 
-        function resize() {
-          W = canvas.width = window.innerWidth;
-          H = canvas.height = window.innerHeight;
+        // start with about visible
+        showWindow('about');
+
+        // --- shaded planetary gear animation ---
+        const ctx = canvas.getContext('2d');
+        let W = 0, H = 0, t = 0;
+        function resize(){
+          const dpr = window.devicePixelRatio || 1;
+          W = canvas.width = Math.floor(window.innerWidth * dpr);
+          H = canvas.height = Math.floor(window.innerHeight * dpr);
+          canvas.style.width = window.innerWidth + 'px';
+          canvas.style.height = window.innerHeight + 'px';
+          ctx.setTransform(dpr,0,0,dpr,0,0);
         }
         window.addEventListener('resize', resize);
         resize();
 
-        function drawPlanetary(cx, cy, radius, count, speed) {
+        // draw a gear with teeth and optional inner hole
+        function drawGear(cx, cy, R, teeth, angle, color){
+          const toothDepth = Math.max(6, R*0.08);
+          const rInner = R - toothDepth*1.1;
+          const step = (Math.PI*2)/teeth;
+
           ctx.beginPath();
-          ctx.arc(cx, cy, radius * 0.3, 0, Math.PI * 2);
-          ctx.strokeStyle = 'rgba(0,255,200,0.6)';
-          ctx.lineWidth = 1.5;
+          for(let i=0;i<teeth;i++){
+            const a = i*step + angle;
+            const aMid = a + step*0.5;
+            // outer tip
+            const x1 = cx + Math.cos(a - step*0.15) * (R - toothDepth*0.12);
+            const y1 = cy + Math.sin(a - step*0.15) * (R - toothDepth*0.12);
+            const x2 = cx + Math.cos(aMid) * (R + toothDepth*0.4);
+            const y2 = cy + Math.sin(aMid) * (R + toothDepth*0.4);
+            const x3 = cx + Math.cos(a + step*0.15) * (R - toothDepth*0.12);
+            const y3 = cy + Math.sin(a + step*0.15) * (R - toothDepth*0.12);
+            if(i===0) ctx.moveTo(x1,y1);
+            ctx.lineTo(x2,y2);
+            ctx.lineTo(x3,y3);
+          }
+          ctx.closePath();
+
+          // shading: radial gradient
+          const g = ctx.createRadialGradient(cx, cy, Math.max(2, R*0.2), cx, cy, R*1.2);
+          g.addColorStop(0, 'rgba(0,255,208,0.12)');
+          g.addColorStop(0.5, 'rgba(0,180,150,0.06)');
+          g.addColorStop(1, 'rgba(0,120,100,0.02)');
+          ctx.fillStyle = g;
+          ctx.fill();
+
+          // outline
+          ctx.lineWidth = 1.2;
+          ctx.strokeStyle = color;
           ctx.stroke();
 
-          for (let i = 0; i < count; i++) {
-            const angle = t * speed + (i * (Math.PI * 2)) / count;
-            const x = cx + Math.cos(angle) * radius;
-            const y = cy + Math.sin(angle) * radius;
-            ctx.beginPath();
-            ctx.arc(x, y, radius * 0.12, 0, Math.PI * 2);
-            ctx.strokeStyle = 'rgba(0,255,200,0.4)';
-            ctx.lineWidth = 1;
-            ctx.stroke();
-
-            for (let k = 0; k < 8; k++) {
-              const a2 = angle + (k * Math.PI) / 4;
-              ctx.beginPath();
-              ctx.moveTo(x, y);
-              ctx.lineTo(
-                x + Math.cos(a2) * (radius * 0.2),
-                y + Math.sin(a2) * (radius * 0.2)
-              );
-              ctx.strokeStyle = 'rgba(0,255,200,0.1)';
-              ctx.stroke();
-            }
-          }
+          // inner circle hole
+          ctx.beginPath();
+          ctx.arc(cx,cy,rInner*0.6,0,Math.PI*2);
+          ctx.strokeStyle = 'rgba(0,255,208,0.06)';
+          ctx.stroke();
         }
 
-        function loop() {
-          t += 0.015;
-          ctx.clearRect(0, 0, W, H);
+        // draw subtle construction lines to feel like CAD
+        function drawGrid(){
+          ctx.save();
+          ctx.globalAlpha = 0.06;
           ctx.lineWidth = 1;
+          ctx.strokeStyle = 'rgba(0,255,208,0.06)';
+          const spacing = 36;
+          for(let x=0;x<window.innerWidth;x+=spacing){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,window.innerHeight); ctx.stroke(); }
+          for(let y=0;y<window.innerHeight;y+=spacing){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(window.innerWidth,y); ctx.stroke(); }
+          ctx.restore();
+        }
 
-          // grid blueprint lines
-          ctx.strokeStyle = 'rgba(0,255,200,0.08)';
-          for (let x = 0; x < W; x += 40) {
-            ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
-          }
-          for (let y = 0; y < H; y += 40) {
-            ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
-          }
+        // function to compute planet positions and render meshing gears
+        function drawPlanetarySystem(cx, cy, sunR, planets){
+          // draw ring (outer) as dashed construction
+          ctx.beginPath(); ctx.arc(cx,cy,sunR + planets[0].dist + 40,0,Math.PI*2); ctx.setLineDash([6,8]); ctx.strokeStyle='rgba(0,255,208,0.04)'; ctx.stroke(); ctx.setLineDash([]);
 
-          drawPlanetary(W * 0.3, H * 0.5, 120, 5, 0.8);
-          drawPlanetary(W * 0.7, H * 0.5, 180, 6, -0.6);
+          // draw sun gear
+          drawGear(cx, cy, sunR, planets.sunTeeth, t*0.4, 'rgba(0,255,208,0.28)');
+
+          // draw each planet (mounted to carrier)
+          planets.forEach((p, idx)=>{
+            const carrierAngle = t * p.carrierSpeed;
+            const ang = carrierAngle + p.baseAngle;
+            const px = cx + Math.cos(ang) * p.dist;
+            const py = cy + Math.sin(ang) * p.dist;
+
+            // planet gear rotates to mesh with sun: negative ratio
+            const planetAngle = - (sunR / p.r) * (carrierAngle) * 0.9 + t*0.2;
+
+            drawGear(px, py, p.r, p.teeth, planetAngle, 'rgba(0,255,208,0.22)');
+
+            // small axle
+            ctx.beginPath(); ctx.arc(px,py,Math.max(4,p.r*0.12),0,Math.PI*2); ctx.fillStyle='rgba(0,255,208,0.06)'; ctx.fill();
+            ctx.strokeStyle='rgba(0,255,208,0.06)'; ctx.stroke();
+
+            // visual link to carrier center
+            ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(px,py); ctx.strokeStyle='rgba(0,255,208,0.03)'; ctx.stroke();
+          });
+        }
+
+        // create planet config (radii chosen to look balanced, with teeth counts)
+        const planetSets = [
+          {
+            cxFactor: 0.5, cyFactor: 0.5,
+            sunR: 52,
+            sunTeeth: 40,
+            planets: [
+              {r:26, teeth:20, dist:100, baseAngle:0, carrierSpeed:0.15},
+              {r:22, teeth:16, dist:150, baseAngle:2.1, carrierSpeed:0.15}
+            ]
+          }
+        ];
+
+        function loop(){
+          t += 0.006; // slow, soft wallpaper motion
+          ctx.clearRect(0,0,window.innerWidth, window.innerHeight);
+
+          drawGrid();
+
+          // draw faint blueprint arcs/wave for depth
+          ctx.beginPath(); ctx.arc(window.innerWidth*0.5, window.innerHeight*0.5, Math.min(window.innerWidth, window.innerHeight)*0.35, -0.6, 0.6); ctx.strokeStyle='rgba(0,255,208,0.03)'; ctx.lineWidth=1; ctx.stroke();
+
+          // draw the planetary set in center-left to give composition
+          planetSets.forEach(set => {
+            const cx = window.innerWidth * set.cxFactor;
+            const cy = window.innerHeight * set.cyFactor;
+            // prepare planet array with required fields
+            const planets = set.planets.map(p=>({r:p.r, teeth:p.teeth, dist:p.dist, baseAngle:p.baseAngle, carrierSpeed:p.carrierSpeed}));
+            // attach sun teeth info
+            planets.sunTeeth = set.sunTeeth;
+            // draw
+            drawPlanetarySystem(cx, cy, set.sunR, planets);
+          });
 
           requestAnimationFrame(loop);
         }
         loop();
-      };
+      });
     </script>
   </body>
 </html>
