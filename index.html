@@ -1,330 +1,152 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Tyler Lee — Planetary Gears Background</title>
-  <style>
-    :root {
-      --bg: #061021;
-      --text: #e8fdf6;
-      --accent: #00ffd0;
-      --muted: #9fb7b0;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto;background:var(--bg);color:var(--text);overflow:hidden}
-    nav{position:fixed;top:20px;right:40px;display:flex;gap:1.2rem;font-size:0.95rem;z-index:60}
-    nav a{color:var(--muted);text-decoration:none;cursor:pointer;padding:6px 8px;border-radius:6px}
-    nav a:hover{color:var(--accent);background:rgba(0,255,208,0.03)}
-    .window{position:absolute;inset:0;display:none;justify-content:center;align-items:center;flex-direction:column;text-align:center;padding:0 10vw;background:rgba(6,16,33,0.6);transition:opacity .35s;z-index:50}
-    .window.active{display:flex;opacity:1}
-    h1,h2{margin:0 0 1rem}
-    p{color:var(--muted);max-width:700px;line-height:1.7}
-    #about{z-index:55}
-    canvas#background{position:fixed;left:0;top:0;width:100vw;height:100vh;z-index:20;pointer-events:none;display:none}
-    @media(max-width:700px){nav{right:12px}.window{padding:0 6vw}}
-    /* small helper to ensure the name sits visually above the sun hub */
-    .about-inner { position:relative; z-index:56; display:flex; flex-direction:column; align-items:center; gap:8px; }
-    .name { font-size:3.2rem; line-height:1; letter-spacing:0.02em; font-weight:600; color:var(--text); text-shadow: 0 6px 30px rgba(0,0,0,0.6); }
-    @media(max-width:700px){ .name{font-size:2.2rem} }
-  </style>
-</head>
-<body>
-  <canvas id="background" aria-hidden="true"></canvas>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tyler Lee — Flying Bionic Hand</title>
+    <style>
+      :root { --bg: #061021; --text: #e8fdf6; --accent: #00ffd0; --muted: #9fb7b0; }
+      *{box-sizing:border-box}
+      body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto;background:var(--bg);color:var(--text);overflow:hidden}
+      nav{position:fixed;top:20px;right:40px;display:flex;gap:1.2rem;font-size:0.95rem;z-index:60}
+      nav a{color:var(--muted);text-decoration:none;cursor:pointer;padding:6px 8px;border-radius:6px}
+      nav a:hover{color:var(--accent);background:rgba(0,255,208,0.03)}
+      .window{position:absolute;inset:0;display:none;justify-content:center;align-items:center;flex-direction:column;text-align:center;padding:0 10vw;background:rgba(6,16,33,0.6);transition:opacity .35s;z-index:50}
+      .window.active{display:flex;opacity:1}
+      h1,h2{margin:0 0 1rem}
+      p{color:var(--muted);max-width:700px;line-height:1.7}
+      #about{z-index:55}
+      canvas#background{position:fixed;left:0;top:0;width:100vw;height:100vh;z-index:20;pointer-events:none;display:none}
+      @media(max-width:700px){nav{right:12px}.window{padding:0 6vw}}
+    </style>
+  </head>
+  <body>
+    <canvas id="background"></canvas>
+    <nav>
+      <a data-target="about">About</a>
+      <a data-target="left">Left Brain</a>
+      <a data-target="right">Right Brain</a>
+      <a data-target="contact">Contact</a>
+    </nav>
 
-  <nav>
-    <a data-target="about">About</a>
-    <a data-target="left">Left Brain</a>
-    <a data-target="right">Right Brain</a>
-    <a data-target="contact">Contact</a>
-  </nav>
-
-  <div class="window active" id="about">
-    <div class="about-inner">
-      <h1 class="name" id="titleText">Tyler Lee</h1>
+    <div class="window active" id="about">
+      <h1>Tyler Lee</h1>
       <p>Mechanical Engineering student developing a <strong>flying bionic hand</strong> — a new class of aerial bionic systems integrating dexterous manipulation and flight.</p>
     </div>
-  </div>
 
-  <div class="window" id="left">
-    <h2>Left Brain</h2>
-    <p>I specialize in mechatronics, dynamics, and control systems — focusing on compact actuator design, cycloidal and planetary gear systems, and real-time motor control.</p>
-  </div>
+    <div class="window" id="left">
+      <h2>Left Brain</h2>
+      <p>I specialize in mechatronics, dynamics, and control systems — focusing on compact actuator design, cycloidal and planetary gear systems, and real-time motor control.</p>
+    </div>
 
-  <div class="window" id="right">
-    <h2>Right Brain</h2>
-    <p>Beyond engineering, I design expressive motion and biomimetic surfaces — every mechanism should feel alive, even in its precision.</p>
-  </div>
+    <div class="window" id="right">
+      <h2>Right Brain</h2>
+      <p>Beyond engineering, I design expressive motion and biomimetic surfaces — every mechanism should feel alive, even in its precision.</p>
+    </div>
 
-  <div class="window" id="contact">
-    <h2>Contact</h2>
-    <p>YC reviewers and collaborators, reach out for prototype demos or discussions.</p>
-    <p><a href="mailto:you@example.com" style="color:var(--accent)">you@example.com</a></p>
-  </div>
+    <div class="window" id="contact">
+      <h2>Contact</h2>
+      <p>YC reviewers and collaborators, reach out for prototype demos or discussions.</p>
+      <p><a href="mailto:you@example.com" style="color:var(--accent)">you@example.com</a></p>
+    </div>
 
-<script>
-window.addEventListener('load', ()=>{
+    <script>
+      window.addEventListener('load', ()=>{
+        const navLinks=document.querySelectorAll('nav a');
+        const windows=document.querySelectorAll('.window');
+        const canvas=document.getElementById('background');
+        const ctx=canvas.getContext('2d');
+        let running=false, anim;
 
-  // ---------- UI: nav + windows ----------
-  const navLinks = document.querySelectorAll('nav a');
-  const windows = document.querySelectorAll('.window');
-  const canvas = document.getElementById('background');
-  const ctx = canvas.getContext('2d');
+        function showWindow(id){
+          windows.forEach(w=>w.classList.remove('active'));
+          document.getElementById(id).classList.add('active');
+          if(id==='about'){canvas.style.display='block';running=true;loop();}
+          else{canvas.style.display='none';running=false;}
+        }
 
-  function showWindow(id){
-    windows.forEach(w => w.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    if(id === 'about'){
-      canvas.style.display = 'block';
-      resumeAnimation();
-    } else {
-      canvas.style.display = 'none';
-      pauseAnimation();
-    }
-  }
-  navLinks.forEach(l => l.addEventListener('click', ()=> showWindow(l.dataset.target)));
-  showWindow('about'); // start on about and show canvas
+        navLinks.forEach(l=>l.addEventListener('click',()=>showWindow(l.dataset.target)));
+        showWindow('about');
 
-  // ---------- canvas sizing ----------
-  let DPR = window.devicePixelRatio || 1;
-  let W = 0, H = 0;
-  function resize(){
-    DPR = window.devicePixelRatio || 1;
-    W = Math.floor(window.innerWidth * DPR);
-    H = Math.floor(window.innerHeight * DPR);
-    canvas.width = W;
-    canvas.height = H;
-    canvas.style.width = window.innerWidth + 'px';
-    canvas.style.height = window.innerHeight + 'px';
-    ctx.setTransform(DPR,0,0,DPR,0,0);
-    // precompute center
-    centerX = window.innerWidth * 0.5;
-    centerY = window.innerHeight * 0.48; // slight upward offset like example
-  }
-  window.addEventListener('resize', resize);
-  resize();
+        let W=0,H=0,t=0;
+        function resize(){
+          const dpr=window.devicePixelRatio||1;
+          W=canvas.width=Math.floor(window.innerWidth*dpr);
+          H=canvas.height=Math.floor(window.innerHeight*dpr);
+          canvas.style.width=window.innerWidth+'px';
+          canvas.style.height=window.innerHeight+'px';
+          ctx.setTransform(dpr,0,0,dpr,0,0);
+        }
+        window.addEventListener('resize',resize);resize();
 
-  // ---------- Gear geometry helpers (rectangular teeth / spur-like) ----------
-  // pitch: pixels per tooth (affects gear scale)
-  const pitch = 8; // tweak for overall size (keeps visual similar to your example)
-  function pitchRadius(teeth){ return (pitch * teeth) / (2 * Math.PI); }
+        const pitch=8;
+        function pitchRadius(teeth){return (pitch*teeth)/(2*Math.PI);}
 
-  // gear drawing: rectangular teeth arranged around pitch circle
-  // options: inner (ring gear teeth point inward) , bright (highlighted), fill/stroke
-  function drawSpurGear(cx, cy, pitchR, teeth, angle, options = {fill:true, stroke:true, bright:false, inner:false}) {
-    const toothDepth = Math.max(8, pitchR * 0.12);
-    const rPitch = pitchR;
-    ctx.save();
+        function drawSpurGear(cx,cy,R,teeth,angle,options={fill:true,stroke:true,bright:false,inner:false}){
+          const toothDepth=Math.max(8,R*0.12);
+          const rPitch=R;
+          ctx.save();
+          const grad=ctx.createRadialGradient(cx,cy,Math.max(2,R*0.2),cx,cy,R*1.3);
+          grad.addColorStop(0,'rgba(0,255,240,0.25)');
+          grad.addColorStop(1,'rgba(0,120,100,0.04)');
+          if(options.fill){ctx.fillStyle=grad;ctx.beginPath();ctx.arc(cx,cy,rPitch,0,Math.PI*2);ctx.fill();}
+          if(options.stroke){ctx.lineWidth=1.8;ctx.strokeStyle='rgba(0,255,240,0.95)';ctx.beginPath();ctx.arc(cx,cy,rPitch,0,Math.PI*2);ctx.stroke();}
+          for(let i=0;i<teeth;i++){
+            const a=angle+(i*(2*Math.PI/teeth));
+            const cos=Math.cos(a),sin=Math.sin(a);
+            const dir=options.inner?-1:1;
+            const baseR=rPitch+dir*(toothDepth*0.2);
+            const tx=cx+cos*baseR,ty=cy+sin*baseR;
+            const toothArc=(2*Math.PI/teeth)*rPitch;
+            const w=Math.max(10,toothArc*0.6);
+            const h=toothDepth*0.9;
+            ctx.save();ctx.translate(tx,ty);ctx.rotate(a+(options.inner?Math.PI:0));
+            ctx.beginPath();
+            ctx.fillStyle='rgba(0,255,240,0.9)';
+            ctx.strokeStyle='rgba(0,255,240,0.95)';
+            ctx.lineWidth=0.8;
+            ctx.rect(-w/2,options.inner?-h:0,w,h);
+            ctx.fill();ctx.stroke();
+            ctx.restore();
+          }
+          ctx.beginPath();ctx.arc(cx,cy,Math.max(6,R*0.4),0,Math.PI*2);
+          ctx.strokeStyle='rgba(0,255,240,0.15)';ctx.stroke();
+          ctx.restore();
+        }
 
-    // subtle radial gradient fill for the gear body
-    const grad = ctx.createRadialGradient(cx, cy, Math.max(2, rPitch*0.2), cx, cy, rPitch*1.35);
-    if(options.bright) {
-      grad.addColorStop(0, 'rgba(0,255,208,0.14)');
-      grad.addColorStop(0.6, 'rgba(0,200,170,0.06)');
-      grad.addColorStop(1, 'rgba(0,120,100,0.02)');
-    } else {
-      grad.addColorStop(0, 'rgba(0,255,208,0.08)');
-      grad.addColorStop(1, 'rgba(0,120,100,0.02)');
-    }
+        // planetary parameters
+        const Ts=40,Tp=26,Tr=Ts+2*Tp;
+        const Rs=pitchRadius(Ts)*2.2;
+        const Rp=pitchRadius(Tp)*2.2;
+        const Rr=pitchRadius(Tr)*2.2;
+        const centerDist=Rs+Rp+6;
+        const omegaSun=0.7,omegaRing=-0.05;
+        const ratio=Tr/Ts;
+        const omegaCarrier=((ratio*omegaRing)+omegaSun)/(1+ratio);
+        function planetSpin(omegaCarrier){return(omegaSun*Rs)/Rp-omegaCarrier;}
+        const planetAngles=[0,(2*Math.PI)/3,(4*Math.PI)/3];
 
-    if(options.fill){
-      ctx.fillStyle = grad;
-      ctx.beginPath();
-      ctx.arc(cx, cy, rPitch, 0, Math.PI*2);
-      ctx.fill();
-    }
-    if(options.stroke){
-      ctx.lineWidth = 1.6;
-      ctx.strokeStyle = options.bright ? 'rgba(0,255,210,0.98)' : 'rgba(0,255,210,0.7)';
-      ctx.beginPath();
-      ctx.arc(cx, cy, rPitch, 0, Math.PI*2);
-      ctx.stroke();
-    }
-
-    // draw rectangular teeth
-    for (let i = 0; i < teeth; i++){
-      const a = angle + (i * (2 * Math.PI / teeth));
-      const cos = Math.cos(a), sin = Math.sin(a);
-      const dir = options.inner ? -1 : 1;
-      const baseR = rPitch + dir * (toothDepth * 0.2);
-      const tx = cx + cos*baseR;
-      const ty = cy + sin*baseR;
-
-      // tooth width along circumference
-      const toothArc = (2*Math.PI/teeth) * rPitch;
-      const w = Math.max(10, toothArc * 0.62); // width of rectangle
-      const h = toothDepth * 0.95;            // depth
-
-      ctx.save();
-      ctx.translate(tx, ty);
-      // rotate so rectangle's "long" side is tangential to circle; for inner teeth flip 180
-      ctx.rotate(a + (options.inner ? Math.PI : 0));
-      ctx.beginPath();
-      ctx.fillStyle = options.bright ? 'rgba(0,255,210,0.98)' : 'rgba(0,255,210,0.75)';
-      ctx.strokeStyle = 'rgba(0,255,210,0.9)';
-      ctx.lineWidth = 0.9;
-      // draw rectangle: for outer teeth it extends outward (y from 0 to h), inner teeth extend inward (y from -h to 0)
-      ctx.rect(-w/2, options.inner ? -h : 0, w, h);
-      ctx.fill();
-      ctx.stroke();
-      ctx.restore();
-    }
-
-    // inner hub outline
-    ctx.beginPath();
-    ctx.arc(cx, cy, Math.max(6, rPitch*0.42), 0, Math.PI*2);
-    ctx.strokeStyle = 'rgba(0,255,210,0.06)';
-    ctx.stroke();
-
-    ctx.restore();
-  }
-
-  // ---------- Planetary system params ----------
-  // Teeth counts (feel free to tweak)
-  const Ts = 40;   // sun teeth
-  const Tp = 26;   // planet teeth
-  const Tr = Ts + 2*Tp; // internal ring teeth (standard planetary condition)
-
-  // base pitch radii
-  const Rs_base = pitchRadius(Ts);
-  const Rp_base = pitchRadius(Tp);
-  const Rr_base = pitchRadius(Tr);
-
-  // We want a "large halo" sun: scale the assembled system up so sun encloses title
-  // Use a scaling factor to make the sun visually large relative to the title text.
-  // If you want to tweak 'halo' size, change haloScale (1.0 = natural size, >1 bigger)
-  const haloScale = 1.8; // large halo (you asked "large halo")
-  const Rs = Rs_base * haloScale;
-  const Rp = Rp_base * haloScale;
-  const Rr = Rr_base * haloScale;
-
-  // center distance from sun center to planet center = Rs + Rp (pitch circles touch)
-  const centerDistance = Rs + Rp;
-
-  // animation speeds (match the feel of your earlier example)
-  // omegaSun is in radians/sec; earlier example used omegaSun = 0.7
-  const omegaSun = 0.7;
-  // ring slowly turning (visual)
-  const omegaRing = -0.05;
-  // gear ratio relation for carrier speed:
-  // (omegaSun - omegaCarrier) / (omegaRing - omegaCarrier) = -Tr/Ts
-  const ratio = Tr / Ts;
-  const omegaCarrier = ( (ratio * omegaRing) + omegaSun ) / (1 + ratio);
-  // planet spin so planet pitch velocity relative to carrier meshes with sun:
-  function planetSpin(omegaCarrierLocal){ return (omegaSun * Rs) / Rp - omegaCarrierLocal; }
-
-  // planet placement (3 planets evenly spaced)
-  const Nplanets = 3;
-  const planetAngles0 = [];
-  for (let i=0;i<Nplanets;i++) planetAngles0.push(i * (2*Math.PI / Nplanets));
-
-  // ---------- Animation control ----------
-  let animId = null;
-  let running = false;
-  let t = 0; // seconds elapsed (preserved while paused)
-  let lastT = null;
-  let centerX = window.innerWidth * 0.5;
-  let centerY = window.innerHeight * 0.48;
-
-  function startAnimation(){
-    if (running) return;
-    running = true;
-    lastT = performance.now();
-    animId = requestAnimationFrame(loop);
-  }
-  function stopAnimation(){
-    if (!running) return;
-    running = false;
-    if (animId) { cancelAnimationFrame(animId); animId = null; }
-    lastT = null;
-  }
-  function pauseAnimation(){ stopAnimation(); }     // semantic alias
-  function resumeAnimation(){ startAnimation(); }   // semantic alias
-
-  // Initially paused if About not visible
-  if(document.getElementById('about').classList.contains('active')) startAnimation();
-
-  // ---------- draw loop ----------
-  function loop(now){
-    if (!running) return;
-    if (!lastT) lastT = now;
-    const dt = (now - lastT) / 1000;
-    lastT = now;
-    t += dt;
-
-    // clear
-    ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
-
-    // subtle construction / ambient effect (very faint circle behind)
-    ctx.save();
-    ctx.globalAlpha = 0.06;
-    ctx.strokeStyle = 'rgba(0,255,210,0.06)';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    const rc = Math.min(window.innerWidth, window.innerHeight) * 0.45;
-    ctx.arc(centerX, centerY, rc, 0, Math.PI*2);
-    ctx.stroke();
-    ctx.restore();
-
-    // draw ring (inner teeth) - slight rotation
-    const ringAngle = omegaRing * t;
-    drawSpurGear(centerX, centerY, Rr, Tr, ringAngle, {fill:true, stroke:true, bright:true, inner:true});
-
-    // draw sun (center) - this will appear as the halo around the name
-    const sunAngle = omegaSun * t;
-    drawSpurGear(centerX, centerY, Rs, Ts, sunAngle, {fill:true, stroke:true, bright:true, inner:false});
-
-    // draw planets on carrier
-    const carrierAngle = omegaCarrier * t;
-    const pSpin = planetSpin(omegaCarrier);
-
-    for (let i=0;i<Nplanets;i++){
-      const ang = carrierAngle + planetAngles0[i];
-      const px = centerX + Math.cos(ang) * centerDistance;
-      const py = centerY + Math.sin(ang) * centerDistance;
-      const planetAngle = pSpin * t;
-      drawSpurGear(px, py, Rp, Tp, planetAngle, {fill:true, stroke:true, bright:true, inner:false});
-      // small axle circle for visual
-      ctx.beginPath();
-      ctx.arc(px, py, Math.max(6, Rp * 0.12), 0, Math.PI*2);
-      ctx.fillStyle = 'rgba(0,255,210,0.06)';
-      ctx.fill();
-      ctx.strokeStyle = 'rgba(0,255,210,0.12)';
-      ctx.stroke();
-    }
-
-    // request next frame
-    animId = requestAnimationFrame(loop);
-  }
-
-  // expose pause/resume globally (for debugging in dev console)
-  window._gearPause = pauseAnimation;
-  window._gearResume = resumeAnimation;
-
-  // When About becomes active we should also recenter the sun around the TITLE text.
-  // We locate the title element and compute its bounding box in window coordinates, then
-  // move the gear center so the sun hub surrounds the text.
-  function recenterToTitle() {
-    const titleEl = document.getElementById('titleText');
-    if (!titleEl) return;
-    const rect = titleEl.getBoundingClientRect();
-    // center the gear on the center of the title element
-    centerX = rect.left + rect.width * 0.5;
-    centerY = rect.top + rect.height * 0.5;
-  }
-
-  // call recenter initially and whenever layout changes (resize or DOM)
-  recenterToTitle();
-  window.addEventListener('resize', ()=>{
-    resize();
-    recenterToTitle();
-  });
-
-  // If fonts load late and change layout, observe title element for size changes
-  const titleObserver = new ResizeObserver(()=> recenterToTitle());
-  titleObserver.observe(document.getElementById('titleText'));
-
-}); // load
-</script>
-</body>
+        function loop(){
+          if(!running) return;
+          t+=1/60;
+          ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+          const cx=window.innerWidth*0.5,cy=window.innerHeight*0.48;
+          const ringAngle=omegaRing*t;
+          drawSpurGear(cx,cy,Rr,Tr,ringAngle,{fill:true,stroke:true,inner:true});
+          const sunAngle=omegaSun*t;
+          drawSpurGear(cx,cy,Rs,Ts,sunAngle,{fill:true,stroke:true});
+          const carrierAngle=omegaCarrier*t;
+          for(let i=0;i<3;i++){
+            const ang=carrierAngle+planetAngles[i];
+            const px=cx+Math.cos(ang)*centerDist;
+            const py=cy+Math.sin(ang)*centerDist;
+            const pSpin=planetSpin(omegaCarrier);
+            const planetAngle=pSpin*t;
+            drawSpurGear(px,py,Rp,Tp,planetAngle,{fill:true,stroke:true});
+          }
+          anim=requestAnimationFrame(loop);
+        }
+      });
+    </script>
+  </body>
 </html>
