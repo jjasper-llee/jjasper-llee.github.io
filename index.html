@@ -6,7 +6,7 @@
     <title>Tyler Lee — Flying Bionic Hand</title>
     <style>
       :root {
-        --bg: #0a0a0a;
+        --bg: transparent;
         --text: #f7f7f7;
         --accent: #00ffd0;
         --muted: #999;
@@ -15,7 +15,7 @@
       body {
         margin: 0;
         font-family: 'Inter', sans-serif;
-        background-color: var(--bg);
+        background-color: #0a0a0a;
         color: var(--text);
         overflow: hidden;
       }
@@ -37,7 +37,6 @@
       nav a:hover {
         color: var(--accent);
       }
-
       .window {
         position: absolute;
         top: 0;
@@ -50,17 +49,15 @@
         flex-direction: column;
         text-align: center;
         padding: 0 10vw;
-        background: var(--bg);
+        background: rgba(10, 10, 10, 0.6);
         transition: opacity 0.4s ease;
       }
       .window.active {
         display: flex;
         opacity: 1;
       }
-
       h1, h2 { margin: 0 0 1rem; }
       p { color: var(--muted); max-width: 700px; line-height: 1.7; }
-
       canvas#background {
         position: fixed;
         top: 0;
@@ -68,8 +65,8 @@
         width: 100vw;
         height: 100vh;
         z-index: -1;
-        opacity: 0.25;
         pointer-events: none;
+        background: transparent;
       }
     </style>
   </head>
@@ -105,74 +102,81 @@
     </div>
 
     <script>
-      // switching between windows
-      const navLinks = document.querySelectorAll('nav a');
-      const windows = document.querySelectorAll('.window');
-      navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-          windows.forEach(w => w.classList.remove('active'));
-          document.getElementById(link.dataset.target).classList.add('active');
+      window.onload = function() {
+        // switching between windows
+        const navLinks = document.querySelectorAll('nav a');
+        const windows = document.querySelectorAll('.window');
+        navLinks.forEach(link => {
+          link.addEventListener('click', () => {
+            windows.forEach(w => w.classList.remove('active'));
+            document.getElementById(link.dataset.target).classList.add('active');
+          });
         });
-      });
 
-      // planetary gear animation background
-      const canvas = document.getElementById('background');
-      const ctx = canvas.getContext('2d');
-      let W, H, t = 0;
+        // planetary gear animation background
+        const canvas = document.getElementById('background');
+        const ctx = canvas.getContext('2d');
+        let W, H, t = 0;
 
-      function resize() {
-        W = canvas.width = window.innerWidth;
-        H = canvas.height = window.innerHeight;
-      }
-      window.addEventListener('resize', resize);
-      resize();
+        function resize() {
+          W = canvas.width = window.innerWidth;
+          H = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
 
-      function drawPlanetary(cx, cy, radius, count, speed) {
-        ctx.beginPath();
-        ctx.arc(cx, cy, radius * 0.3, 0, Math.PI * 2);
-        ctx.strokeStyle = 'rgba(0,255,200,0.2)';
-        ctx.stroke();
-
-        for (let i = 0; i < count; i++) {
-          const angle = t * speed + (i * (Math.PI * 2)) / count;
-          const x = cx + Math.cos(angle) * radius;
-          const y = cy + Math.sin(angle) * radius;
+        function drawPlanetary(cx, cy, radius, count, speed) {
           ctx.beginPath();
-          ctx.arc(x, y, radius * 0.1, 0, Math.PI * 2);
-          ctx.strokeStyle = 'rgba(0,255,200,0.15)';
+          ctx.arc(cx, cy, radius * 0.3, 0, Math.PI * 2);
+          ctx.strokeStyle = 'rgba(0,255,200,0.6)';
+          ctx.lineWidth = 1.5;
           ctx.stroke();
 
-          for (let k = 0; k < 8; k++) {
-            const a2 = angle + (k * Math.PI) / 4;
+          for (let i = 0; i < count; i++) {
+            const angle = t * speed + (i * (Math.PI * 2)) / count;
+            const x = cx + Math.cos(angle) * radius;
+            const y = cy + Math.sin(angle) * radius;
             ctx.beginPath();
-            ctx.moveTo(x, y);
-            ctx.lineTo(x + Math.cos(a2) * (radius * 0.15), y + Math.sin(a2) * (radius * 0.15));
-            ctx.strokeStyle = 'rgba(0,255,200,0.05)';
+            ctx.arc(x, y, radius * 0.12, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(0,255,200,0.4)';
+            ctx.lineWidth = 1;
             ctx.stroke();
+
+            for (let k = 0; k < 8; k++) {
+              const a2 = angle + (k * Math.PI) / 4;
+              ctx.beginPath();
+              ctx.moveTo(x, y);
+              ctx.lineTo(
+                x + Math.cos(a2) * (radius * 0.2),
+                y + Math.sin(a2) * (radius * 0.2)
+              );
+              ctx.strokeStyle = 'rgba(0,255,200,0.1)';
+              ctx.stroke();
+            }
           }
         }
-      }
 
-      function loop() {
-        t += 0.01;
-        ctx.clearRect(0, 0, W, H);
-        ctx.lineWidth = 1;
+        function loop() {
+          t += 0.015;
+          ctx.clearRect(0, 0, W, H);
+          ctx.lineWidth = 1;
 
-        // grid blueprint lines
-        ctx.strokeStyle = 'rgba(0,255,200,0.05)';
-        for (let x = 0; x < W; x += 40) {
-          ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+          // grid blueprint lines
+          ctx.strokeStyle = 'rgba(0,255,200,0.08)';
+          for (let x = 0; x < W; x += 40) {
+            ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+          }
+          for (let y = 0; y < H; y += 40) {
+            ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+          }
+
+          drawPlanetary(W * 0.3, H * 0.5, 120, 5, 0.8);
+          drawPlanetary(W * 0.7, H * 0.5, 180, 6, -0.6);
+
+          requestAnimationFrame(loop);
         }
-        for (let y = 0; y < H; y += 40) {
-          ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
-        }
-
-        drawPlanetary(W * 0.3, H * 0.5, 120, 5, 0.8);
-        drawPlanetary(W * 0.7, H * 0.5, 180, 6, -0.6);
-
-        requestAnimationFrame(loop);
-      }
-      loop();
+        loop();
+      };
     </script>
   </body>
 </html>
