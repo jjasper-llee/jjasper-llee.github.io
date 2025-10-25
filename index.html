@@ -12,7 +12,6 @@ window.addEventListener('load', ()=>{
   navLinks.forEach(l=>l.addEventListener('click',()=>showWindow(l.dataset.target)));
   showWindow('about');
 
-  // --- Canvas setup ---
   const ctx=canvas.getContext('2d');
   let W=0,H=0,t=0;
   function resize(){
@@ -26,26 +25,27 @@ window.addEventListener('load', ()=>{
   window.addEventListener('resize',resize);
   resize();
 
-  // --- Gear geometry ---
-  const pitch = 9; // slightly larger spacing for teeth visibility
+  const pitch = 8.2;
   function pitchRadius(teeth){ return (pitch*teeth)/(2*Math.PI); }
 
+  // refined, semi-transparent gear drawing
   function drawSpurGear(cx,cy,R,teeth,angle,opt={fill:true,inner:false,bright:false}) {
     const toothDepth = Math.max(8, R*0.12);
     const rPitch = R;
     ctx.save();
 
-    // gradient fill with more brightness contrast
-    const grad = ctx.createRadialGradient(cx,cy,R*0.2,cx,cy,R*1.2);
-    grad.addColorStop(0,opt.bright ? 'rgba(0,255,230,0.35)' : 'rgba(0,255,180,0.25)');
-    grad.addColorStop(1,opt.bright ? 'rgba(0,150,255,0.08)' : 'rgba(0,180,180,0.05)');
+    // soft translucent glow gradient
+    const grad = ctx.createRadialGradient(cx,cy,R*0.1,cx,cy,R*1.25);
+    grad.addColorStop(0,opt.bright?'rgba(0,255,255,0.18)':'rgba(0,255,190,0.10)');
+    grad.addColorStop(1,opt.bright?'rgba(0,255,255,0.00)':'rgba(0,255,190,0.00)');
     ctx.fillStyle = grad;
     ctx.beginPath();
     ctx.arc(cx,cy,rPitch,0,Math.PI*2);
     ctx.fill();
 
-    ctx.strokeStyle = opt.bright ? 'rgba(0,255,240,0.9)' : 'rgba(0,255,190,0.8)';
-    ctx.lineWidth = 1.3;
+    // subtle outline
+    ctx.strokeStyle = opt.bright ? 'rgba(0,255,255,0.7)' : 'rgba(0,255,190,0.6)';
+    ctx.lineWidth = 1.2;
     ctx.beginPath();
     ctx.arc(cx,cy,rPitch,0,Math.PI*2);
     ctx.stroke();
@@ -58,51 +58,46 @@ window.addEventListener('load', ()=>{
       const tx = cx + cos*baseR;
       const ty = cy + sin*baseR;
       const w = (2*Math.PI*rPitch/teeth)*0.55;
-      const h = toothDepth * 0.8;
+      const h = toothDepth*0.8;
       ctx.save();
       ctx.translate(tx,ty);
       ctx.rotate(a + (opt.inner?Math.PI:0));
-      ctx.fillStyle = opt.bright ? 'rgba(0,255,255,0.95)' : 'rgba(0,255,210,0.85)';
+      ctx.fillStyle = opt.bright ? 'rgba(0,255,255,0.5)' : 'rgba(0,255,210,0.35)';
       ctx.fillRect(-w/2, opt.inner?-h:0, w, h);
       ctx.restore();
     }
     ctx.restore();
   }
 
-  // --- Planetary gear setup ---
-  const Ts = 40;  // sun teeth
-  const Tp = 24;  // planet teeth
-  const Tr = Ts + 2*Tp;
-  const Rs = pitchRadius(Ts)*1.5;
-  const Rp = pitchRadius(Tp)*1.5;
-  const Rr = pitchRadius(Tr)*1.5;
-  const centerDist = Rs + Rp;
+  // planetary parameters
+  const Ts=40, Tp=24, Tr=Ts+2*Tp;
+  const Rs=pitchRadius(Ts)*1.5;
+  const Rp=pitchRadius(Tp)*1.5;
+  const Rr=pitchRadius(Tr)*1.5;
+  const centerDist=Rs+Rp;
 
-  const omegaSun = 0.7;
-  const omegaRing = -0.05;
-  const ratio = Tr/Ts;
-  const omegaCarrier = ((ratio*omegaRing)+omegaSun)/(1+ratio);
-  function planetSpin(){ return (omegaSun*Rs)/Rp - omegaCarrier; }
+  const omegaSun=0.7, omegaRing=-0.05;
+  const ratio=Tr/Ts;
+  const omegaCarrier=((ratio*omegaRing)+omegaSun)/(1+ratio);
   const planetAngles=[0,(2*Math.PI)/3,(4*Math.PI)/3];
+  function planetSpin(){ return (omegaSun*Rs)/Rp - omegaCarrier; }
 
   function loop(){
-    t += 1/60;
-    ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+    t+=1/60;
+    ctx.clearRect(0,0,W,H);
 
     const cx=W*0.5, cy=H*0.5;
-    const ringAngle=omegaRing*t;
-    drawSpurGear(cx,cy,Rr,Tr,ringAngle,{fill:true,inner:true,bright:true});
 
-    const sunAngle=omegaSun*t;
-    drawSpurGear(cx,cy,Rs,Ts,sunAngle,{fill:true,inner:false,bright:true});
+    // draw ring, sun, and planets
+    drawSpurGear(cx,cy,Rr,Tr,omegaRing*t,{fill:true,inner:true,bright:true});
+    drawSpurGear(cx,cy,Rs,Ts,omegaSun*t,{fill:true,inner:false,bright:true});
 
     const carrierAngle=omegaCarrier*t;
     for(let i=0;i<3;i++){
       const ang=carrierAngle+planetAngles[i];
       const px=cx+Math.cos(ang)*centerDist;
       const py=cy+Math.sin(ang)*centerDist;
-      const planetAngle=planetSpin()*t;
-      drawSpurGear(px,py,Rp,Tp,planetAngle,{fill:true,inner:false,bright:false});
+      drawSpurGear(px,py,Rp,Tp,planetSpin()*t,{fill:true,inner:false,bright:false});
     }
 
     requestAnimationFrame(loop);
