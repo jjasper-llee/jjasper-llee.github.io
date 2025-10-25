@@ -215,11 +215,21 @@ window.addEventListener('load', () => {
   loop();
 
   function showWindow(id){
-    windows.forEach(w=>w.classList.remove('active'));
-    navLinks.forEach(l=>l.classList.remove('active'));
-    const el=document.getElementById(id); if(el) el.classList.add('active');
-    const link=Array.from(navLinks).find(l=>l.dataset.target===id); if(link) link.classList.add('active');
-  }
+    windows.forEach(w => {
+        if(w.id === id){
+            w.classList.add('active');
+        } else {
+            w.classList.remove('active');
+        }
+    });
+    navLinks.forEach(l => {
+        if(l.dataset.target === id){
+            l.classList.add('active');
+        } else {
+            l.classList.remove('active');
+        }
+    });
+}
   navLinks.forEach(l=>l.addEventListener('click',()=>showWindow(l.dataset.target)));
   showWindow('about');
 });
