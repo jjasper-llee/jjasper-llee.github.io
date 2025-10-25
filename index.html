@@ -113,7 +113,7 @@
 <canvas id="gears"></canvas>
 
 <div class="hero">
-  <h1>Tyler Lee</h1>
+  <h1>Jasper Lee</h1>
   <p>Mechanical Engineer • Flying Bionic Hand</p>
 </div>
 
@@ -153,7 +153,7 @@ window.addEventListener('load', () => {
     H = grid.height = gears.height = Math.floor(window.innerHeight * dpr);
     grid.style.width = gears.style.width = window.innerWidth + 'px';
     grid.style.height = gears.style.height = window.innerHeight + 'px';
-    gctx.setTransform(dpr,0,0,dpr,0,0);
+    gctx.setTransform(dpr,window.innerWidth/2,0,dpr,0,0);
     ctx.setTransform(dpr,0,0,dpr,0,0);
   }
   window.addEventListener('resize', resize);
