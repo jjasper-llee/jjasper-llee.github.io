@@ -3,49 +3,97 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jasper Lee — Right Brain</title>
+  <title>Jasper Lee</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
   <header>
     <a href="index.html" class="logo">Jasper Lee</a>
     <nav>
-      <a href="leftbrain.html">Left Brain</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
+      <a href="#about">About</a>
+      <a href="#leftbrain">Left Brain</a>
+      <a href="#rightbrain">Right Brain</a>
+      <a href="#contact">Contact</a>
     </nav>
   </header>
 
-  <main class="content">
-    <section class="intro">
-      <h1>Right Brain</h1>
-      <p>Design intuition and creative curiosity drive everything I build — from bionic hands to aerial robotics.</p>
+  <main>
+    <!-- ABOUT -->
+    <section id="about" class="page-section active">
+      <img src="images/profile.jpg" alt="Jasper Lee portrait" class="profile-pic" />
+      <div class="bio">
+        <h1>About Me</h1>
+        <p>
+          I’m Jasper Lee — a Mechanical Engineer passionate about the intersection of 
+          robotics, biomechanics, and flight. My work blends precision engineering 
+          with creative design to push the boundaries of human–machine interaction.
+        </p>
+      </div>
     </section>
 
-    <section class="projects">
-      <div class="project">
-        <a href="project-bionichand.html">
-          <img src="images/bionichand.jpg" alt="Flying Bionic Hand" />
+    <!-- LEFT BRAIN -->
+    <section id="leftbrain" class="page-section">
+      <h1>Left Brain</h1>
+      <div class="project-grid">
+        <a href="project-bionichand.html" class="project">
+          <img src="images/bionichand.jpg" alt="Bionic Hand project" />
           <h2>Flying Bionic Hand</h2>
         </a>
-      </div>
-      <div class="project">
-        <a href="project-flight.html">
-          <img src="images/flight.jpg" alt="Aerial Robotics" />
-          <h2>Aerial Robotics Concepts</h2>
+        <a href="project-cad.html" class="project">
+          <img src="images/cad.jpg" alt="CAD Simulation project" />
+          <h2>CAD & Simulation</h2>
         </a>
+        <!-- Add more projects here -->
       </div>
-      <div class="project">
-        <a href="project-motion.html">
-          <img src="images/motion.jpg" alt="Mechanism Design" />
-          <h2>Mechanism Design Studies</h2>
-        </a>
+    </section>
+
+    <!-- RIGHT BRAIN -->
+    <section id="rightbrain" class="page-section">
+      <h1>Right Brain</h1>
+      <div class="project-grid">
+        <div class="project">
+          <iframe width="100%" height="200" src="https://www.youtube.com/embed/OCjwL5QbiMg"
+            title="YouTube video player" frameborder="0"
+            allowfullscreen></iframe>
+          <h2>Neural Motion Study</h2>
+        </div>
+        <div class="project">
+          <iframe width="100%" height="200" src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+            title="YouTube video player" frameborder="0"
+            allowfullscreen></iframe>
+          <h2>Design Concept Demo</h2>
+        </div>
       </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="page-section">
+      <h1>Contact</h1>
+      <p>Reach me at <a href="mailto:jasper@yourdomain.com">jasper@yourdomain.com</a></p>
     </section>
   </main>
 
-  <footer>
-    <p>© 2025 Jasper Lee</p>
-  </footer>
+  <script>
+    // Navigation logic
+    const navLinks = document.querySelectorAll('nav a');
+    const sections = document.querySelectorAll('.page-section');
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const target = link.getAttribute('href').substring(1);
+
+        sections.forEach(sec => sec.classList.remove('active'));
+        document.getElementById(target).classList.add('active');
+
+        navLinks.forEach(n => n.classList.remove('active'));
+        link.classList.add('active');
+
+        window.scrollTo(0, 0);
+      });
+    });
+  </script>
+
 </body>
 </html>
