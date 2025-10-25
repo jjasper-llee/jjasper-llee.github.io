@@ -4,37 +4,48 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Left Brain | Jasper Lee</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v=20240621" />
 </head>
-<body>
-  <canvas id="bg-waves"></canvas>
+<body class="brain-theme">
+  <canvas id="brain-canvas"></canvas>
 
   <header>
-    <h1>Left Brain</h1>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="left-brain.html" class="active">Left Brain</a>
-      <a href="right-brain.html">Right Brain</a>
-    </nav>
+    <div class="nav-left">
+      <h1 class="logo">Jasper Lee</h1>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="left-brain.html" class="active">Left Brain</a>
+        <a href="right-brain.html">Right Brain</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
   </header>
 
+  <div class="brain-hero-spacer" aria-hidden="true"></div>
+
   <main>
-    <section class="content">
-      <h2>Engineering & Innovation</h2>
+    <section class="page visible">
+      <h2>Engineering &amp; Innovation</h2>
       <p>
-        Applying precision, analysis, and mechanics to bring creative concepts to life.
-        Here are some of my engineering projects:
+        Applying precision, analysis, and mechanics to bring creative concepts to life. Here are some of my
+        engineering projects:
       </p>
 
       <div class="video-grid">
-        <!-- Replace the links below with your actual video IDs -->
-        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Project 1" allowfullscreen></iframe>
-        <iframe src="https://www.youtube.com/embed/xvFZjo5PgG0" title="Project 2" allowfullscreen></iframe>
-        <iframe src="https://www.youtube.com/embed/aqz-KE-bpKQ" title="Project 3" allowfullscreen></iframe>
+        <iframe src="https://www.youtube.com/embed/xe-f4gokRBs" title="Prince Rupert's Drop in slow motion" allowfullscreen></iframe>
+        <iframe src="https://www.youtube.com/embed/xoxhDk-hwuo" title="Mark Rober's Glitter Bomb" allowfullscreen></iframe>
+        <iframe src="https://www.youtube.com/embed/fRj34o4hN4I" title="Boston Dynamics: Do You Love Me?" allowfullscreen></iframe>
       </div>
     </section>
   </main>
 
-  <script src="waves.js"></script>
+  <footer>
+    <p>© 2025 Jasper Lee</p>
+  </footer>
+
+  <script>
+    window.pendingBrainHighlight = 'left';
+  </script>
+  <script src="brain.js?v=20240621" defer></script>
 </body>
 </html>
