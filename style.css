@@ -7,6 +7,15 @@ html, body {
   background: #fff;
 }
 
+#brain-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
 /* === Header === */
 header {
   position: fixed;
@@ -48,6 +57,10 @@ main {
   margin: 8rem auto 4rem;
   padding: 0 2rem;
   text-align: center;
+}
+
+.brain-hero-spacer {
+  height: clamp(320px, 70vh, 620px);
 }
 
 .page {
@@ -172,4 +185,95 @@ footer {
   color: #555;
   border-top: 1px solid #eee;
   background: #fff;
+}
+
+/* === Brain Theme Overrides === */
+body.brain-theme {
+  background: radial-gradient(circle at 50% -20%, #1a2b5a 0%, #081028 48%, #020712 100%);
+  color: #e5ecff;
+  min-height: 100vh;
+}
+
+body.brain-theme header {
+  background: rgba(5, 12, 32, 0.82);
+  border-bottom: 1px solid rgba(38, 66, 124, 0.45);
+  box-shadow: 0 20px 55px rgba(3, 10, 29, 0.55);
+  backdrop-filter: blur(16px);
+  position: relative;
+  z-index: 2;
+}
+
+body.brain-theme .logo {
+  color: #d7e5ff;
+}
+
+body.brain-theme nav a {
+  color: #c3d6ff;
+}
+
+body.brain-theme nav a:hover,
+body.brain-theme nav a.active {
+  color: #7fb6ff;
+}
+
+body.brain-theme main {
+  color: inherit;
+  position: relative;
+  z-index: 1;
+}
+
+body.brain-theme .page {
+  background: rgba(5, 13, 35, 0.78);
+  border: 1px solid rgba(67, 104, 186, 0.55);
+  border-radius: 24px;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 35px 90px rgba(2, 6, 20, 0.7);
+  backdrop-filter: blur(12px);
+}
+
+body.brain-theme h2 {
+  color: #f2f6ff;
+}
+
+body.brain-theme p {
+  color: rgba(217, 228, 255, 0.92);
+}
+
+body.brain-theme .profile-photo {
+  box-shadow: 0 25px 60px rgba(9, 20, 54, 0.65);
+  border: 2px solid rgba(92, 134, 220, 0.6);
+}
+
+body.brain-theme .project {
+  border: 1px solid rgba(70, 103, 175, 0.65);
+  background: rgba(9, 19, 44, 0.75);
+  color: inherit;
+}
+
+body.brain-theme .project:hover {
+  box-shadow: 0 22px 48px rgba(6, 14, 35, 0.65);
+}
+
+body.brain-theme .caption {
+  color: rgba(216, 226, 255, 0.85);
+}
+
+body.brain-theme .creative-content {
+  color: inherit;
+}
+
+body.brain-theme .video-grid iframe {
+  box-shadow: 0 24px 60px rgba(6, 12, 32, 0.7);
+}
+
+body.brain-theme #contact a {
+  color: #7fb6ff;
+}
+
+body.brain-theme footer {
+  background: rgba(4, 11, 29, 0.88);
+  border-top: 1px solid rgba(38, 66, 124, 0.45);
+  color: rgba(203, 218, 255, 0.85);
+  position: relative;
+  z-index: 1;
 }

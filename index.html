@@ -4,9 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Jasper Lee</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v=20240610" />
 </head>
-<body>
+<body class="brain-theme">
+  <canvas id="brain-canvas"></canvas>
   <header>
     <div class="nav-left">
       <h1 class="logo">Jasper Lee</h1>
@@ -18,6 +19,8 @@
       </nav>
     </div>
   </header>
+
+  <div class="brain-hero-spacer" aria-hidden="true"></div>
 
   <main>
     <!-- === ABOUT === -->
@@ -102,6 +105,8 @@
     <p>© 2025 Jasper Lee</p>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.min.js"></script>
+  <script src="brain.js?v=20240610" defer></script>
   <script>
     // Page switching navigation
     const navLinks = document.querySelectorAll('nav a');
