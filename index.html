@@ -57,10 +57,10 @@
   .hero {
     position: fixed;
     top: 20px;
-    right: 40px;
+    left: 40px;
     z-index: 10;
     font-weight: 400;
-    text-align: right;
+    text-align: left;
   }
 
   .hero h1 {
@@ -101,6 +101,7 @@
 
 <nav>
   <a data-target="about" class="active">About</a>
+  <a data-target="bio">Bio</a>
   <a data-target="leftbrain">Left Brain</a>
   <a data-target="rightbrain">Right Brain</a>
   <a data-target="contact">Contact</a>
@@ -162,7 +163,7 @@ window.addEventListener('load', () => {
   function drawGrid() {
     const spacing = 80;
     gctx.clearRect(0,0,window.innerWidth, window.innerHeight);
-    gctx.strokeStyle='rgba(0,150,255,0.25)'; // brighter grid
+    gctx.strokeStyle='rgba(0,150,255,0.25)';
     gctx.lineWidth=1;
     for(let x=0;x<window.innerWidth;x+=spacing){ gctx.beginPath(); gctx.moveTo(x,0); gctx.lineTo(x,window.innerHeight); gctx.stroke();}
     for(let y=0;y<window.innerHeight;y+=spacing){ gctx.beginPath(); gctx.moveTo(0,y); gctx.lineTo(window.innerWidth,y); gctx.stroke();}
@@ -218,4 +219,4 @@ window.addEventListener('load', () => {
     navLinks.forEach(l=>l.classList.remove('active'));
     const el=document.getElementById(id); if(el) el.classList.add('active');
     const link=Array.from(navLinks).find(l=>l.dataset.target===id); if(link) link.classList.add('active');
-    if(id==='about') { grid.style.display='block'; gears.style.display='block'; setTimeout(()=>
+    if(id==='about' || id==='bio') { grid.style.display='block'; gears.style.display='block'; setTimeout(()=>gears.style.opacity=1,
