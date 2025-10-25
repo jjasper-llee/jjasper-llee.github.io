@@ -1,96 +1,88 @@
+/* --- GLOBAL STYLES --- */
 html, body {
   margin: 0;
   padding: 0;
   font-family: 'Inter', sans-serif;
   color: #fff;
-  background: linear-gradient(180deg, #000 0%, #0a0a0a 100%);
+  background: linear-gradient(180deg, #000814, #00111e);
+  min-height: 100vh;
   overflow-x: hidden;
-  height: 100%;
 }
 
-canvas#bg-waves {
+/* --- ANIMATED BACKGROUND --- */
+#bg-waves {
   position: fixed;
   top: 0;
   left: 0;
   z-index: -1;
+  width: 100%;
+  height: 100%;
+  background: transparent;
 }
 
+/* --- HEADER --- */
 header {
   position: fixed;
   top: 0;
-  left: 0;
   width: 100%;
   background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(6px);
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  backdrop-filter: blur(8px);
   z-index: 100;
 }
 
-.logo {
-  font-weight: 600;
-  font-size: 1.2rem;
-  text-decoration: none;
+header h1 {
+  font-size: 1.5rem;
+  margin: 0;
   color: #0ff;
 }
 
 nav a {
   color: #fff;
-  text-decoration: none;
   margin-left: 1.5rem;
-  font-size: 1rem;
+  text-decoration: none;
   transition: color 0.3s ease;
 }
 nav a:hover {
   color: #0ff;
 }
 
+/* --- MAIN CONTENT --- */
 main {
-  padding-top: 120px;
+  margin-top: 100px;
+  padding: 2rem;
   max-width: 900px;
-  margin: auto;
-  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.hero h1 {
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
-}
-.hero p {
-  font-size: 1.2rem;
-  opacity: 0.85;
+h2, h3 {
+  color: #0ff;
 }
 
-.about {
-  margin-top: 3rem;
+p {
   line-height: 1.6;
-  text-align: left;
-}
-.about h2 {
-  font-size: 1.8rem;
-  margin-bottom: 1rem;
+  opacity: 0.9;
 }
 
-.right-brain .bio {
+/* --- RIGHT BRAIN PAGE --- */
+.bio {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 1.5rem;
-  margin-top: 6rem;
-  text-align: left;
+  gap: 2rem;
 }
-.right-brain .bio img {
-  width: 220px;
-  height: 220px;
+
+.bio img {
+  width: 250px;
+  height: 250px;
   object-fit: cover;
   border-radius: 8px;
   float: right;
-}
-.right-brain .bio div {
-  flex: 1;
 }
 
 .video-grid {
@@ -99,10 +91,10 @@ main {
   gap: 1.5rem;
   margin-top: 2rem;
 }
+
 .video-grid iframe {
   width: 100%;
   aspect-ratio: 16/9;
   border-radius: 12px;
   border: none;
 }
-
