@@ -115,9 +115,9 @@
       centerY,
       scale * 3.8
     );
-    gradient.addColorStop(0, 'rgba(100, 134, 230, 0.55)');
-    gradient.addColorStop(0.45, 'rgba(28, 46, 114, 0.82)');
-    gradient.addColorStop(1, 'rgba(5, 12, 32, 0.96)');
+    // gradient.addColorStop(0, 'rgba(100, 134, 230, 0.55)');
+    // gradient.addColorStop(0.45, 'rgba(28, 46, 114, 0.82)');
+    // gradient.addColorStop(1, 'rgba(5, 12, 32, 0.96)');
 
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, width, height);
