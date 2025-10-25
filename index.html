@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Planetary Gears Demo</title>
+<title>Planetary Gears – Glowing Tabs Demo</title>
 <style>
   html, body {
     margin: 0;
@@ -15,23 +15,35 @@
     overflow: hidden;
   }
 
+  /* Right-side vertical nav */
   nav {
     position: fixed;
-    top: 10px;
-    left: 10px;
+    top: 50%;
+    right: 30px;
+    transform: translateY(-50%);
     z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
   }
 
   nav a {
+    position: relative;
     color: cyan;
     text-decoration: none;
-    margin-right: 1em;
     font-weight: bold;
-    cursor: pointer;
+    padding: 0.75em 1.5em;
+    border: 2px solid rgba(0,255,255,0.5);
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(0,255,255,0.4);
+    background: rgba(0,255,255,0.05);
+    transition: all 0.3s ease;
   }
 
-  nav a:hover {
-    text-decoration: underline;
+  nav a:hover, nav a.active {
+    background: rgba(0,255,255,0.15);
+    box-shadow: 0 0 25px rgba(0,255,255,0.8);
   }
 
   canvas#background {
@@ -45,46 +57,54 @@
 
   .window {
     display: none;
-    position: relative;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     z-index: 1;
-    padding: 3em;
     max-width: 800px;
+    text-align: center;
+    padding: 3em;
   }
 
   .window.active {
     display: block;
   }
 
-  #about {
-    margin: 5em auto;
-    text-align: center;
+  h1 {
+    color: cyan;
+    text-shadow: 0 0 10px cyan;
   }
 
-  #projects {
-    margin: 5em auto;
-    text-align: center;
+  p {
+    color: #bff;
   }
 </style>
 </head>
 <body>
 
 <nav>
-  <a data-target="about">About</a>
-  <a data-target="projects">Projects</a>
+  <a data-target="about" class="active">About</a>
+  <a data-target="leftbrain">Left Brain</a>
+  <a data-target="rightbrain">Right Brain</a>
 </nav>
 
 <canvas id="background"></canvas>
 
 <div id="about" class="window active">
   <h1>About This Demo</h1>
-  <p>This is a planetary gear animation built entirely with HTML5 Canvas and JavaScript.</p>
-  <p>The gear animation runs behind the “About” section. Click "Projects" to hide it.</p>
+  <p>A hypnotic, cyan-glowing planetary gear system rendered in Canvas.</p>
+  <p>Click a glowing tab to switch modes!</p>
 </div>
 
-<div id="projects" class="window">
-  <h1>Projects</h1>
-  <p>Here’s where project info would go.</p>
-  <p>Click “About” to return to the animated background.</p>
+<div id="leftbrain" class="window">
+  <h1>Left Brain</h1>
+  <p>Logic. Structure. Engineering. Pattern recognition.</p>
+</div>
+
+<div id="rightbrain" class="window">
+  <h1>Right Brain</h1>
+  <p>Creativity. Art. Emotion. Imagination.</p>
 </div>
 
 <script>
@@ -92,32 +112,22 @@ window.addEventListener('load', () => {
   const navLinks = document.querySelectorAll('nav a');
   const windows = document.querySelectorAll('.window');
   const canvas = document.getElementById('background');
-
-  if (!canvas) {
-    console.error("Canvas element not found!");
-    return;
-  }
-
-  function showWindow(id) {
-    windows.forEach(w => w.classList.remove('active'));
-    const el = document.getElementById(id);
-    if (!el) {
-      console.warn("Missing window:", id);
-      return;
-    }
-    el.classList.add('active');
-    canvas.style.display = (id === 'about') ? 'block' : 'none';
-  }
-
-  navLinks.forEach(l => {
-    l.addEventListener('click', () => showWindow(l.dataset.target));
-  });
-
-  showWindow('about');
-
   const ctx = canvas.getContext('2d');
   let W = 0, H = 0, t = 0;
 
+  /* --- PAGE SWITCHING --- */
+  function showWindow(id) {
+    windows.forEach(w => w.classList.remove('active'));
+    navLinks.forEach(l => l.classList.remove('active'));
+    const el = document.getElementById(id);
+    const link = Array.from(navLinks).find(l => l.dataset.target === id);
+    if (el) el.classList.add('active');
+    if (link) link.classList.add('active');
+    canvas.style.display = (id === 'about') ? 'block' : 'none';
+  }
+  navLinks.forEach(l => l.addEventListener('click', () => showWindow(l.dataset.target)));
+
+  /* --- CANVAS SETUP --- */
   function resize() {
     const dpr = window.devicePixelRatio || 1;
     W = canvas.width = Math.floor(window.innerWidth * dpr);
@@ -129,75 +139,83 @@ window.addEventListener('load', () => {
   window.addEventListener('resize', resize);
   resize();
 
+  /* --- GEAR GEOMETRY --- */
   const pitch = 8.2;
   function pitchRadius(teeth) { return (pitch * teeth) / (2 * Math.PI); }
 
-  function drawSpurGear(cx, cy, R, teeth, angle, opt = { fill: true, inner: false, bright: false }) {
-    const toothDepth = Math.max(8, R * 0.12);
+  // Improved gear teeth drawing — teeth align more realistically
+  function drawGear(cx, cy, R, teeth, angle, opt = { inner: false, bright: false }) {
+    const toothDepth = R * 0.08;
     const rPitch = R;
-    ctx.save();
+    const rBase = R - (opt.inner ? -toothDepth : toothDepth);
 
-    const grad = ctx.createRadialGradient(cx, cy, R * 0.1, cx, cy, R * 1.25);
-    grad.addColorStop(0, opt.bright ? 'rgba(0,255,255,0.18)' : 'rgba(0,255,190,0.10)');
-    grad.addColorStop(1, opt.bright ? 'rgba(0,255,255,0.00)' : 'rgba(0,255,190,0.00)');
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(angle);
+
+    // gradient fill
+    const grad = ctx.createRadialGradient(0, 0, R * 0.1, 0, 0, R * 1.2);
+    grad.addColorStop(0, opt.bright ? 'rgba(0,255,255,0.25)' : 'rgba(0,255,180,0.1)');
+    grad.addColorStop(1, 'rgba(0,255,255,0.0)');
     ctx.fillStyle = grad;
+
     ctx.beginPath();
-    ctx.arc(cx, cy, rPitch, 0, Math.PI * 2);
+    ctx.arc(0, 0, R, 0, Math.PI * 2);
     ctx.fill();
 
-    ctx.strokeStyle = opt.bright ? 'rgba(0,255,255,0.7)' : 'rgba(0,255,190,0.6)';
+    // Outline
+    ctx.strokeStyle = opt.bright ? 'rgba(0,255,255,0.8)' : 'rgba(0,255,200,0.5)';
     ctx.lineWidth = 1.2;
     ctx.beginPath();
-    ctx.arc(cx, cy, rPitch, 0, Math.PI * 2);
+    ctx.arc(0, 0, R, 0, Math.PI * 2);
     ctx.stroke();
 
-    const dir = opt.inner ? -1 : 1;
+    const step = (2 * Math.PI) / teeth;
     for (let i = 0; i < teeth; i++) {
-      const a = angle + i * (2 * Math.PI / teeth);
-      const cos = Math.cos(a), sin = Math.sin(a);
-      const baseR = rPitch + dir * (toothDepth * 0.25);
-      const tx = cx + cos * baseR;
-      const ty = cy + sin * baseR;
-      const w = (2 * Math.PI * rPitch / teeth) * 0.55;
-      const h = toothDepth * 0.8;
+      const a = i * step;
+      const w = step * R * 0.4;
       ctx.save();
-      ctx.translate(tx, ty);
-      ctx.rotate(a + (opt.inner ? Math.PI : 0));
-      ctx.fillStyle = opt.bright ? 'rgba(0,255,255,0.5)' : 'rgba(0,255,210,0.35)';
-      ctx.fillRect(-w / 2, opt.inner ? -h : 0, w, h);
+      ctx.rotate(a);
+      ctx.beginPath();
+      ctx.rect(-w / 2, R - toothDepth, w, toothDepth);
+      ctx.fillStyle = opt.bright ? 'rgba(0,255,255,0.6)' : 'rgba(0,255,210,0.3)';
+      ctx.fill();
       ctx.restore();
     }
-
     ctx.restore();
   }
 
-  const Ts = 40, Tp = 24, Tr = Ts + 2 * Tp;
+  /* --- PLANETARY PARAMETERS --- */
+  const Ts = 40, Tp = 20, Tr = Ts + 2 * Tp;
   const Rs = pitchRadius(Ts) * 1.5;
   const Rp = pitchRadius(Tp) * 1.5;
   const Rr = pitchRadius(Tr) * 1.5;
   const centerDist = Rs + Rp;
 
-  const omegaSun = 0.7, omegaRing = -0.05;
+  const omegaSun = 0.6, omegaRing = -0.05;
   const ratio = Tr / Ts;
   const omegaCarrier = ((ratio * omegaRing) + omegaSun) / (1 + ratio);
   const planetAngles = [0, (2 * Math.PI) / 3, (4 * Math.PI) / 3];
-  function planetSpin() { return (omegaSun * Rs) / Rp - omegaCarrier; }
+  const planetSpin = () => (omegaSun * Rs) / Rp - omegaCarrier;
 
+  /* --- ANIMATION LOOP --- */
   function loop() {
     t += 1 / 60;
     ctx.clearRect(0, 0, W, H);
 
-    const cx = W * 0.5, cy = H * 0.5;
+    const cx = W * 0.5;
+    const cy = H * 0.5;
 
-    drawSpurGear(cx, cy, Rr, Tr, omegaRing * t, { fill: true, inner: true, bright: true });
-    drawSpurGear(cx, cy, Rs, Ts, omegaSun * t, { fill: true, inner: false, bright: true });
+    // Draw ring, sun, and planets
+    drawGear(cx, cy, Rr, Tr, omegaRing * t, { inner: true, bright: true });
+    drawGear(cx, cy, Rs, Ts, omegaSun * t, { bright: true });
 
     const carrierAngle = omegaCarrier * t;
     for (let i = 0; i < 3; i++) {
       const ang = carrierAngle + planetAngles[i];
       const px = cx + Math.cos(ang) * centerDist;
       const py = cy + Math.sin(ang) * centerDist;
-      drawSpurGear(px, py, Rp, Tp, planetSpin() * t, { fill: true, inner: false, bright: false });
+      drawGear(px, py, Rp, Tp, planetSpin() * t, { bright: false });
     }
 
     requestAnimationFrame(loop);
