@@ -1,152 +1,112 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tyler Lee — Flying Bionic Hand</title>
-    <style>
-      :root { --bg: #061021; --text: #e8fdf6; --accent: #00ffd0; --muted: #9fb7b0; }
-      *{box-sizing:border-box}
-      body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto;background:var(--bg);color:var(--text);overflow:hidden}
-      nav{position:fixed;top:20px;right:40px;display:flex;gap:1.2rem;font-size:0.95rem;z-index:60}
-      nav a{color:var(--muted);text-decoration:none;cursor:pointer;padding:6px 8px;border-radius:6px}
-      nav a:hover{color:var(--accent);background:rgba(0,255,208,0.03)}
-      .window{position:absolute;inset:0;display:none;justify-content:center;align-items:center;flex-direction:column;text-align:center;padding:0 10vw;background:rgba(6,16,33,0.6);transition:opacity .35s;z-index:50}
-      .window.active{display:flex;opacity:1}
-      h1,h2{margin:0 0 1rem}
-      p{color:var(--muted);max-width:700px;line-height:1.7}
-      #about{z-index:55}
-      canvas#background{position:fixed;left:0;top:0;width:100vw;height:100vh;z-index:20;pointer-events:none;display:none}
-      @media(max-width:700px){nav{right:12px}.window{padding:0 6vw}}
-    </style>
-  </head>
-  <body>
-    <canvas id="background"></canvas>
-    <nav>
-      <a data-target="about">About</a>
-      <a data-target="left">Left Brain</a>
-      <a data-target="right">Right Brain</a>
-      <a data-target="contact">Contact</a>
-    </nav>
+<script>
+window.addEventListener('load', ()=>{
+  const navLinks=document.querySelectorAll('nav a');
+  const windows=document.querySelectorAll('.window');
+  const canvas=document.getElementById('background');
 
-    <div class="window active" id="about">
-      <h1>Tyler Lee</h1>
-      <p>Mechanical Engineering student developing a <strong>flying bionic hand</strong> — a new class of aerial bionic systems integrating dexterous manipulation and flight.</p>
-    </div>
+  function showWindow(id){
+    windows.forEach(w=>w.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    canvas.style.display = (id==='about') ? 'block' : 'none';
+  }
+  navLinks.forEach(l=>l.addEventListener('click',()=>showWindow(l.dataset.target)));
+  showWindow('about');
 
-    <div class="window" id="left">
-      <h2>Left Brain</h2>
-      <p>I specialize in mechatronics, dynamics, and control systems — focusing on compact actuator design, cycloidal and planetary gear systems, and real-time motor control.</p>
-    </div>
+  // --- Canvas setup ---
+  const ctx=canvas.getContext('2d');
+  let W=0,H=0,t=0;
+  function resize(){
+    const dpr=window.devicePixelRatio||1;
+    W=canvas.width=Math.floor(window.innerWidth*dpr);
+    H=canvas.height=Math.floor(window.innerHeight*dpr);
+    canvas.style.width=window.innerWidth+'px';
+    canvas.style.height=window.innerHeight+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  window.addEventListener('resize',resize);
+  resize();
 
-    <div class="window" id="right">
-      <h2>Right Brain</h2>
-      <p>Beyond engineering, I design expressive motion and biomimetic surfaces — every mechanism should feel alive, even in its precision.</p>
-    </div>
+  // --- Gear geometry ---
+  const pitch = 9; // slightly larger spacing for teeth visibility
+  function pitchRadius(teeth){ return (pitch*teeth)/(2*Math.PI); }
 
-    <div class="window" id="contact">
-      <h2>Contact</h2>
-      <p>YC reviewers and collaborators, reach out for prototype demos or discussions.</p>
-      <p><a href="mailto:you@example.com" style="color:var(--accent)">you@example.com</a></p>
-    </div>
+  function drawSpurGear(cx,cy,R,teeth,angle,opt={fill:true,inner:false,bright:false}) {
+    const toothDepth = Math.max(8, R*0.12);
+    const rPitch = R;
+    ctx.save();
 
-    <script>
-      window.addEventListener('load', ()=>{
-        const navLinks=document.querySelectorAll('nav a');
-        const windows=document.querySelectorAll('.window');
-        const canvas=document.getElementById('background');
-        const ctx=canvas.getContext('2d');
-        let running=false, anim;
+    // gradient fill with more brightness contrast
+    const grad = ctx.createRadialGradient(cx,cy,R*0.2,cx,cy,R*1.2);
+    grad.addColorStop(0,opt.bright ? 'rgba(0,255,230,0.35)' : 'rgba(0,255,180,0.25)');
+    grad.addColorStop(1,opt.bright ? 'rgba(0,150,255,0.08)' : 'rgba(0,180,180,0.05)');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(cx,cy,rPitch,0,Math.PI*2);
+    ctx.fill();
 
-        function showWindow(id){
-          windows.forEach(w=>w.classList.remove('active'));
-          document.getElementById(id).classList.add('active');
-          if(id==='about'){canvas.style.display='block';running=true;loop();}
-          else{canvas.style.display='none';running=false;}
-        }
+    ctx.strokeStyle = opt.bright ? 'rgba(0,255,240,0.9)' : 'rgba(0,255,190,0.8)';
+    ctx.lineWidth = 1.3;
+    ctx.beginPath();
+    ctx.arc(cx,cy,rPitch,0,Math.PI*2);
+    ctx.stroke();
 
-        navLinks.forEach(l=>l.addEventListener('click',()=>showWindow(l.dataset.target)));
-        showWindow('about');
+    const dir = opt.inner ? -1 : 1;
+    for(let i=0;i<teeth;i++){
+      const a = angle + i*(2*Math.PI/teeth);
+      const cos=Math.cos(a), sin=Math.sin(a);
+      const baseR = rPitch + dir * (toothDepth*0.25);
+      const tx = cx + cos*baseR;
+      const ty = cy + sin*baseR;
+      const w = (2*Math.PI*rPitch/teeth)*0.55;
+      const h = toothDepth * 0.8;
+      ctx.save();
+      ctx.translate(tx,ty);
+      ctx.rotate(a + (opt.inner?Math.PI:0));
+      ctx.fillStyle = opt.bright ? 'rgba(0,255,255,0.95)' : 'rgba(0,255,210,0.85)';
+      ctx.fillRect(-w/2, opt.inner?-h:0, w, h);
+      ctx.restore();
+    }
+    ctx.restore();
+  }
 
-        let W=0,H=0,t=0;
-        function resize(){
-          const dpr=window.devicePixelRatio||1;
-          W=canvas.width=Math.floor(window.innerWidth*dpr);
-          H=canvas.height=Math.floor(window.innerHeight*dpr);
-          canvas.style.width=window.innerWidth+'px';
-          canvas.style.height=window.innerHeight+'px';
-          ctx.setTransform(dpr,0,0,dpr,0,0);
-        }
-        window.addEventListener('resize',resize);resize();
+  // --- Planetary gear setup ---
+  const Ts = 40;  // sun teeth
+  const Tp = 24;  // planet teeth
+  const Tr = Ts + 2*Tp;
+  const Rs = pitchRadius(Ts)*1.5;
+  const Rp = pitchRadius(Tp)*1.5;
+  const Rr = pitchRadius(Tr)*1.5;
+  const centerDist = Rs + Rp;
 
-        const pitch=8;
-        function pitchRadius(teeth){return (pitch*teeth)/(2*Math.PI);}
+  const omegaSun = 0.7;
+  const omegaRing = -0.05;
+  const ratio = Tr/Ts;
+  const omegaCarrier = ((ratio*omegaRing)+omegaSun)/(1+ratio);
+  function planetSpin(){ return (omegaSun*Rs)/Rp - omegaCarrier; }
+  const planetAngles=[0,(2*Math.PI)/3,(4*Math.PI)/3];
 
-        function drawSpurGear(cx,cy,R,teeth,angle,options={fill:true,stroke:true,bright:false,inner:false}){
-          const toothDepth=Math.max(8,R*0.12);
-          const rPitch=R;
-          ctx.save();
-          const grad=ctx.createRadialGradient(cx,cy,Math.max(2,R*0.2),cx,cy,R*1.3);
-          grad.addColorStop(0,'rgba(0,255,240,0.25)');
-          grad.addColorStop(1,'rgba(0,120,100,0.04)');
-          if(options.fill){ctx.fillStyle=grad;ctx.beginPath();ctx.arc(cx,cy,rPitch,0,Math.PI*2);ctx.fill();}
-          if(options.stroke){ctx.lineWidth=1.8;ctx.strokeStyle='rgba(0,255,240,0.95)';ctx.beginPath();ctx.arc(cx,cy,rPitch,0,Math.PI*2);ctx.stroke();}
-          for(let i=0;i<teeth;i++){
-            const a=angle+(i*(2*Math.PI/teeth));
-            const cos=Math.cos(a),sin=Math.sin(a);
-            const dir=options.inner?-1:1;
-            const baseR=rPitch+dir*(toothDepth*0.2);
-            const tx=cx+cos*baseR,ty=cy+sin*baseR;
-            const toothArc=(2*Math.PI/teeth)*rPitch;
-            const w=Math.max(10,toothArc*0.6);
-            const h=toothDepth*0.9;
-            ctx.save();ctx.translate(tx,ty);ctx.rotate(a+(options.inner?Math.PI:0));
-            ctx.beginPath();
-            ctx.fillStyle='rgba(0,255,240,0.9)';
-            ctx.strokeStyle='rgba(0,255,240,0.95)';
-            ctx.lineWidth=0.8;
-            ctx.rect(-w/2,options.inner?-h:0,w,h);
-            ctx.fill();ctx.stroke();
-            ctx.restore();
-          }
-          ctx.beginPath();ctx.arc(cx,cy,Math.max(6,R*0.4),0,Math.PI*2);
-          ctx.strokeStyle='rgba(0,255,240,0.15)';ctx.stroke();
-          ctx.restore();
-        }
+  function loop(){
+    t += 1/60;
+    ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
 
-        // planetary parameters
-        const Ts=40,Tp=26,Tr=Ts+2*Tp;
-        const Rs=pitchRadius(Ts)*2.2;
-        const Rp=pitchRadius(Tp)*2.2;
-        const Rr=pitchRadius(Tr)*2.2;
-        const centerDist=Rs+Rp+6;
-        const omegaSun=0.7,omegaRing=-0.05;
-        const ratio=Tr/Ts;
-        const omegaCarrier=((ratio*omegaRing)+omegaSun)/(1+ratio);
-        function planetSpin(omegaCarrier){return(omegaSun*Rs)/Rp-omegaCarrier;}
-        const planetAngles=[0,(2*Math.PI)/3,(4*Math.PI)/3];
+    const cx=W*0.5, cy=H*0.5;
+    const ringAngle=omegaRing*t;
+    drawSpurGear(cx,cy,Rr,Tr,ringAngle,{fill:true,inner:true,bright:true});
 
-        function loop(){
-          if(!running) return;
-          t+=1/60;
-          ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
-          const cx=window.innerWidth*0.5,cy=window.innerHeight*0.48;
-          const ringAngle=omegaRing*t;
-          drawSpurGear(cx,cy,Rr,Tr,ringAngle,{fill:true,stroke:true,inner:true});
-          const sunAngle=omegaSun*t;
-          drawSpurGear(cx,cy,Rs,Ts,sunAngle,{fill:true,stroke:true});
-          const carrierAngle=omegaCarrier*t;
-          for(let i=0;i<3;i++){
-            const ang=carrierAngle+planetAngles[i];
-            const px=cx+Math.cos(ang)*centerDist;
-            const py=cy+Math.sin(ang)*centerDist;
-            const pSpin=planetSpin(omegaCarrier);
-            const planetAngle=pSpin*t;
-            drawSpurGear(px,py,Rp,Tp,planetAngle,{fill:true,stroke:true});
-          }
-          anim=requestAnimationFrame(loop);
-        }
-      });
-    </script>
-  </body>
-</html>
+    const sunAngle=omegaSun*t;
+    drawSpurGear(cx,cy,Rs,Ts,sunAngle,{fill:true,inner:false,bright:true});
+
+    const carrierAngle=omegaCarrier*t;
+    for(let i=0;i<3;i++){
+      const ang=carrierAngle+planetAngles[i];
+      const px=cx+Math.cos(ang)*centerDist;
+      const py=cy+Math.sin(ang)*centerDist;
+      const planetAngle=planetSpin()*t;
+      drawSpurGear(px,py,Rp,Tp,planetAngle,{fill:true,inner:false,bright:false});
+    }
+
+    requestAnimationFrame(loop);
+  }
+  loop();
+});
+</script>
