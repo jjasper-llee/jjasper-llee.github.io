@@ -1,72 +1,92 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 body {
-  font-family: system-ui, sans-serif;
-  background: #fff;
+  margin: 0;
+  font-family: 'Inter', system-ui, sans-serif;
   color: #111;
+  background: #fff;
 }
 
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 2rem 4rem;
+  padding: 2rem 3rem;
+  position: sticky;
+  top: 0;
+  background: white;
+  border-bottom: 1px solid #eee;
 }
 
 .logo {
-  font-size: 1.3rem;
-  text-decoration: none;
-  color: #000;
   font-weight: 500;
+  color: #000;
+  text-decoration: none;
+  font-size: 1.1rem;
 }
 
 nav a {
+  color: #333;
   text-decoration: none;
-  color: #444;
-  margin-left: 2rem;
+  margin-left: 1.5rem;
   font-size: 0.9rem;
+  transition: 0.2s ease;
 }
 
-nav a:hover {
+nav a:hover, nav a.active {
   color: #000;
+  font-weight: 600;
+  border-bottom: 1px solid #000;
 }
 
-.gallery {
+main.content {
+  padding: 3rem;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.intro {
+  margin-bottom: 2.5rem;
+}
+
+.intro h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.intro p {
+  color: #555;
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: 600px;
+}
+
+.projects {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 2rem;
-  padding: 4rem;
-}
-
-.project {
-  text-decoration: none;
-  color: #000;
 }
 
 .project img {
   width: 100%;
   height: auto;
-  border: 1px solid #eee;
-  transition: opacity 0.2s ease;
+  border-radius: 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.project img:hover {
-  opacity: 0.8;
+.project:hover img {
+  transform: scale(1.02);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
 .project h2 {
-  margin-top: 0.75rem;
+  margin-top: 0.8rem;
   font-size: 1rem;
-  font-weight: 400;
+  color: #000;
 }
 
 footer {
   text-align: center;
-  padding: 3rem 0;
-  color: #777;
-  font-size: 0.85rem;
+  padding: 2rem;
+  font-size: 0.8rem;
+  color: #666;
+  border-top: 1px solid #eee;
 }
