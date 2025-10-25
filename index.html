@@ -1,140 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Your Name – Personal Website</title>
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      width: 100%;
-      background: #000;
-      color: #fff;
-      font-family: system-ui, sans-serif;
-      overflow: hidden;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Your Name</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: #000;
+    color: #fff;
+    font-family: 'Inter', system-ui, sans-serif;
+    overflow: hidden;
+  }
 
-    nav {
-      position: fixed;
-      top: 50%;
-      right: 30px;
-      transform: translateY(-50%);
-      z-index: 10;
-      display: flex;
-      flex-direction: column;
-      gap: 1em;
-    }
+  /* ---------- NAVIGATION ---------- */
+  nav {
+    position: fixed;
+    top: 25px;
+    right: 40px;
+    z-index: 20;
+    display: flex;
+    gap: 1.5em;
+  }
 
-    nav a {
-      display: block;
-      color: cyan;
-      text-decoration: none;
-      font-weight: bold;
-      padding: 0.75em 1.5em;
-      border: 2px solid rgba(0,255,255,0.5);
-      border-radius: 8px;
-      text-align: center;
-      box-shadow: 0 0 15px rgba(0,255,255,0.4);
-      background: rgba(0,255,255,0.05);
-      transition: all 0.3s ease;
-    }
+  nav a {
+    color: cyan;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 0.4em 0.8em;
+    border: 1.5px solid rgba(0,255,255,0.5);
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(0,255,255,0.3);
+    background: rgba(0,255,255,0.05);
+    transition: all 0.25s ease;
+  }
 
-    nav a:hover,
-    nav a.active {
-      background: rgba(0,255,255,0.15);
-      box-shadow: 0 0 25px rgba(0,255,255,0.8);
-    }
+  nav a:hover,
+  nav a.active {
+    background: rgba(0,255,255,0.15);
+    box-shadow: 0 0 20px rgba(0,255,255,0.8);
+  }
 
-    canvas#background {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-    }
+  /* ---------- CANVAS BACKGROUND ---------- */
+  canvas#background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
 
-    .window {
-      display: none;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 1;
-      max-width: 800px;
-      text-align: center;
-      padding: 3em;
-    }
+  /* ---------- HERO (CENTER NAME) ---------- */
+  .hero {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 10;
+  }
 
-    .window.active {
-      display: block;
-    }
+  .hero h1 {
+    font-size: 4rem;
+    margin: 0;
+    color: cyan;
+    text-shadow: 0 0 25px rgba(0,255,255,0.7);
+    letter-spacing: 2px;
+  }
 
-    h1 {
-      color: cyan;
-      text-shadow: 0 0 10px cyan;
-    }
+  .hero p {
+    margin-top: 0.5em;
+    color: #bff;
+    font-size: 1.1rem;
+    opacity: 0.8;
+  }
 
-    p {
-      color: #bff;
-    }
-  </style>
+  /* ---------- CONTENT WINDOWS ---------- */
+  .window {
+    display: none;
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    max-width: 800px;
+    text-align: center;
+  }
+
+  .window.active {
+    display: block;
+  }
+
+  h2 {
+    color: cyan;
+    text-shadow: 0 0 10px cyan;
+  }
+
+  p {
+    color: #bff;
+  }
+</style>
 </head>
 <body>
 
-  <nav>
-    <a data-target="about" class="active">About</a>
-    <a data-target="leftbrain">Left Brain</a>
-    <a data-target="rightbrain">Right Brain</a>
-  </nav>
+<!-- NAVIGATION -->
+<nav>
+  <a data-target="about" class="active">About</a>
+  <a data-target="leftbrain">Left Brain</a>
+  <a data-target="rightbrain">Right Brain</a>
+</nav>
 
-  <canvas id="background"></canvas>
+<!-- BACKGROUND CANVAS -->
+<canvas id="background"></canvas>
 
-  <div id="about" class="window active">
-    <h1>About Me</h1>
-    <p>Here’s a snapshot of who I am and what I do.</p>
-  </div>
+<!-- HERO TEXT -->
+<div class="hero">
+  <h1>Your Name</h1>
+  <p>Engineer • Designer • Creator</p>
+</div>
 
-  <div id="leftbrain" class="window">
-    <h1>Left Brain</h1>
-    <p>Logic, structure, engineering.</p>
-  </div>
+<!-- PAGE CONTENT -->
+<div id="about" class="window active">
+  <h2>About</h2>
+  <p>Welcome to my digital space — a mix of logic, art, and innovation.</p>
+</div>
 
-  <div id="rightbrain" class="window">
-    <h1>Right Brain</h1>
-    <p>Creativity, art, imagination.</p>
-  </div>
+<div id="leftbrain" class="window">
+  <h2>Left Brain</h2>
+  <p>Precision, systems, algorithms — I bring structure to ideas.</p>
+</div>
+
+<div id="rightbrain" class="window">
+  <h2>Right Brain</h2>
+  <p>Expression, color, motion — I turn concepts into experiences.</p>
+</div>
 
 <script>
 window.addEventListener('load', () => {
   const navLinks = document.querySelectorAll('nav a');
   const windows = document.querySelectorAll('.window');
   const canvas = document.getElementById('background');
-  if (!canvas) return console.error("Canvas not found!");
-
   const ctx = canvas.getContext('2d');
   let W = 0, H = 0, t = 0;
 
+  /* --- Navigation --- */
   function showWindow(id) {
     windows.forEach(w => w.classList.remove('active'));
     navLinks.forEach(l => l.classList.remove('active'));
     const el = document.getElementById(id);
-    if (!el) return console.warn("Window not found:", id);
-    el.classList.add('active');
+    if (el) el.classList.add('active');
     const link = Array.from(navLinks).find(l => l.dataset.target === id);
     if (link) link.classList.add('active');
-    // If you want the gear background visible only on "About", else hide
-    canvas.style.display = (id === 'about') ? 'block' : 'none';
+    canvas.style.display = (id === 'about') ? 'block' : 'block'; // always show
   }
 
-  navLinks.forEach(l => {
-    l.addEventListener('click', () => showWindow(l.dataset.target));
-  });
+  navLinks.forEach(l => l.addEventListener('click', () => showWindow(l.dataset.target)));
 
-  showWindow('about');
-
+  /* --- Canvas Setup --- */
   function resize() {
     const dpr = window.devicePixelRatio || 1;
     W = canvas.width = Math.floor(window.innerWidth * dpr);
@@ -146,6 +172,7 @@ window.addEventListener('load', () => {
   window.addEventListener('resize', resize);
   resize();
 
+  /* --- Gears --- */
   const pitch = 8.2;
   function pitchRadius(teeth) { return (pitch * teeth) / (2 * Math.PI); }
 
@@ -157,26 +184,29 @@ window.addEventListener('load', () => {
     ctx.translate(cx, cy);
     ctx.rotate(angle);
 
+    // gradient fill
     const grad = ctx.createRadialGradient(0, 0, R * 0.1, 0, 0, R * 1.2);
-    grad.addColorStop(0, opt.bright ? 'rgba(0,255,255,0.25)' : 'rgba(0,255,180,0.1)');
+    grad.addColorStop(0, opt.bright ? 'rgba(0,255,255,0.3)' : 'rgba(0,255,180,0.15)');
     grad.addColorStop(1, 'rgba(0,255,255,0)');
     ctx.fillStyle = grad;
     ctx.beginPath();
     ctx.arc(0, 0, R, 0, Math.PI * 2);
     ctx.fill();
 
+    // outline
     ctx.strokeStyle = opt.bright ? 'rgba(0,255,255,0.8)' : 'rgba(0,255,200,0.5)';
     ctx.lineWidth = 1.2;
     ctx.beginPath();
     ctx.arc(0, 0, R, 0, Math.PI * 2);
     ctx.stroke();
 
+    // teeth
     for (let i = 0; i < teeth; i++) {
       ctx.save();
       ctx.rotate(i * step);
       ctx.beginPath();
-      ctx.rect(-step * R * 0.2, R - toothDepth, step * R * 0.4, toothDepth);
-      ctx.fillStyle = opt.bright ? 'rgba(0,255,255,0.6)' : 'rgba(0,255,210,0.3)';
+      ctx.rect(-step * R * 0.25, R - toothDepth, step * R * 0.5, toothDepth);
+      ctx.fillStyle = opt.bright ? 'rgba(0,255,255,0.7)' : 'rgba(0,255,210,0.3)';
       ctx.fill();
       ctx.restore();
     }
@@ -184,6 +214,7 @@ window.addEventListener('load', () => {
     ctx.restore();
   }
 
+  /* --- Planetary Gear Params --- */
   const Ts = 40, Tp = 20, Tr = Ts + 2 * Tp;
   const Rs = pitchRadius(Ts) * 1.5;
   const Rp = pitchRadius(Tp) * 1.5;
@@ -194,16 +225,15 @@ window.addEventListener('load', () => {
   const ratio = Tr / Ts;
   const omegaCarrier = ((ratio * omegaRing) + omegaSun) / (1 + ratio);
   const planetAngles = [0, (2 * Math.PI) / 3, (4 * Math.PI) / 3];
-  function planetSpin() {
-    return (omegaSun * Rs) / Rp - omegaCarrier;
-  }
+  function planetSpin() { return (omegaSun * Rs) / Rp - omegaCarrier; }
 
+  /* --- Loop --- */
   function loop() {
     t += 1 / 60;
     ctx.clearRect(0, 0, W, H);
 
-    const cx = W * 0.5;
-    const cy = H * 0.5;
+    const cx = W / 2;
+    const cy = H / 2;
 
     drawGear(cx, cy, Rr, Tr, omegaRing * t, { inner: true, bright: true });
     drawGear(cx, cy, Rs, Ts, omegaSun * t, { bright: true });
