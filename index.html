@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+-<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -7,30 +7,106 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <canvas id="bg-waves"></canvas>
 
   <header>
-    <h1>Jasper Lee</h1>
+    <a href="index.html" class="logo">Jasper Lee</a>
     <nav>
-      <a href="index.html" class="active">Home</a>
-      <a href="left-brain.html">Left Brain</a>
-      <a href="right-brain.html">Right Brain</a>
+      <a href="#about">About</a>
+      <a href="#leftbrain">Left Brain</a>
+      <a href="#rightbrain">Right Brain</a>
+      <a href="#contact">Contact</a>
     </nav>
   </header>
 
   <main>
-    <section class="about-section">
-      <img src="your-photo.jpg" alt="Jasper Lee" class="about-photo" />
-      <div class="about-text">
-        <h2>Mechanical Engineer · Creator · Innovator</h2>
+    <!-- ABOUT -->
+    <section id="about" class="page-section active">
+      <img src="IMG_1144.jpeg" alt="Jasper Lee portrait" class="profile-pic" />
+      <div class="bio">
+        <h1>About Me</h1>
         <p>
-          Exploring how engineering, art, and design converge to create technology that feels alive.
-          I’m driven by curiosity — building things that blur the line between precision and creativity.
+          I’m Jasper Lee — a Mechanical Engineer passionate about the intersection of 
+          robotics, biomechanics, and flight. My work blends precision engineering 
+          with creative design to push the boundaries of human–machine interaction.
         </p>
       </div>
     </section>
+
+    <!-- LEFT BRAIN -->
+    <section id="leftbrain" class="page-section">
+      <h1>Left Brain</h1>
+      <div class="project-grid">
+        <a href="project-bionichand.html" class="project">
+          <img src="images/bionichand.jpg" alt="Bionic Hand project" />
+          <h2>COM& Aerial Bionic Hand</h2>
+        </a>
+        <a href="project-cad.html" class="project">
+          <img src="images/cad.jpg" alt="CAD Simulation project" />
+          <h2>Shape-Shifting Tri-Copter Drone</h2>
+        </a>
+        <!-- Add more projects here -->
+      </div>
+    </section>
+
+    <!-- RIGHT BRAIN -->
+    <section id="rightbrain" class="page-section">
+      <h1>Right Brain</h1>
+      <div class="project-grid">
+        <div class="project">
+          <iframe width="100%" height="200" src="https://www.youtube.com/embed/VlcR8Cx_-2w"
+            title="YouTube video player" frameborder="0"
+            allowfullscreen></iframe>
+          <h2>Morningside Music Bridge @ New England Conservatory - Rachmaninoff Cello Sonata</h2>
+        </div>
+        <div class="project">
+          <iframe width="100%" height="200" src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+            title="YouTube video player" frameborder="0"
+            allowfullscreen></iframe>
+          <h2>Design Concept Demo</h2>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <h2>Contact</h2>
+      <p>
+      I’m always open to discussing new ideas, collaborations, or engineering challenges.
+      </p>
+      <p>
+      📧 <a href="mailto:jasper@yourdomain.com" style="color: cyan;">jasper@yourdomain.com</a>
+      </p>
+      <p>
+      🧠 <a href="https://www.linkedin.com/in/yourprofile" style="color: cyan;" target="_blank">LinkedIn</a>
+      </p>
+    </section>
+
+<footer>
+  © 2025 Jasper Lee
+</footer>
+
   </main>
 
-  <script src="waves.js"></script>
+  <script>
+    // Navigation logic
+    const navLinks = document.querySelectorAll('nav a');
+    const sections = document.querySelectorAll('.page-section');
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const target = link.getAttribute('href').substring(1);
+
+        sections.forEach(sec => sec.classList.remove('active'));
+        document.getElementById(target).classList.add('active');
+
+        navLinks.forEach(n => n.classList.remove('active'));
+        link.classList.add('active');
+
+        window.scrollTo(0, 0);
+      });
+    });
+  </script>
+
 </body>
 </html>
