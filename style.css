@@ -1,109 +1,153 @@
+/* ===== General Styles ===== */
 html, body {
   margin: 0;
   padding: 0;
   font-family: 'Inter', sans-serif;
-  color: #fff;
-  background: linear-gradient(180deg, #000814 0%, #001b2e 100%);
-  overflow-x: hidden;
-  height: 100%;
+  color: #111;
+  background: #fff;
+  scroll-behavior: smooth;
 }
 
-canvas#bg-waves {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: -2;
+h1, h2 {
+  margin: 0 0 0.5rem 0;
 }
 
+a {
+  color: #007acc;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/* ===== Header / Navigation ===== */
 header {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  padding: 1.2rem 2rem;
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(6px);
+  background: #fff;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #ddd;
   z-index: 10;
 }
 
-header h1 {
-  font-size: 1.5rem;
-  margin: 0;
-  color: #0ff;
+.logo {
+  font-size: 1.2rem;
+  font-weight: 600;
 }
 
 nav a {
-  color: #fff;
-  text-decoration: none;
   margin-left: 1.5rem;
+  color: #111;
   font-size: 1rem;
-  transition: color 0.3s ease;
+  transition: color 0.3s;
 }
 nav a:hover, nav a.active {
-  color: #0ff;
+  color: #007acc;
 }
 
-main {
-  padding-top: 120px;
-  max-width: 1000px;
+/* ===== Section Layout ===== */
+.section {
+  padding: 6rem 2rem 4rem;
+  max-width: 900px;
   margin: auto;
 }
-
-/* === ABOUT SECTION (like Anhadsawhney.com) === */
-.about-section {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 3rem;
-  padding: 4rem 2rem;
-  text-align: left;
-  min-height: 80vh;
-  z-index: 1;
-  position: relative;
-}
-
-.about-photo {
-  width: 280px;
-  height: 280px;
-  object-fit: cover;
-  border-radius: 12px;
-  box-shadow: 0 0 30px rgba(0,255,255,0.3);
-}
-
-.about-text {
-  flex: 1;
-  min-width: 300px;
-}
-
-.about-text h2 {
+.section h2 {
   font-size: 1.8rem;
-  color: #0ff;
   margin-bottom: 1rem;
 }
 
-.about-text p {
-  line-height: 1.6;
-  max-width: 550px;
-  opacity: 0.9;
+/* ===== About ===== */
+.about {
+  text-align: center;
+  margin-top: 5rem;
+}
+.profile-photo {
+  width: 200px;
+  height: 200px;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  margin-bottom: 1rem;
+}
+.bio {
+  max-width: 700px;
+  margin: auto;
   font-size: 1.05rem;
+  line-height: 1.6;
 }
 
-/* === VIDEO GRID === */
-.video-grid {
+/* ===== Left Brain ===== */
+.left-brain {
+  text-align: center;
+}
+.projects {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  margin-top: 2.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+.project {
+  text-decoration: none;
+  color: #111;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.project:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+.project img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+.caption {
+  padding: 0.8rem;
+  font-weight: 500;
 }
 
-.video-grid iframe {
-  width: 100%;
-  aspect-ratio: 16/9;
-  border: none;
-  border-radius: 10px;
-  box-shadow: 0 0 20px rgba(0,255,255,0.2);
+/* ===== Right Brain ===== */
+.right-brain .creative-content {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 1.5rem;
+  line-height: 1.6;
+}
+.float-right {
+  width: 250px;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+.right-brain p {
+  flex: 1;
+  min-width: 250px;
+}
+
+/* ===== Contact ===== */
+.contact {
+  text-align: center;
+  line-height: 1.8;
+}
+.contact a {
+  color: #007acc;
+}
+
+/* ===== Footer ===== */
+footer {
+  text-align: center;
+  padding: 2rem;
+  font-size: 0.9rem;
+  color: #555;
+  border-top: 1px solid #eee;
 }
