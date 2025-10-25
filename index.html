@@ -17,7 +17,7 @@ html, body {
 
 nav {
   position: fixed;
-  top: 25px;
+  top: 20px;
   right: 40px;
   z-index: 30;
   display: flex;
@@ -32,7 +32,6 @@ nav a {
   padding: 0.3em 0.6em;
   border: 1.5px solid rgba(0,255,255,0.5);
   border-radius: 6px;
-  box-shadow: 0 0 10px rgba(0,255,255,0.3);
   background: rgba(0,255,255,0.05);
   transition: all 0.25s ease;
 }
@@ -40,7 +39,6 @@ nav a {
 nav a:hover,
 nav a.active {
   background: rgba(0,255,255,0.15);
-  box-shadow: 0 0 20px rgba(0,255,255,0.8);
 }
 
 canvas {
@@ -53,31 +51,26 @@ canvas {
 }
 
 #grid { z-index: 0; }
-#gears { z-index: 1; display: none; }
-#brain { z-index: 1; display: none; }
+#gears, #brain { z-index: 1; display: none; }
 
 .hero {
   position: fixed;
   top: 20px;
   left: 40px;
   z-index: 10;
-  font-weight: 400;
   text-align: left;
 }
 
 .hero h1 {
   font-size: 1.2rem;
-  margin: 0;
   color: white;
-  text-shadow: none;
-  letter-spacing: 1px;
   font-weight: 400;
+  margin: 0;
 }
 
 .window {
   display: none;
   position: relative;
-  z-index: 20;
   max-width: 800px;
   padding: 30px 20px;
   margin-top: 100vh;
@@ -116,7 +109,7 @@ p { font-size: 0.9rem; line-height: 1.5; }
 
 <div id="bio" class="window">
   <h2>Bio</h2>
-  <p>Mechanical Engineer specializing in bionic hands and flying robotics. Experienced in prototyping, design optimization, and mechanism innovation. Passionate about merging human-machine interaction with advanced robotics.</p>
+  <p>Mechanical Engineer specializing in bionic hands and flying robotics. Experienced in prototyping, design optimization, and mechanism innovation.</p>
 </div>
 
 <div id="leftbrain" class="window">
@@ -138,7 +131,6 @@ p { font-size: 0.9rem; line-height: 1.5; }
 window.addEventListener('load', () => {
   const navLinks = document.querySelectorAll('nav a');
   const windows = document.querySelectorAll('.window');
-
   const grid = document.getElementById('grid');
   const gears = document.getElementById('gears');
   const brain = document.getElementById('brain');
@@ -156,7 +148,7 @@ window.addEventListener('load', () => {
   window.addEventListener('resize', resize);
   resize();
 
-  // Draw Grid
+  // Grid
   function drawGrid(){
     const spacing = 80;
     gctx.clearRect(0,0,grid.width,grid.height);
@@ -167,20 +159,15 @@ window.addEventListener('load', () => {
   }
   drawGrid();
 
-  // Gears functions
+  // Gears
   const pitch=8.2;
   function pitchRadius(teeth){return (pitch*teeth)/(2*Math.PI);}
-  function drawGear(cx,cy,R,teeth,angle,opt={inner:false,bright:false}){
+  function drawGear(cx,cy,R,teeth,angle,opt={bright:true}){
     const toothDepth=R*0.08;
     const step=(2*Math.PI)/teeth;
     ctx.save(); ctx.translate(cx,cy); ctx.rotate(angle);
-    const grad=ctx.createRadialGradient(0,0,R*0.2,0,0,R*1.2);
-    grad.addColorStop(0,opt.bright?'rgba(192,192,192,0.4)':'rgba(192,192,192,0.15)');
-    grad.addColorStop(1,'rgba(192,192,192,0)');
-    ctx.fillStyle=grad; ctx.beginPath(); ctx.arc(0,0,R,0,Math.PI*2); ctx.fill();
-    ctx.strokeStyle=opt.bright?'rgba(192,192,192,0.9)':'rgba(192,192,192,0.6)';
-    ctx.lineWidth=1.4; ctx.beginPath(); ctx.arc(0,0,R,0,Math.PI*2); ctx.stroke();
-    for(let i=0;i<teeth;i++){ ctx.save(); ctx.rotate(i*step); ctx.beginPath(); ctx.rect(-step*R*0.25,R-toothDepth,step*R*0.5,toothDepth); ctx.fillStyle='rgba(192,192,192,0.8)'; ctx.fill(); ctx.restore(); }
+    ctx.strokeStyle='silver'; ctx.lineWidth=1.5;
+    for(let i=0;i<teeth;i++){ ctx.save(); ctx.rotate(i*step); ctx.beginPath(); ctx.rect(-step*R*0.25,R-toothDepth,step*R*0.5,toothDepth); ctx.stroke(); ctx.restore(); }
     ctx.restore();
   }
 
@@ -193,19 +180,15 @@ window.addEventListener('load', () => {
   const planetAngles=[0,2*Math.PI/3,4*Math.PI/3];
   function planetSpin(){return (omegaSun*Rs)/Rp-omegaCarrier;}
 
-  // Draw Brain
+  // Brain
   function drawBrain(){
-    const cx=brain.width/2;
-    const cy=brain.height/2;
-    const scale = 1 + 0.03*Math.sin(t*2); // slight pulsate
+    const cx=brain.width/2, cy=brain.height/2;
+    const scale = 1 + 0.03*Math.sin(t*2);
     bctx.clearRect(0,0,brain.width,brain.height);
     bctx.save(); bctx.translate(cx,cy); bctx.scale(scale,scale);
     bctx.strokeStyle='cyan'; bctx.lineWidth=2;
-    // Left hemisphere
     bctx.beginPath(); bctx.arc(-60,0,60,Math.PI*0.5,Math.PI*1.5); bctx.stroke();
-    // Right hemisphere
     bctx.beginPath(); bctx.arc(60,0,60,Math.PI*1.5,Math.PI*0.5); bctx.stroke();
-    // Connections
     bctx.strokeStyle='gold'; bctx.lineWidth=0.5;
     for(let i=0;i<50;i++){
       const angle=Math.random()*Math.PI*2;
@@ -218,27 +201,36 @@ window.addEventListener('load', () => {
 
   function loop(){
     t+=1/60;
-    ctx.clearRect(0,0,gears.width,gears.height);
     drawGrid();
-    if(document.getElementById('leftbrain').classList.contains('active')){
+    if(gears.style.display==='block'){
+      ctx.clearRect(0,0,gears.width,gears.height);
       const cx = gears.width/2, cy = gears.height/2;
-      drawGear(cx,cy,Rr,Tr,omegaRing*t,{inner:true,bright:true});
-      drawGear(cx,cy,Rs,Ts,omegaSun*t,{bright:true});
+      drawGear(cx,cy,Rr,Tr,omegaRing*t);
+      drawGear(cx,cy,Rs,Ts,omegaSun*t);
       const carrierAngle=omegaCarrier*t;
       for(let i=0;i<3;i++){
         const ang=carrierAngle+planetAngles[i];
         const px=cx+Math.cos(ang)*centerDist;
         const py=cy+Math.sin(ang)*centerDist;
-        drawGear(px,py,Rp,Tp,planetSpin()*t,{bright:false});
+        drawGear(px,py,Rp,Tp,planetSpin()*t);
       }
     }
-    if(document.getElementById('about').classList.contains('active')){
-      drawBrain();
-    }
+    if(brain.style.display==='block') drawBrain();
     requestAnimationFrame(loop);
   }
   loop();
 
   function showWindow(id){
-    windows.forEach(w=>w.classList.toggle('active', w.id===id));
-    navLinks.forEach(l=>l
+    windows.forEach(w => w.classList.toggle('active', w.id===id));
+    navLinks.forEach(l => l.classList.toggle('active', l.dataset.target===id));
+
+    brain.style.display = (id==='about') ? 'block' : 'none';
+    gears.style.display = (id==='leftbrain') ? 'block' : 'none';
+  }
+
+  navLinks.forEach(l=>l.addEventListener('click',()=>showWindow(l.dataset.target)));
+  showWindow('about');
+});
+</script>
+</body>
+</html>
