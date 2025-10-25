@@ -3,9 +3,8 @@ html, body {
   margin: 0;
   padding: 0;
   font-family: 'Inter', sans-serif;
-  color: #f0f0f0;
-  background: linear-gradient(180deg, #1b2b1e, #101712);
-  min-height: 100vh;
+  color: #111;
+  background: #fff;
 }
 
 /* === Header === */
@@ -14,30 +13,33 @@ header {
   top: 0;
   left: 0;
   width: 100%;
-  background: rgba(20, 30, 20, 0.95);
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  background: #fff;
+  border-bottom: 1px solid #ddd;
   padding: 1rem 2rem;
   z-index: 10;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
 }
 
 .logo {
   font-weight: 600;
   font-size: 1.2rem;
-  color: #9bc5a4; /* matte grayish green */
+  margin-right: 1rem;
 }
 
 nav a {
-  color: #ddd;
+  color: #111;
   text-decoration: none;
-  margin-left: 1.5rem;
+  margin-right: 1.5rem;
   font-size: 1rem;
-  transition: color 0.3s;
+  transition: color 0.3s ease;
 }
 nav a:hover, nav a.active {
-  color: #9bc5a4;
+  color: #007acc;
 }
 
 /* === Layout === */
@@ -47,6 +49,7 @@ main {
   padding: 0 2rem;
   text-align: center;
 }
+
 .page {
   display: none;
   animation: fadeIn 0.5s ease;
@@ -61,8 +64,8 @@ main {
 }
 
 h2 {
-  color: #9bc5a4;
   margin-top: 1rem;
+  color: #111;
 }
 
 /* === About === */
@@ -73,14 +76,14 @@ h2 {
   height: 200px;
   border-radius: 10px;
   object-fit: cover;
-  box-shadow: 0 0 20px rgba(155,197,164,0.2);
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
+
 p {
   line-height: 1.6;
   font-size: 1.05rem;
   max-width: 700px;
   margin: 1rem auto;
-  color: #e4e4e4;
 }
 
 /* === Left Brain === */
@@ -92,15 +95,15 @@ p {
 }
 .project {
   text-decoration: none;
-  color: #f0f0f0;
-  background: rgba(255,255,255,0.05);
+  color: #111;
+  border: 1px solid #eee;
   border-radius: 8px;
   overflow: hidden;
   transition: transform 0.3s, box-shadow 0.3s;
 }
 .project:hover {
   transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(155,197,164,0.3);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 .project img {
   width: 100%;
@@ -110,7 +113,7 @@ p {
 .caption {
   padding: 0.8rem;
   font-weight: 500;
-  color: #9bc5a4;
+  text-align: center;
 }
 
 /* === Right Brain === */
@@ -128,8 +131,24 @@ p {
   height: 250px;
   border-radius: 10px;
   object-fit: cover;
-  box-shadow: 0 0 15px rgba(155,197,164,0.3);
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
   flex-shrink: 0;
+}
+
+/* === Right Brain Videos === */
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+  justify-items: center;
+}
+.video-grid iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
 /* === Contact === */
@@ -138,7 +157,7 @@ p {
   line-height: 1.8;
 }
 #contact a {
-  color: #9bc5a4;
+  color: #007acc;
   text-decoration: none;
 }
 #contact a:hover {
@@ -150,7 +169,7 @@ footer {
   text-align: center;
   padding: 2rem;
   font-size: 0.9rem;
-  color: #9bc5a4;
-  border-top: 1px solid rgba(255,255,255,0.05);
-  background: rgba(20, 30, 20, 0.95);
+  color: #555;
+  border-top: 1px solid #eee;
+  background: #fff;
 }
