@@ -1,98 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jasper Lee</title>
 <style>
-  html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    background: #000;
-    color: #fff;
-    font-family: 'Inter', system-ui, sans-serif;
-    overflow-x: hidden;
-  }
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: #000;
+  color: #fff;
+  font-family: 'Inter', system-ui, sans-serif;
+  overflow-x: hidden;
+}
 
-  nav {
-    position: fixed;
-    top: 25px;
-    right: 40px;
-    z-index: 30;
-    display: flex;
-    gap: 1.5em;
-  }
+nav {
+  position: fixed;
+  top: 25px;
+  right: 40px;
+  z-index: 30;
+  display: flex;
+  gap: 1.5em;
+}
 
-  nav a {
-    color: cyan;
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 0.85rem;
-    padding: 0.3em 0.6em;
-    border: 1.5px solid rgba(0,255,255,0.5);
-    border-radius: 6px;
-    box-shadow: 0 0 10px rgba(0,255,255,0.3);
-    background: rgba(0,255,255,0.05);
-    transition: all 0.25s ease;
-  }
+nav a {
+  color: cyan;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.85rem;
+  padding: 0.3em 0.6em;
+  border: 1.5px solid rgba(0,255,255,0.5);
+  border-radius: 6px;
+  box-shadow: 0 0 10px rgba(0,255,255,0.3);
+  background: rgba(0,255,255,0.05);
+  transition: all 0.25s ease;
+}
 
-  nav a:hover,
-  nav a.active {
-    background: rgba(0,255,255,0.15);
-    box-shadow: 0 0 20px rgba(0,255,255,0.8);
-  }
+nav a:hover,
+nav a.active {
+  background: rgba(0,255,255,0.15);
+  box-shadow: 0 0 20px rgba(0,255,255,0.8);
+}
 
-  canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-  }
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
 
-  #grid { z-index: 0; }
-  #gears { z-index: 1; opacity: 1; display: none; }
-  #brain { z-index: 1; opacity: 1; display: none; }
+#grid { z-index: 0; }
+#gears { z-index: 1; display: none; }
+#brain { z-index: 1; display: none; }
 
-  .hero {
-    position: fixed;
-    top: 20px;
-    left: 40px;
-    z-index: 10;
-    font-weight: 400;
-    text-align: left;
-  }
+.hero {
+  position: fixed;
+  top: 20px;
+  left: 40px;
+  z-index: 10;
+  font-weight: 400;
+  text-align: left;
+}
 
-  .hero h1 {
-    font-size: 1.2rem;
-    margin: 0;
-    color: white;
-    text-shadow: none;
-    letter-spacing: 1px;
-    font-weight: 400;
-  }
+.hero h1 {
+  font-size: 1.2rem;
+  margin: 0;
+  color: white;
+  text-shadow: none;
+  letter-spacing: 1px;
+  font-weight: 400;
+}
 
-  .window {
-    display: none;
-    position: relative;
-    z-index: 20;
-    max-width: 800px;
-    padding: 30px 20px;
-    margin-top: 100vh;
-    text-align: center;
-    color: #bff;
-  }
+.window {
+  display: none;
+  position: relative;
+  z-index: 20;
+  max-width: 800px;
+  padding: 30px 20px;
+  margin-top: 100vh;
+  text-align: center;
+  color: #bff;
+}
 
-  .window.active { display: block; }
+.window.active { display: block; }
 
-  h2 {
-    color: cyan;
-    font-size: 1.4rem;
-  }
-
-  p { font-size: 0.9rem; line-height: 1.5; }
+h2 { color: cyan; font-size: 1.4rem; }
+p { font-size: 0.9rem; line-height: 1.5; }
 </style>
 </head>
 <body>
@@ -152,26 +148,26 @@ window.addEventListener('load', () => {
   let t = 0;
 
   function resize() {
-    grid.width = gears.width = brain.width = window.innerWidth;
-    grid.height = gears.height = brain.height = window.innerHeight;
-    gctx.setTransform(1,0,0,1,0,0);
-    ctx.setTransform(1,0,0,1,0,0);
-    bctx.setTransform(1,0,0,1,0,0);
+    [grid, gears, brain].forEach(c => {
+      c.width = window.innerWidth;
+      c.height = window.innerHeight;
+    });
   }
   window.addEventListener('resize', resize);
   resize();
 
-  function drawGrid() {
+  // Draw Grid
+  function drawGrid(){
     const spacing = 80;
-    gctx.clearRect(0,0,window.innerWidth, window.innerHeight);
+    gctx.clearRect(0,0,grid.width,grid.height);
     gctx.strokeStyle='rgba(0,150,255,0.35)';
     gctx.lineWidth=1;
-    for(let x=0;x<window.innerWidth;x+=spacing){ gctx.beginPath(); gctx.moveTo(x,0); gctx.lineTo(x,window.innerHeight); gctx.stroke();}
-    for(let y=0;y<window.innerHeight;y+=spacing){ gctx.beginPath(); gctx.moveTo(0,y); gctx.lineTo(window.innerWidth,y); gctx.stroke();}
+    for(let x=0;x<grid.width;x+=spacing){ gctx.beginPath(); gctx.moveTo(x,0); gctx.lineTo(x,grid.height); gctx.stroke();}
+    for(let y=0;y<grid.height;y+=spacing){ gctx.beginPath(); gctx.moveTo(0,y); gctx.lineTo(grid.width,y); gctx.stroke();}
   }
   drawGrid();
 
-  // Planetary Gears same as before
+  // Gears functions
   const pitch=8.2;
   function pitchRadius(teeth){return (pitch*teeth)/(2*Math.PI);}
   function drawGear(cx,cy,R,teeth,angle,opt={inner:false,bright:false}){
@@ -180,11 +176,14 @@ window.addEventListener('load', () => {
     ctx.save(); ctx.translate(cx,cy); ctx.rotate(angle);
     const grad=ctx.createRadialGradient(0,0,R*0.2,0,0,R*1.2);
     grad.addColorStop(0,opt.bright?'rgba(192,192,192,0.4)':'rgba(192,192,192,0.15)');
-    grad.addColorStop(1,'rgba(192,192,192,0)'); ctx.fillStyle=grad; ctx.beginPath(); ctx.arc(0,0,R,0,Math.PI*2); ctx.fill();
-    ctx.strokeStyle=opt.bright?'rgba(192,192,192,0.9)':'rgba(192,192,192,0.6)'; ctx.lineWidth=1.4; ctx.beginPath(); ctx.arc(0,0,R,0,Math.PI*2); ctx.stroke();
+    grad.addColorStop(1,'rgba(192,192,192,0)');
+    ctx.fillStyle=grad; ctx.beginPath(); ctx.arc(0,0,R,0,Math.PI*2); ctx.fill();
+    ctx.strokeStyle=opt.bright?'rgba(192,192,192,0.9)':'rgba(192,192,192,0.6)';
+    ctx.lineWidth=1.4; ctx.beginPath(); ctx.arc(0,0,R,0,Math.PI*2); ctx.stroke();
     for(let i=0;i<teeth;i++){ ctx.save(); ctx.rotate(i*step); ctx.beginPath(); ctx.rect(-step*R*0.25,R-toothDepth,step*R*0.5,toothDepth); ctx.fillStyle='rgba(192,192,192,0.8)'; ctx.fill(); ctx.restore(); }
     ctx.restore();
   }
+
   const Ts=40,Tp=20,Tr=Ts+2*Tp;
   const Rs=pitchRadius(Ts)*1.5,Rp=pitchRadius(Tp)*1.5,Rr=pitchRadius(Tr)*1.5;
   const centerDist=Rs+Rp;
@@ -194,15 +193,35 @@ window.addEventListener('load', () => {
   const planetAngles=[0,2*Math.PI/3,4*Math.PI/3];
   function planetSpin(){return (omegaSun*Rs)/Rp-omegaCarrier;}
 
+  // Draw Brain
+  function drawBrain(){
+    const cx=brain.width/2;
+    const cy=brain.height/2;
+    const scale = 1 + 0.03*Math.sin(t*2); // slight pulsate
+    bctx.clearRect(0,0,brain.width,brain.height);
+    bctx.save(); bctx.translate(cx,cy); bctx.scale(scale,scale);
+    bctx.strokeStyle='cyan'; bctx.lineWidth=2;
+    // Left hemisphere
+    bctx.beginPath(); bctx.arc(-60,0,60,Math.PI*0.5,Math.PI*1.5); bctx.stroke();
+    // Right hemisphere
+    bctx.beginPath(); bctx.arc(60,0,60,Math.PI*1.5,Math.PI*0.5); bctx.stroke();
+    // Connections
+    bctx.strokeStyle='gold'; bctx.lineWidth=0.5;
+    for(let i=0;i<50;i++){
+      const angle=Math.random()*Math.PI*2;
+      const x1=-60+Math.cos(angle)*60; const y1=Math.sin(angle)*60;
+      const x2=60+Math.cos(angle)*60; const y2=Math.sin(angle)*60;
+      bctx.beginPath(); bctx.moveTo(x1,y1); bctx.lineTo(x2,y2); bctx.stroke();
+    }
+    bctx.restore();
+  }
+
   function loop(){
     t+=1/60;
-    ctx.clearRect(0,0,window.innerWidth, window.innerHeight);
-    bctx.clearRect(0,0,window.innerWidth, window.innerHeight);
-
-    // Draw gears only on left brain page
+    ctx.clearRect(0,0,gears.width,gears.height);
+    drawGrid();
     if(document.getElementById('leftbrain').classList.contains('active')){
-      const cx = window.innerWidth / 2;
-      const cy = window.innerHeight / 2;
+      const cx = gears.width/2, cy = gears.height/2;
       drawGear(cx,cy,Rr,Tr,omegaRing*t,{inner:true,bright:true});
       drawGear(cx,cy,Rs,Ts,omegaSun*t,{bright:true});
       const carrierAngle=omegaCarrier*t;
@@ -213,17 +232,13 @@ window.addEventListener('load', () => {
         drawGear(px,py,Rp,Tp,planetSpin()*t,{bright:false});
       }
     }
-
-    // Draw brain for about page
     if(document.getElementById('about').classList.contains('active')){
-      const cx = window.innerWidth/2;
-      const cy = window.innerHeight/2;
-      // Left hemisphere
-      bctx.strokeStyle='cyan';
-      bctx.lineWidth=2;
-      bctx.beginPath();
-      bctx.arc(cx-60, cy, 60, Math.PI*0.5, Math.PI*1.5);
-      bctx.stroke();
-      // Right hemisphere
-      bctx.beginPath();
-      bctx.arc(cx+60, cy, 
+      drawBrain();
+    }
+    requestAnimationFrame(loop);
+  }
+  loop();
+
+  function showWindow(id){
+    windows.forEach(w=>w.classList.toggle('active', w.id===id));
+    navLinks.forEach(l=>l
