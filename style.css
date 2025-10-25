@@ -3,8 +3,8 @@ html, body {
   margin: 0;
   padding: 0;
   font-family: 'Inter', sans-serif;
-  color: white;
-  background: linear-gradient(180deg, #003300, #001a00);
+  color: #f0f0f0;
+  background: linear-gradient(180deg, #1b2b1e, #101712);
   min-height: 100vh;
 }
 
@@ -14,8 +14,8 @@ header {
   top: 0;
   left: 0;
   width: 100%;
-  background: rgba(0, 20, 0, 0.8);
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  background: rgba(20, 30, 20, 0.95);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -26,21 +26,21 @@ header {
 .logo {
   font-weight: 600;
   font-size: 1.2rem;
-  color: #90ee90;
+  color: #9bc5a4; /* matte grayish green */
 }
 
 nav a {
-  color: white;
+  color: #ddd;
   text-decoration: none;
   margin-left: 1.5rem;
   font-size: 1rem;
   transition: color 0.3s;
 }
 nav a:hover, nav a.active {
-  color: #90ee90;
+  color: #9bc5a4;
 }
 
-/* === Main Layout === */
+/* === Layout === */
 main {
   max-width: 900px;
   margin: 8rem auto 4rem;
@@ -61,8 +61,8 @@ main {
 }
 
 h2 {
+  color: #9bc5a4;
   margin-top: 1rem;
-  color: #90ee90;
 }
 
 /* === About === */
@@ -73,13 +73,14 @@ h2 {
   height: 200px;
   border-radius: 10px;
   object-fit: cover;
-  box-shadow: 0 0 20px rgba(144,238,144,0.4);
+  box-shadow: 0 0 20px rgba(155,197,164,0.2);
 }
 p {
   line-height: 1.6;
   font-size: 1.05rem;
   max-width: 700px;
   margin: 1rem auto;
+  color: #e4e4e4;
 }
 
 /* === Left Brain === */
@@ -90,6 +91,8 @@ p {
   margin-top: 2rem;
 }
 .project {
+  text-decoration: none;
+  color: #f0f0f0;
   background: rgba(255,255,255,0.05);
   border-radius: 8px;
   overflow: hidden;
@@ -97,7 +100,7 @@ p {
 }
 .project:hover {
   transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(144,238,144,0.3);
+  box-shadow: 0 5px 15px rgba(155,197,164,0.3);
 }
 .project img {
   width: 100%;
@@ -106,8 +109,8 @@ p {
 }
 .caption {
   padding: 0.8rem;
-  color: #90ee90;
   font-weight: 500;
+  color: #9bc5a4;
 }
 
 /* === Right Brain === */
@@ -125,13 +128,17 @@ p {
   height: 250px;
   border-radius: 10px;
   object-fit: cover;
-  box-shadow: 0 0 20px rgba(144,238,144,0.4);
+  box-shadow: 0 0 15px rgba(155,197,164,0.3);
   flex-shrink: 0;
 }
 
 /* === Contact === */
+#contact {
+  text-align: center;
+  line-height: 1.8;
+}
 #contact a {
-  color: #90ee90;
+  color: #9bc5a4;
   text-decoration: none;
 }
 #contact a:hover {
@@ -143,7 +150,7 @@ footer {
   text-align: center;
   padding: 2rem;
   font-size: 0.9rem;
-  color: #90ee90;
-  border-top: 1px solid rgba(255,255,255,0.1);
-  background: rgba(0, 20, 0, 0.8);
+  color: #9bc5a4;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  background: rgba(20, 30, 20, 0.95);
 }
