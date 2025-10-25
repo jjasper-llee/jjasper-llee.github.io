@@ -54,13 +54,13 @@ nav a:hover, nav a.active {
 /* === Layout === */
 main {
   max-width: 900px;
-  margin: 8rem auto 4rem;
+  margin: 0 auto 4rem;
   padding: 0 2rem;
   text-align: center;
 }
 
 .brain-hero-spacer {
-  height: clamp(320px, 70vh, 620px);
+  height: clamp(420px, 78vh, 720px);
 }
 
 .page {
