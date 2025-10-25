@@ -1,90 +1,86 @@
-/* ===== General Styles ===== */
+/* ===== Base ===== */
 html, body {
   margin: 0;
   padding: 0;
   font-family: 'Inter', sans-serif;
   color: #111;
   background: #fff;
-  scroll-behavior: smooth;
 }
 
-h1, h2 {
-  margin: 0 0 0.5rem 0;
-}
-
-a {
-  color: #007acc;
-  text-decoration: none;
-}
-a:hover {
-  text-decoration: underline;
-}
-
-/* ===== Header / Navigation ===== */
+/* ===== Header ===== */
 header {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   background: #fff;
+  border-bottom: 1px solid #ddd;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  border-bottom: 1px solid #ddd;
   z-index: 10;
 }
 
 .logo {
-  font-size: 1.2rem;
   font-weight: 600;
+  font-size: 1.2rem;
 }
 
 nav a {
-  margin-left: 1.5rem;
   color: #111;
+  text-decoration: none;
+  margin-left: 1.5rem;
   font-size: 1rem;
-  transition: color 0.3s;
+  transition: color 0.3s ease;
 }
 nav a:hover, nav a.active {
   color: #007acc;
 }
 
-/* ===== Section Layout ===== */
-.section {
-  padding: 6rem 2rem 4rem;
+/* ===== Main Layout ===== */
+main {
   max-width: 900px;
-  margin: auto;
+  margin: 8rem auto 4rem;
+  padding: 0 2rem;
 }
-.section h2 {
-  font-size: 1.8rem;
-  margin-bottom: 1rem;
+
+.page {
+  display: none;
+  animation: fadeIn 0.6s ease-in-out;
+}
+.page.visible {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+h2 {
+  margin-top: 0;
 }
 
 /* ===== About ===== */
-.about {
-  text-align: center;
-  margin-top: 5rem;
-}
 .profile-photo {
+  display: block;
+  margin: 2rem auto;
   width: 200px;
   height: 200px;
   border-radius: 8px;
   object-fit: cover;
   box-shadow: 0 0 15px rgba(0,0,0,0.1);
-  margin-bottom: 1rem;
 }
-.bio {
+.bio, .page p {
+  text-align: center;
+  line-height: 1.6;
+  font-size: 1.05rem;
   max-width: 700px;
   margin: auto;
-  font-size: 1.05rem;
-  line-height: 1.6;
 }
 
 /* ===== Left Brain ===== */
-.left-brain {
-  text-align: center;
-}
 .projects {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -111,21 +107,23 @@ nav a:hover, nav a.active {
 .caption {
   padding: 0.8rem;
   font-weight: 500;
+  text-align: center;
 }
 
 /* ===== Right Brain ===== */
-.right-brain .creative-content {
+.creative-content {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
   gap: 1.5rem;
   line-height: 1.6;
+  text-align: left;
 }
 .float-right {
   width: 250px;
   height: 250px;
-  object-fit: cover;
   border-radius: 8px;
+  object-fit: cover;
   flex-shrink: 0;
   box-shadow: 0 0 15px rgba(0,0,0,0.1);
 }
@@ -135,11 +133,11 @@ nav a:hover, nav a.active {
 }
 
 /* ===== Contact ===== */
-.contact {
+#contact {
   text-align: center;
   line-height: 1.8;
 }
-.contact a {
+#contact a {
   color: #007acc;
 }
 
