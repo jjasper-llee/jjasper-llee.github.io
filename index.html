@@ -18,7 +18,7 @@
   </header>
 
   <main>
-    <!-- ===== ABOUT ===== -->
+    <!-- === ABOUT === -->
     <section id="about" class="page visible">
       <img src="your-photo.jpg" alt="Jasper Lee" class="profile-photo" />
       <h2>About Me</h2>
@@ -30,11 +30,10 @@
       </p>
     </section>
 
-    <!-- ===== LEFT BRAIN ===== -->
+    <!-- === LEFT BRAIN === -->
     <section id="left-brain" class="page">
       <h2>Left Brain</h2>
       <p>Engineering, robotics, and technical projects.</p>
-
       <div class="projects">
         <div class="project">
           <img src="project1.jpg" alt="Project 1" />
@@ -51,7 +50,7 @@
       </div>
     </section>
 
-    <!-- ===== RIGHT BRAIN ===== -->
+    <!-- === RIGHT BRAIN === -->
     <section id="right-brain" class="page">
       <h2>Right Brain</h2>
       <div class="creative-content">
@@ -66,7 +65,7 @@
       </div>
     </section>
 
-    <!-- ===== CONTACT ===== -->
+    <!-- === CONTACT === -->
     <section id="contact" class="page">
       <h2>Contact</h2>
       <p>Email: <a href="mailto:jasper@example.com">jasper@example.com</a></p>
@@ -80,19 +79,19 @@
   </footer>
 
   <script>
-    // Simple JS for navigation without reloading pages
-    const links = document.querySelectorAll('nav a');
-    const sections = document.querySelectorAll('.page');
+    // Simple navigation system (page switching)
+    const navLinks = document.querySelectorAll('nav a');
+    const pages = document.querySelectorAll('.page');
 
-    links.forEach(link => {
+    navLinks.forEach(link => {
       link.addEventListener('click', e => {
         e.preventDefault();
-        const targetId = link.dataset.section;
+        const target = link.dataset.section;
 
-        sections.forEach(sec => sec.classList.remove('visible'));
-        document.getElementById(targetId).classList.add('visible');
+        pages.forEach(p => p.classList.remove('visible'));
+        document.getElementById(target).classList.add('visible');
 
-        links.forEach(l => l.classList.remove('active'));
+        navLinks.forEach(l => l.classList.remove('active'));
         link.classList.add('active');
 
         window.scrollTo({ top: 0, behavior: 'smooth' });
