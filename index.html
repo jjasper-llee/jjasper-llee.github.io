@@ -1,69 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jasper Lee</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <canvas id="bg-waves"></canvas>
+
   <header>
-    <a href="index.html" class="logo">Jasper Lee</a>
+    <h1>Jasper Lee</h1>
     <nav>
       <a href="index.html">Home</a>
+      <a href="left-brain.html">Left Brain</a>
       <a href="right-brain.html">Right Brain</a>
-      <a href="contact.html">Contact</a>
     </nav>
   </header>
 
   <main>
-    <section class="hero">
-      <h1>Building the Future, One Idea at a Time</h1>
-      <p>Mechanical Engineer | Innovator | Creator</p>
-    </section>
-
-    <section class="about">
-      <h2>About Me</h2>
+    <section class="intro">
+      <h2>Welcome</h2>
       <p>
-        I’m passionate about the intersection of robotics, art, and human-machine interaction. 
-        My work combines precise engineering with creative design to make technology more intuitive.
+        Hi, I’m Jasper — a mechanical engineer exploring the space between
+        robotics, design, and art. I build systems that move, think, and inspire.
       </p>
     </section>
   </main>
 
-  <script>
-    const canvas = document.getElementById('bg-waves');
-    const ctx = canvas.getContext('2d');
-    let w, h, t = 0;
-
-    function resize() {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resize);
-    resize();
-
-    function drawWave(color, amp, freq, speed, offset) {
-      ctx.beginPath();
-      for (let x = 0; x < w; x++) {
-        const y = h / 2 + amp * Math.sin((x * freq + t * speed) + offset);
-        ctx.lineTo(x, y);
-      }
-      ctx.strokeStyle = color;
-      ctx.lineWidth = 2;
-      ctx.stroke();
-    }
-
-    function animate() {
-      ctx.clearRect(0, 0, w, h);
-      drawWave('rgba(0,255,255,0.3)', 60, 0.015, 0.03, 0);
-      drawWave('rgba(0,255,100,0.25)', 80, 0.01, 0.02, Math.PI / 2);
-      drawWave('rgba(0,255,255,0.2)', 40, 0.02, 0.04, Math.PI);
-      t += 1;
-      requestAnimationFrame(animate);
-    }
-    animate();
-  </script>
+  <script src="waves.js"></script>
 </body>
 </html>
