@@ -8,7 +8,6 @@ html, body {
   height: 100%;
 }
 
-/* Waves behind all content */
 canvas#bg-waves {
   position: fixed;
   top: 0;
@@ -49,70 +48,62 @@ nav a:hover, nav a.active {
 
 main {
   padding-top: 120px;
-  max-width: 900px;
+  max-width: 1000px;
   margin: auto;
 }
 
-.hero {
-  text-align: center;
-  margin-top: 5rem;
-}
-.hero .profile-pic {
-  width: 180px;
-  height: 180px;
-  border-radius: 12px;
-  object-fit: cover;
-  box-shadow: 0 0 25px rgba(0,255,255,0.4);
-  margin-bottom: 1rem;
-  z-index: 1;
-  position: relative;
-}
-.hero h2 {
-  color: #0ff;
-  margin-bottom: 0.5rem;
-}
-.hero p {
-  max-width: 600px;
-  margin: 0 auto;
-  line-height: 1.6;
-  opacity: 0.9;
-}
-
-.content, .bio {
-  margin: 3rem 1.5rem;
-  line-height: 1.6;
-  position: relative;
-  z-index: 1;
-}
-
-.bio {
+/* === ABOUT SECTION (like Anhadsawhney.com) === */
+.about-section {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
   align-items: center;
-}
-.bio img {
-  width: 220px;
-  height: 220px;
-  border-radius: 8px;
-  object-fit: cover;
-  margin-left: 1.5rem;
-  box-shadow: 0 0 25px rgba(0,255,255,0.3);
-  position: relative;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 3rem;
+  padding: 4rem 2rem;
+  text-align: left;
+  min-height: 80vh;
   z-index: 1;
+  position: relative;
 }
 
+.about-photo {
+  width: 280px;
+  height: 280px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 0 30px rgba(0,255,255,0.3);
+}
+
+.about-text {
+  flex: 1;
+  min-width: 300px;
+}
+
+.about-text h2 {
+  font-size: 1.8rem;
+  color: #0ff;
+  margin-bottom: 1rem;
+}
+
+.about-text p {
+  line-height: 1.6;
+  max-width: 550px;
+  opacity: 0.9;
+  font-size: 1.05rem;
+}
+
+/* === VIDEO GRID === */
 .video-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
-  margin-top: 2rem;
+  gap: 2rem;
+  margin-top: 2.5rem;
 }
+
 .video-grid iframe {
   width: 100%;
   aspect-ratio: 16/9;
-  border-radius: 12px;
   border: none;
-  position: relative;
-  z-index: 1;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0,255,255,0.2);
 }
