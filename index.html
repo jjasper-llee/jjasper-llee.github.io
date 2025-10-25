@@ -1,4 +1,4 @@
--<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -7,106 +7,63 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
+  <canvas id="bg-waves"></canvas>
   <header>
     <a href="index.html" class="logo">Jasper Lee</a>
     <nav>
-      <a href="#about">About</a>
-      <a href="#leftbrain">Left Brain</a>
-      <a href="#rightbrain">Right Brain</a>
-      <a href="#contact">Contact</a>
+      <a href="index.html">Home</a>
+      <a href="right-brain.html">Right Brain</a>
+      <a href="contact.html">Contact</a>
     </nav>
   </header>
 
   <main>
-    <!-- ABOUT -->
-    <section id="about" class="page-section active">
-      <img src="IMG_1144.jpeg" alt="Jasper Lee portrait" class="profile-pic" />
-      <div class="bio">
-        <h1>About Me</h1>
-        <p>
-          I’m Jasper Lee — a Mechanical Engineer passionate about the intersection of 
-          robotics, biomechanics, and flight. My work blends precision engineering 
-          with creative design to push the boundaries of human–machine interaction.
-        </p>
-      </div>
+    <section class="hero">
+      <h1>Building the Future, One Idea at a Time</h1>
+      <p>Mechanical Engineer | Innovator | Creator</p>
     </section>
 
-    <!-- LEFT BRAIN -->
-    <section id="leftbrain" class="page-section">
-      <h1>Left Brain</h1>
-      <div class="project-grid">
-        <a href="project-bionichand.html" class="project">
-          <img src="images/bionichand.jpg" alt="Bionic Hand project" />
-          <h2>COM& Aerial Bionic Hand</h2>
-        </a>
-        <a href="project-cad.html" class="project">
-          <img src="images/cad.jpg" alt="CAD Simulation project" />
-          <h2>Shape-Shifting Tri-Copter Drone</h2>
-        </a>
-        <!-- Add more projects here -->
-      </div>
-    </section>
-
-    <!-- RIGHT BRAIN -->
-    <section id="rightbrain" class="page-section">
-      <h1>Right Brain</h1>
-      <div class="project-grid">
-        <div class="project">
-          <iframe width="100%" height="200" src="https://www.youtube.com/embed/VlcR8Cx_-2w"
-            title="YouTube video player" frameborder="0"
-            allowfullscreen></iframe>
-          <h2>Morningside Music Bridge @ New England Conservatory - Rachmaninoff Cello Sonata</h2>
-        </div>
-        <div class="project">
-          <iframe width="100%" height="200" src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-            title="YouTube video player" frameborder="0"
-            allowfullscreen></iframe>
-          <h2>Design Concept Demo</h2>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact">
-      <h2>Contact</h2>
+    <section class="about">
+      <h2>About Me</h2>
       <p>
-      I’m always open to discussing new ideas, collaborations, or engineering challenges.
-      </p>
-      <p>
-      📧 <a href="mailto:jasper@yourdomain.com" style="color: cyan;">jasper@yourdomain.com</a>
-      </p>
-      <p>
-      🧠 <a href="https://www.linkedin.com/in/yourprofile" style="color: cyan;" target="_blank">LinkedIn</a>
+        I’m passionate about the intersection of robotics, art, and human-machine interaction. 
+        My work combines precise engineering with creative design to make technology more intuitive.
       </p>
     </section>
-
-<footer>
-  © 2025 Jasper Lee
-</footer>
-
   </main>
 
   <script>
-    // Navigation logic
-    const navLinks = document.querySelectorAll('nav a');
-    const sections = document.querySelectorAll('.page-section');
+    const canvas = document.getElementById('bg-waves');
+    const ctx = canvas.getContext('2d');
+    let w, h, t = 0;
 
-    navLinks.forEach(link => {
-      link.addEventListener('click', e => {
-        e.preventDefault();
-        const target = link.getAttribute('href').substring(1);
+    function resize() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
 
-        sections.forEach(sec => sec.classList.remove('active'));
-        document.getElementById(target).classList.add('active');
+    function drawWave(color, amp, freq, speed, offset) {
+      ctx.beginPath();
+      for (let x = 0; x < w; x++) {
+        const y = h / 2 + amp * Math.sin((x * freq + t * speed) + offset);
+        ctx.lineTo(x, y);
+      }
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
 
-        navLinks.forEach(n => n.classList.remove('active'));
-        link.classList.add('active');
-
-        window.scrollTo(0, 0);
-      });
-    });
+    function animate() {
+      ctx.clearRect(0, 0, w, h);
+      drawWave('rgba(0,255,255,0.3)', 60, 0.015, 0.03, 0);
+      drawWave('rgba(0,255,100,0.25)', 80, 0.01, 0.02, Math.PI / 2);
+      drawWave('rgba(0,255,255,0.2)', 40, 0.02, 0.04, Math.PI);
+      t += 1;
+      requestAnimationFrame(animate);
+    }
+    animate();
   </script>
-
 </body>
 </html>
