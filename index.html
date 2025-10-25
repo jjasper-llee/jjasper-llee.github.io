@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Tyler Lee</title>
+<title>Jasper Lee</title>
 <style>
   html, body {
     margin: 0;
@@ -28,7 +28,7 @@
     color: cyan;
     text-decoration: none;
     font-weight: 500;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     padding: 0.3em 0.6em;
     border: 1.5px solid rgba(0,255,255,0.5);
     border-radius: 6px;
@@ -52,7 +52,7 @@
   }
 
   #grid { z-index: 0; }
-  #gears { z-index: 1; opacity: 0; transition: opacity 2s ease; display: block; }
+  #gears { z-index: 1; opacity: 1; display: block; }
 
   .hero {
     position: fixed;
@@ -64,7 +64,7 @@
   }
 
   .hero h1 {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     margin: 0;
     color: white;
     text-shadow: none;
@@ -82,7 +82,7 @@
     margin-top: 100vh;
     z-index: 20;
     max-width: 800px;
-    padding: 40px 20px;
+    padding: 30px 20px;
     text-align: center;
     color: #bff;
   }
@@ -91,10 +91,10 @@
 
   h2 {
     color: cyan;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
 
-  p { font-size: 0.95rem; line-height: 1.6; }
+  p { font-size: 0.9rem; line-height: 1.5; }
 </style>
 </head>
 <body>
@@ -111,7 +111,7 @@
 <canvas id="gears"></canvas>
 
 <div class="hero">
-  <h1>Tyler Lee</h1>
+  <h1>Jasper Lee</h1>
 </div>
 
 <div id="about" class="window active">
@@ -136,7 +136,7 @@
 
 <div id="contact" class="window">
   <h2>Contact</h2>
-  <p>Reach me at <a href="mailto:tyler@yourdomain.com" style="color: cyan;">tyler@yourdomain.com</a></p>
+  <p>Reach me at <a href="mailto:jasper@yourdomain.com" style="color: cyan;">jasper@yourdomain.com</a></p>
 </div>
 
 <script>
@@ -219,4 +219,10 @@ window.addEventListener('load', () => {
     navLinks.forEach(l=>l.classList.remove('active'));
     const el=document.getElementById(id); if(el) el.classList.add('active');
     const link=Array.from(navLinks).find(l=>l.dataset.target===id); if(link) link.classList.add('active');
-    if(id==='about' || id==='bio') { grid.style.display='block'; gears.style.display='block'; setTimeout(()=>gears.style.opacity=1,
+  }
+  navLinks.forEach(l=>l.addEventListener('click',()=>showWindow(l.dataset.target)));
+  showWindow('about');
+});
+</script>
+</body>
+</html>
