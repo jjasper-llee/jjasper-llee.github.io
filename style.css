@@ -72,3 +72,37 @@ main {
   font-size: 1.8rem;
   margin-bottom: 1rem;
 }
+
+.right-brain .bio {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-top: 6rem;
+  text-align: left;
+}
+.right-brain .bio img {
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 8px;
+  float: right;
+}
+.right-brain .bio div {
+  flex: 1;
+}
+
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+.video-grid iframe {
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 12px;
+  border: none;
+}
+
