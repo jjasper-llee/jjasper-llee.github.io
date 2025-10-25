@@ -49,11 +49,12 @@
     left: 0;
     width: 100%;
     height: 100%;
-    pointer-events: none; /* allow clicks to pass through */
+    pointer-events: none;
   }
 
   #grid { z-index: 0; }
-  #gears { z-index: 1; opacity: 1; display: block; }
+  #gears { z-index: 1; opacity: 1; display: none; }
+  #brain { z-index: 1; opacity: 1; display: none; }
 
   .hero {
     position: fixed;
@@ -71,10 +72,6 @@
     text-shadow: none;
     letter-spacing: 1px;
     font-weight: 400;
-  }
-
-  .hero p {
-    display: none;
   }
 
   .window {
@@ -110,6 +107,7 @@
 
 <canvas id="grid"></canvas>
 <canvas id="gears"></canvas>
+<canvas id="brain"></canvas>
 
 <div class="hero">
   <h1>Jasper Lee</h1>
@@ -147,15 +145,18 @@ window.addEventListener('load', () => {
 
   const grid = document.getElementById('grid');
   const gears = document.getElementById('gears');
+  const brain = document.getElementById('brain');
   const gctx = grid.getContext('2d');
   const ctx = gears.getContext('2d');
+  const bctx = brain.getContext('2d');
   let t = 0;
 
   function resize() {
-    grid.width = gears.width = window.innerWidth;
-    grid.height = gears.height = window.innerHeight;
+    grid.width = gears.width = brain.width = window.innerWidth;
+    grid.height = gears.height = brain.height = window.innerHeight;
     gctx.setTransform(1,0,0,1,0,0);
     ctx.setTransform(1,0,0,1,0,0);
+    bctx.setTransform(1,0,0,1,0,0);
   }
   window.addEventListener('resize', resize);
   resize();
@@ -170,9 +171,9 @@ window.addEventListener('load', () => {
   }
   drawGrid();
 
+  // Planetary Gears same as before
   const pitch=8.2;
   function pitchRadius(teeth){return (pitch*teeth)/(2*Math.PI);}
-
   function drawGear(cx,cy,R,teeth,angle,opt={inner:false,bright:false}){
     const toothDepth=R*0.08;
     const step=(2*Math.PI)/teeth;
@@ -184,7 +185,6 @@ window.addEventListener('load', () => {
     for(let i=0;i<teeth;i++){ ctx.save(); ctx.rotate(i*step); ctx.beginPath(); ctx.rect(-step*R*0.25,R-toothDepth,step*R*0.5,toothDepth); ctx.fillStyle='rgba(192,192,192,0.8)'; ctx.fill(); ctx.restore(); }
     ctx.restore();
   }
-
   const Ts=40,Tp=20,Tr=Ts+2*Tp;
   const Rs=pitchRadius(Ts)*1.5,Rp=pitchRadius(Tp)*1.5,Rr=pitchRadius(Tr)*1.5;
   const centerDist=Rs+Rp;
@@ -197,37 +197,33 @@ window.addEventListener('load', () => {
   function loop(){
     t+=1/60;
     ctx.clearRect(0,0,window.innerWidth, window.innerHeight);
-    const cx = window.innerWidth / 2;
-    const cy = window.innerHeight / 2;
+    bctx.clearRect(0,0,window.innerWidth, window.innerHeight);
 
-    drawGear(cx,cy,Rr,Tr,omegaRing*t,{inner:true,bright:true});
-    drawGear(cx,cy,Rs,Ts,omegaSun*t,{bright:true});
-
-    const carrierAngle=omegaCarrier*t;
-    for(let i=0;i<3;i++){
-      const ang=carrierAngle+planetAngles[i];
-      const px=cx+Math.cos(ang)*centerDist;
-      const py=cy+Math.sin(ang)*centerDist;
-      drawGear(px,py,Rp,Tp,planetSpin()*t,{bright:false});
+    // Draw gears only on left brain page
+    if(document.getElementById('leftbrain').classList.contains('active')){
+      const cx = window.innerWidth / 2;
+      const cy = window.innerHeight / 2;
+      drawGear(cx,cy,Rr,Tr,omegaRing*t,{inner:true,bright:true});
+      drawGear(cx,cy,Rs,Ts,omegaSun*t,{bright:true});
+      const carrierAngle=omegaCarrier*t;
+      for(let i=0;i<3;i++){
+        const ang=carrierAngle+planetAngles[i];
+        const px=cx+Math.cos(ang)*centerDist;
+        const py=cy+Math.sin(ang)*centerDist;
+        drawGear(px,py,Rp,Tp,planetSpin()*t,{bright:false});
+      }
     }
-    requestAnimationFrame(loop);
-  }
-  loop();
 
-  function showWindow(id){
-    windows.forEach(w => w.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-
-    navLinks.forEach(l => l.classList.remove('active'));
-    document.querySelector(`nav a[data-target='${id}']`).classList.add('active');
-
-    // Scroll to the section if it's not the first
-    if(id !== 'about') window.scrollTo({top: window.innerHeight, behavior: 'smooth'});
-  }
-
-  navLinks.forEach(l=>l.addEventListener('click',()=>showWindow(l.dataset.target)));
-  showWindow('about');
-});
-</script>
-</body>
-</html>
+    // Draw brain for about page
+    if(document.getElementById('about').classList.contains('active')){
+      const cx = window.innerWidth/2;
+      const cy = window.innerHeight/2;
+      // Left hemisphere
+      bctx.strokeStyle='cyan';
+      bctx.lineWidth=2;
+      bctx.beginPath();
+      bctx.arc(cx-60, cy, 60, Math.PI*0.5, Math.PI*1.5);
+      bctx.stroke();
+      // Right hemisphere
+      bctx.beginPath();
+      bctx.arc(cx+60, cy, 
