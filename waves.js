@@ -22,15 +22,18 @@ function drawWave(color, amp, freq, speed, offset) {
 
 function animate() {
   ctx.clearRect(0, 0, w, h);
+
+  // Background gradient
   const grad = ctx.createLinearGradient(0, 0, 0, h);
   grad.addColorStop(0, "#000814");
   grad.addColorStop(1, "#001b2e");
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, w, h);
 
-  drawWave("rgba(0,255,255,0.3)", 60, 0.015, 0.03, 0);
-  drawWave("rgba(0,255,100,0.25)", 80, 0.01, 0.02, Math.PI / 2);
-  drawWave("rgba(0,255,255,0.15)", 40, 0.02, 0.04, Math.PI);
+  // Cyan waves only
+  drawWave("rgba(0,255,255,0.35)", 60, 0.015, 0.03, 0);
+  drawWave("rgba(0,255,255,0.2)", 40, 0.02, 0.04, Math.PI / 2);
+  drawWave("rgba(0,255,255,0.15)", 80, 0.01, 0.02, Math.PI);
 
   t += 1;
   requestAnimationFrame(animate);
