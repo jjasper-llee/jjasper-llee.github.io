@@ -9,7 +9,7 @@
     return;
   }
 
-  const NODE_COUNT = 240;
+  const NODE_COUNT = 238;
   const nodes = [];
   const connections = [];
   const pointer = {
@@ -74,7 +74,7 @@
         const nodeA = nodes[i];
         const nodeB = nodes[j];
         const dx = nodeA.baseX - nodeB.baseX;
-               const dy = nodeA.baseY - nodeB.baseY;
+        const dy = nodeA.baseY - nodeB.baseY;
         const distance = Math.hypot(dx, dy);
         if (distance < 0.65) {
           connections.push({ a: i, b: j, baseDistance: distance });
@@ -104,24 +104,6 @@
     resetPointer();
     pointer.x = centerX;
     pointer.y = centerY;
-
-    window.addEventListener('pointermove', event => {
-      pointer.targetX = event.clientX;
-      pointer.targetY = event.clientY;
-      pointer.strength = 1.4;
-      pointer.x = event.clientX;
-      pointer.y = event.clientY;
-    });
-
-    window.addEventListener('pointerleave', () => {
-      pointer.strength = 0;
-      resetPointer();
-    });
-
-    window.addEventListener('touchend', () => {
-      pointer.strength = 0;
-      resetPointer();
-    });
   }
 
   function drawBackground() {
