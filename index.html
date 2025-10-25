@@ -7,85 +7,95 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- ===== Navigation Bar ===== -->
   <header>
     <h1 class="logo">Jasper Lee</h1>
     <nav>
-      <a href="#about" class="active">About</a>
-      <a href="#left-brain">Left Brain</a>
-      <a href="#right-brain">Right Brain</a>
-      <a href="#contact">Contact</a>
+      <a href="#" data-section="about" class="active">About</a>
+      <a href="#" data-section="left-brain">Left Brain</a>
+      <a href="#" data-section="right-brain">Right Brain</a>
+      <a href="#" data-section="contact">Contact</a>
     </nav>
   </header>
 
-  <!-- ===== ABOUT ===== -->
-  <section id="about" class="section about">
-    <img src="your-photo.jpg" alt="Jasper Lee" class="profile-photo" />
-    <div class="bio">
+  <main>
+    <!-- ===== ABOUT ===== -->
+    <section id="about" class="page visible">
+      <img src="your-photo.jpg" alt="Jasper Lee" class="profile-photo" />
       <h2>About Me</h2>
       <p>
-        I’m Jasper Lee — a mechanical engineer, designer, and builder exploring
-        how engineering and art merge to shape the future of human–machine interaction.
-        My work balances analytical rigor with creative intuition, from robotics
-        and product design to art and motion.
+        I’m Jasper Lee — a mechanical engineer and designer exploring how
+        engineering and art merge to shape the future of human–machine
+        interaction. My work balances analytical rigor with creative intuition,
+        from robotics and product design to art and motion.
       </p>
-    </div>
-  </section>
+    </section>
 
-  <!-- ===== LEFT BRAIN ===== -->
-  <section id="left-brain" class="section left-brain">
-    <h2>Left Brain</h2>
-    <p>Engineering, robotics, and technical projects.</p>
-    <div class="projects">
-      <a href="project1.html" class="project">
-        <img src="project1.jpg" alt="Project 1" />
-        <div class="caption">Bionic Hand Prototype</div>
-      </a>
-      <a href="project2.html" class="project">
-        <img src="project2.jpg" alt="Project 2" />
-        <div class="caption">Composite Beam Analysis</div>
-      </a>
-      <a href="project3.html" class="project">
-        <img src="project3.jpg" alt="Project 3" />
-        <div class="caption">Drone Control System</div>
-      </a>
-    </div>
-  </section>
+    <!-- ===== LEFT BRAIN ===== -->
+    <section id="left-brain" class="page">
+      <h2>Left Brain</h2>
+      <p>Engineering, robotics, and technical projects.</p>
 
-  <!-- ===== RIGHT BRAIN ===== -->
-  <section id="right-brain" class="section right-brain">
-    <h2>Right Brain</h2>
-    <div class="creative-content">
-      <img src="creative-photo.jpg" alt="Creative Work" class="float-right" />
-      <p>
-        My creative work explores visuals, sound, and kinetic art — translating
-        motion and emotion into form. I draw inspiration from patterns in
-        nature, music, and robotics, turning them into expressive physical
-        experiences. Whether through film, sculpture, or design, I aim to make
-        technology feel human.
-      </p>
-    </div>
-  </section>
+      <div class="projects">
+        <div class="project">
+          <img src="project1.jpg" alt="Project 1" />
+          <div class="caption">Bionic Hand Prototype</div>
+        </div>
+        <div class="project">
+          <img src="project2.jpg" alt="Project 2" />
+          <div class="caption">Composite Beam Analysis</div>
+        </div>
+        <div class="project">
+          <img src="project3.jpg" alt="Project 3" />
+          <div class="caption">Drone Control System</div>
+        </div>
+      </div>
+    </section>
 
-  <!-- ===== CONTACT ===== -->
-  <section id="contact" class="section contact">
-    <h2>Contact</h2>
-    <p>Email: <a href="mailto:jasper@example.com">jasper@example.com</a></p>
-    <p>LinkedIn: <a href="https://linkedin.com/in/yourprofile" target="_blank">linkedin.com/in/yourprofile</a></p>
-    <p>GitHub: <a href="https://github.com/jjasper-llee" target="_blank">github.com/jjasper-llee</a></p>
-  </section>
+    <!-- ===== RIGHT BRAIN ===== -->
+    <section id="right-brain" class="page">
+      <h2>Right Brain</h2>
+      <div class="creative-content">
+        <img src="creative-photo.jpg" alt="Creative Work" class="float-right" />
+        <p>
+          My creative work explores visuals, sound, and kinetic art — translating
+          motion and emotion into form. I draw inspiration from patterns in
+          nature, music, and robotics, turning them into expressive physical
+          experiences. Whether through film, sculpture, or design, I aim to make
+          technology feel human.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===== CONTACT ===== -->
+    <section id="contact" class="page">
+      <h2>Contact</h2>
+      <p>Email: <a href="mailto:jasper@example.com">jasper@example.com</a></p>
+      <p>LinkedIn: <a href="https://linkedin.com/in/yourprofile" target="_blank">linkedin.com/in/yourprofile</a></p>
+      <p>GitHub: <a href="https://github.com/jjasper-llee" target="_blank">github.com/jjasper-llee</a></p>
+    </section>
+  </main>
 
   <footer>
     <p>© 2025 Jasper Lee</p>
   </footer>
 
   <script>
-    // Smooth scroll for navigation
-    document.querySelectorAll('nav a').forEach(link => {
+    // Simple JS for navigation without reloading pages
+    const links = document.querySelectorAll('nav a');
+    const sections = document.querySelectorAll('.page');
+
+    links.forEach(link => {
       link.addEventListener('click', e => {
         e.preventDefault();
-        const target = document.querySelector(link.getAttribute('href'));
-        window.scrollTo({ top: target.offsetTop - 60, behavior: 'smooth' });
+        const targetId = link.dataset.section;
+
+        sections.forEach(sec => sec.classList.remove('visible'));
+        document.getElementById(targetId).classList.add('visible');
+
+        links.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       });
     });
   </script>
