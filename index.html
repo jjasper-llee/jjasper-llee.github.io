@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Your Name</title>
+<title>Tyler Lee</title>
 <style>
   html, body {
     margin: 0;
@@ -20,7 +20,7 @@
     position: fixed;
     top: 25px;
     right: 40px;
-    z-index: 20;
+    z-index: 30;
     display: flex;
     gap: 1.5em;
   }
@@ -44,14 +44,23 @@
     box-shadow: 0 0 20px rgba(0,255,255,0.8);
   }
 
-  /* ---------- CANVAS BACKGROUND ---------- */
-  canvas#background {
+  /* ---------- CANVASES ---------- */
+  canvas {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+  }
+
+  #grid {
     z-index: 0;
+  }
+
+  #gears {
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 2s ease;
   }
 
   /* ---------- HERO (CENTER NAME) ---------- */
@@ -86,7 +95,7 @@
     top: 60%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 5;
+    z-index: 20;
     max-width: 800px;
     text-align: center;
   }
@@ -112,67 +121,84 @@
   <a data-target="about" class="active">About</a>
   <a data-target="leftbrain">Left Brain</a>
   <a data-target="rightbrain">Right Brain</a>
+  <a data-target="contact">Contact</a>
 </nav>
 
-<!-- BACKGROUND CANVAS -->
-<canvas id="background"></canvas>
+<!-- BACKGROUND CANVASES -->
+<canvas id="grid"></canvas>
+<canvas id="gears"></canvas>
 
 <!-- HERO TEXT -->
 <div class="hero">
-  <h1>Your Name</h1>
-  <p>Engineer • Designer • Creator</p>
+  <h1>Tyler Lee</h1>
+  <p>Mechanical Engineer • Flying Bionic Hand</p>
 </div>
 
 <!-- PAGE CONTENT -->
 <div id="about" class="window active">
   <h2>About</h2>
-  <p>Welcome to my digital space — a mix of logic, art, and innovation.</p>
+  <p>I design, prototype, and engineer mechanisms that merge robotics, biomechanics, and flight.</p>
 </div>
 
 <div id="leftbrain" class="window">
   <h2>Left Brain</h2>
-  <p>Precision, systems, algorithms — I bring structure to ideas.</p>
+  <p>Precision, modeling, and mechanical logic — I bring systems to life.</p>
 </div>
 
 <div id="rightbrain" class="window">
   <h2>Right Brain</h2>
-  <p>Expression, color, motion — I turn concepts into experiences.</p>
+  <p>Design intuition and curiosity drive every mechanism I build.</p>
+</div>
+
+<div id="contact" class="window">
+  <h2>Contact</h2>
+  <p>Reach me at <a href="mailto:tyler@yourdomain.com" style="color: cyan;">tyler@yourdomain.com</a></p>
 </div>
 
 <script>
 window.addEventListener('load', () => {
   const navLinks = document.querySelectorAll('nav a');
   const windows = document.querySelectorAll('.window');
-  const canvas = document.getElementById('background');
-  const ctx = canvas.getContext('2d');
+  const grid = document.getElementById('grid');
+  const gears = document.getElementById('gears');
+  const gctx = grid.getContext('2d');
+  const ctx = gears.getContext('2d');
   let W = 0, H = 0, t = 0;
 
-  /* --- Navigation --- */
-  function showWindow(id) {
-    windows.forEach(w => w.classList.remove('active'));
-    navLinks.forEach(l => l.classList.remove('active'));
-    const el = document.getElementById(id);
-    if (el) el.classList.add('active');
-    const link = Array.from(navLinks).find(l => l.dataset.target === id);
-    if (link) link.classList.add('active');
-    canvas.style.display = (id === 'about') ? 'block' : 'block'; // always show
-  }
-
-  navLinks.forEach(l => l.addEventListener('click', () => showWindow(l.dataset.target)));
-
-  /* --- Canvas Setup --- */
   function resize() {
     const dpr = window.devicePixelRatio || 1;
-    W = canvas.width = Math.floor(window.innerWidth * dpr);
-    H = canvas.height = Math.floor(window.innerHeight * dpr);
-    canvas.style.width = window.innerWidth + 'px';
-    canvas.style.height = window.innerHeight + 'px';
+    W = grid.width = gears.width = Math.floor(window.innerWidth * dpr);
+    H = grid.height = gears.height = Math.floor(window.innerHeight * dpr);
+    grid.style.width = gears.style.width = window.innerWidth + 'px';
+    grid.style.height = gears.style.height = window.innerHeight + 'px';
+    gctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
   window.addEventListener('resize', resize);
   resize();
 
-  /* --- Gears --- */
+  // --- Draw blueprint grid ---
+  function drawGrid() {
+    const spacing = 80;
+    gctx.clearRect(0, 0, W, H);
+    gctx.strokeStyle = 'rgba(0,150,255,0.15)';
+    gctx.lineWidth = 1;
+    for (let x = 0; x < W; x += spacing) {
+      gctx.beginPath();
+      gctx.moveTo(x, 0);
+      gctx.lineTo(x, H);
+      gctx.stroke();
+    }
+    for (let y = 0; y < H; y += spacing) {
+      gctx.beginPath();
+      gctx.moveTo(0, y);
+      gctx.lineTo(W, y);
+      gctx.stroke();
+    }
+  }
+  drawGrid();
+
+  // --- Planetary Gears ---
   const pitch = 8.2;
   function pitchRadius(teeth) { return (pitch * teeth) / (2 * Math.PI); }
 
@@ -184,29 +210,29 @@ window.addEventListener('load', () => {
     ctx.translate(cx, cy);
     ctx.rotate(angle);
 
-    // gradient fill
-    const grad = ctx.createRadialGradient(0, 0, R * 0.1, 0, 0, R * 1.2);
-    grad.addColorStop(0, opt.bright ? 'rgba(0,255,255,0.3)' : 'rgba(0,255,180,0.15)');
+    // Glow fill
+    const grad = ctx.createRadialGradient(0, 0, R * 0.2, 0, 0, R * 1.2);
+    grad.addColorStop(0, opt.bright ? 'rgba(0,255,255,0.4)' : 'rgba(0,255,255,0.15)');
     grad.addColorStop(1, 'rgba(0,255,255,0)');
     ctx.fillStyle = grad;
     ctx.beginPath();
     ctx.arc(0, 0, R, 0, Math.PI * 2);
     ctx.fill();
 
-    // outline
-    ctx.strokeStyle = opt.bright ? 'rgba(0,255,255,0.8)' : 'rgba(0,255,200,0.5)';
-    ctx.lineWidth = 1.2;
+    // Outline
+    ctx.strokeStyle = opt.bright ? 'rgba(0,255,255,0.9)' : 'rgba(0,255,255,0.6)';
+    ctx.lineWidth = 1.4;
     ctx.beginPath();
     ctx.arc(0, 0, R, 0, Math.PI * 2);
     ctx.stroke();
 
-    // teeth
+    // Teeth
     for (let i = 0; i < teeth; i++) {
       ctx.save();
       ctx.rotate(i * step);
       ctx.beginPath();
       ctx.rect(-step * R * 0.25, R - toothDepth, step * R * 0.5, toothDepth);
-      ctx.fillStyle = opt.bright ? 'rgba(0,255,255,0.7)' : 'rgba(0,255,210,0.3)';
+      ctx.fillStyle = 'rgba(0,255,255,0.8)';
       ctx.fill();
       ctx.restore();
     }
@@ -214,30 +240,24 @@ window.addEventListener('load', () => {
     ctx.restore();
   }
 
-  /* --- Planetary Gear Params --- */
   const Ts = 40, Tp = 20, Tr = Ts + 2 * Tp;
   const Rs = pitchRadius(Ts) * 1.5;
   const Rp = pitchRadius(Tp) * 1.5;
   const Rr = pitchRadius(Tr) * 1.5;
   const centerDist = Rs + Rp;
-
   const omegaSun = 0.6, omegaRing = -0.05;
   const ratio = Tr / Ts;
   const omegaCarrier = ((ratio * omegaRing) + omegaSun) / (1 + ratio);
   const planetAngles = [0, (2 * Math.PI) / 3, (4 * Math.PI) / 3];
   function planetSpin() { return (omegaSun * Rs) / Rp - omegaCarrier; }
 
-  /* --- Loop --- */
   function loop() {
     t += 1 / 60;
     ctx.clearRect(0, 0, W, H);
-
     const cx = W / 2;
     const cy = H / 2;
-
     drawGear(cx, cy, Rr, Tr, omegaRing * t, { inner: true, bright: true });
     drawGear(cx, cy, Rs, Ts, omegaSun * t, { bright: true });
-
     const carrierAngle = omegaCarrier * t;
     for (let i = 0; i < 3; i++) {
       const ang = carrierAngle + planetAngles[i];
@@ -245,10 +265,33 @@ window.addEventListener('load', () => {
       const py = cy + Math.sin(ang) * centerDist;
       drawGear(px, py, Rp, Tp, planetSpin() * t, { bright: false });
     }
-
     requestAnimationFrame(loop);
   }
   loop();
+
+  // --- Navigation Logic ---
+  function showWindow(id) {
+    windows.forEach(w => w.classList.remove('active'));
+    navLinks.forEach(l => l.classList.remove('active'));
+    const el = document.getElementById(id);
+    if (el) el.classList.add('active');
+    const link = Array.from(navLinks).find(l => l.dataset.target === id);
+    if (link) link.classList.add('active');
+    if (id === 'about') {
+      grid.style.display = 'block';
+      gears.style.display = 'block';
+      setTimeout(() => (gears.style.opacity = 1), 100);
+    } else {
+      gears.style.opacity = 0;
+      setTimeout(() => {
+        grid.style.display = 'none';
+        gears.style.display = 'none';
+      }, 1000);
+    }
+  }
+
+  navLinks.forEach(l => l.addEventListener('click', () => showWindow(l.dataset.target)));
+  showWindow('about');
 });
 </script>
 
