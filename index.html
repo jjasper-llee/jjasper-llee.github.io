@@ -113,7 +113,7 @@
 <canvas id="gears"></canvas>
 
 <div class="hero">
-  <h1>Jasper Lee</h1>
+  <h1>Tyler Lee</h1>
   <p>Mechanical Engineer • Flying Bionic Hand</p>
 </div>
 
@@ -145,27 +145,26 @@ window.addEventListener('load', () => {
   const gears = document.getElementById('gears');
   const gctx = grid.getContext('2d');
   const ctx = gears.getContext('2d');
-  let W = 0, H = 0, t = 0;
+  let t = 0;
 
   function resize() {
-    const dpr = window.devicePixelRatio || 1;
-    W = grid.width = gears.width = Math.floor(window.innerWidth * dpr);
-    H = grid.height = gears.height = Math.floor(window.innerHeight * dpr);
+    grid.width = gears.width = window.innerWidth;
+    grid.height = gears.height = window.innerHeight;
     grid.style.width = gears.style.width = window.innerWidth + 'px';
     grid.style.height = gears.style.height = window.innerHeight + 'px';
-    gctx.setTransform(dpr,window.innerWidth/2,0,dpr,0,0);
-    ctx.setTransform(dpr,0,0,dpr,0,0);
+    gctx.setTransform(1,0,0,1,0,0);
+    ctx.setTransform(1,0,0,1,0,0);
   }
   window.addEventListener('resize', resize);
   resize();
 
   function drawGrid() {
     const spacing = 80;
-    gctx.clearRect(0,0,W,H);
+    gctx.clearRect(0,0,window.innerWidth, window.innerHeight);
     gctx.strokeStyle='rgba(0,150,255,0.15)';
     gctx.lineWidth=1;
-    for(let x=0;x<W;x+=spacing){ gctx.beginPath(); gctx.moveTo(x,0); gctx.lineTo(x,H); gctx.stroke();}
-    for(let y=0;y<H;y+=spacing){ gctx.beginPath(); gctx.moveTo(0,y); gctx.lineTo(W,y); gctx.stroke();}
+    for(let x=0;x<window.innerWidth;x+=spacing){ gctx.beginPath(); gctx.moveTo(x,0); gctx.lineTo(x,window.innerHeight); gctx.stroke();}
+    for(let y=0;y<window.innerHeight;y+=spacing){ gctx.beginPath(); gctx.moveTo(0,y); gctx.lineTo(window.innerWidth,y); gctx.stroke();}
   }
   drawGrid();
 
@@ -195,12 +194,20 @@ window.addEventListener('load', () => {
 
   function loop(){
     t+=1/60;
-    ctx.clearRect(0,0,W,H);
-    const cx=W/2, cy=H/2;
+    ctx.clearRect(0,0,window.innerWidth, window.innerHeight);
+    const cx = window.innerWidth / 2;
+    const cy = window.innerHeight / 2;
+
     drawGear(cx,cy,Rr,Tr,omegaRing*t,{inner:true,bright:true});
     drawGear(cx,cy,Rs,Ts,omegaSun*t,{bright:true});
+
     const carrierAngle=omegaCarrier*t;
-    for(let i=0;i<3;i++){ const ang=carrierAngle+planetAngles[i]; const px=cx+Math.cos(ang)*centerDist; const py=cy+Math.sin(ang)*centerDist; drawGear(px,py,Rp,Tp,planetSpin()*t,{bright:false});}
+    for(let i=0;i<3;i++){
+      const ang=carrierAngle+planetAngles[i];
+      const px=cx+Math.cos(ang)*centerDist;
+      const py=cy+Math.sin(ang)*centerDist;
+      drawGear(px,py,Rp,Tp,planetSpin()*t,{bright:false});
+    }
     requestAnimationFrame(loop);
   }
   loop();
@@ -218,4 +225,3 @@ window.addEventListener('load', () => {
 });
 </script>
 </body>
-</html>
