@@ -4,9 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Jasper Lee</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v=20240610" />
 </head>
-<body>
+<body class="brain-theme">
+  <canvas id="brain-canvas"></canvas>
   <header>
     <div class="nav-left">
       <h1 class="logo">Jasper Lee</h1>
@@ -18,6 +19,8 @@
       </nav>
     </div>
   </header>
+
+  <div class="brain-hero-spacer" aria-hidden="true"></div>
 
   <main>
     <!-- === ABOUT === -->
@@ -69,20 +72,20 @@
       <div class="video-grid">
         <!-- Replace with your YouTube video IDs -->
         <iframe
-          src="https://www.youtube.com/embed/YOUR_VIDEO_ID1"
-          title="Creative Video 1"
+          src="https://www.youtube.com/embed/WQO-aOdJLiw"
+          title="Taika Waititi on creativity"
           frameborder="0"
           allowfullscreen
         ></iframe>
         <iframe
-          src="https://www.youtube.com/embed/YOUR_VIDEO_ID2"
-          title="Creative Video 2"
+          src="https://www.youtube.com/embed/Q3oItpVa9fs"
+          title="Cymatics: Science Vs. Music"
           frameborder="0"
           allowfullscreen
         ></iframe>
         <iframe
-          src="https://www.youtube.com/embed/YOUR_VIDEO_ID3"
-          title="Creative Video 3"
+          src="https://www.youtube.com/embed/aqz-KE-bpKQ"
+          title="NASA: Journey to the ISS"
           frameborder="0"
           allowfullscreen
         ></iframe>
@@ -102,10 +105,30 @@
     <p>© 2025 Jasper Lee</p>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.min.js"></script>
+  <script src="brain.js?v=20240610" defer></script>
   <script>
     // Page switching navigation
     const navLinks = document.querySelectorAll('nav a');
     const pages = document.querySelectorAll('.page');
+
+    function requestBrainHighlight(mode) {
+      if (window.setBrainHighlight) {
+        window.setBrainHighlight(mode);
+      } else {
+        window.pendingBrainHighlight = mode;
+      }
+    }
+
+    function updateBrainHighlight(section) {
+      if (section === 'left-brain') {
+        requestBrainHighlight('left');
+      } else if (section === 'right-brain') {
+        requestBrainHighlight('right');
+      } else {
+        requestBrainHighlight('none');
+      }
+    }
 
     navLinks.forEach(link => {
       link.addEventListener('click', e => {
@@ -118,9 +141,13 @@
         navLinks.forEach(l => l.classList.remove('active'));
         link.classList.add('active');
 
+        updateBrainHighlight(target);
+
         window.scrollTo({ top: 0, behavior: 'smooth' });
       });
     });
+
+    updateBrainHighlight('about');
   </script>
 </body>
 </html>
