@@ -9,7 +9,7 @@
     return;
   }
 
-  const NODE_COUNT = 238;
+  const NODE_COUNT = 50;
   const nodes = [];
   const connections = [];
   const pointer = {
@@ -264,9 +264,9 @@
   requestAnimationFrame(tick);
 
   window.addEventListener('resize', () => {
-    resize();
+    // resize();
     initConnections();
-    resetPointer();
+    // resetPointer();
   });
 
   if (window.pendingBrainHighlight) {
