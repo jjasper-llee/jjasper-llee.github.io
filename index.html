@@ -15,7 +15,6 @@
     overflow: hidden;
   }
 
-  /* ---------- NAVIGATION ---------- */
   nav {
     position: fixed;
     top: 25px;
@@ -29,8 +28,8 @@
     color: cyan;
     text-decoration: none;
     font-weight: 600;
-    font-size: 1rem;
-    padding: 0.4em 0.8em;
+    font-size: 0.9rem;
+    padding: 0.3em 0.6em;
     border: 1.5px solid rgba(0,255,255,0.5);
     border-radius: 6px;
     box-shadow: 0 0 10px rgba(0,255,255,0.3);
@@ -44,7 +43,6 @@
     box-shadow: 0 0 20px rgba(0,255,255,0.8);
   }
 
-  /* ---------- CANVASES ---------- */
   canvas {
     position: fixed;
     top: 0;
@@ -53,20 +51,12 @@
     height: 100%;
   }
 
-  #grid {
-    z-index: 0;
-  }
+  #grid { z-index: 0; }
+  #gears { z-index: 1; opacity: 0; transition: opacity 2s ease; display: block; }
 
-  #gears {
-    z-index: 1;
-    opacity: 0;
-    transition: opacity 2s ease;
-  }
-
-  /* ---------- HERO (CENTER NAME) ---------- */
   .hero {
     position: absolute;
-    top: 50%;
+    top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
@@ -74,21 +64,20 @@
   }
 
   .hero h1 {
-    font-size: 4rem;
+    font-size: 3rem;
     margin: 0;
-    color: cyan;
-    text-shadow: 0 0 25px rgba(0,255,255,0.7);
-    letter-spacing: 2px;
+    color: white;
+    text-shadow: 0 0 20px rgba(255,255,255,0.7);
+    letter-spacing: 1.5px;
   }
 
   .hero p {
-    margin-top: 0.5em;
+    margin-top: 0.3em;
     color: #bff;
-    font-size: 1.1rem;
+    font-size: 0.95rem;
     opacity: 0.8;
   }
 
-  /* ---------- CONTENT WINDOWS ---------- */
   .window {
     display: none;
     position: absolute;
@@ -96,27 +85,23 @@
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 20;
-    max-width: 800px;
+    max-width: 700px;
     text-align: center;
   }
 
-  .window.active {
-    display: block;
-  }
+  .window.active { display: block; }
 
   h2 {
     color: cyan;
-    text-shadow: 0 0 10px cyan;
+    text-shadow: 0 0 8px cyan;
+    font-size: 1.5rem;
   }
 
-  p {
-    color: #bff;
-  }
+  p { color: #bff; font-size: 0.9rem; line-height: 1.5; }
 </style>
 </head>
 <body>
 
-<!-- NAVIGATION -->
 <nav>
   <a data-target="about" class="active">About</a>
   <a data-target="leftbrain">Left Brain</a>
@@ -124,17 +109,14 @@
   <a data-target="contact">Contact</a>
 </nav>
 
-<!-- BACKGROUND CANVASES -->
 <canvas id="grid"></canvas>
 <canvas id="gears"></canvas>
 
-<!-- HERO TEXT -->
 <div class="hero">
   <h1>Tyler Lee</h1>
   <p>Mechanical Engineer • Flying Bionic Hand</p>
 </div>
 
-<!-- PAGE CONTENT -->
 <div id="about" class="window active">
   <h2>About</h2>
   <p>I design, prototype, and engineer mechanisms that merge robotics, biomechanics, and flight.</p>
@@ -171,129 +153,69 @@ window.addEventListener('load', () => {
     H = grid.height = gears.height = Math.floor(window.innerHeight * dpr);
     grid.style.width = gears.style.width = window.innerWidth + 'px';
     grid.style.height = gears.style.height = window.innerHeight + 'px';
-    gctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    gctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
   }
   window.addEventListener('resize', resize);
   resize();
 
-  // --- Draw blueprint grid ---
   function drawGrid() {
     const spacing = 80;
-    gctx.clearRect(0, 0, W, H);
-    gctx.strokeStyle = 'rgba(0,150,255,0.15)';
-    gctx.lineWidth = 1;
-    for (let x = 0; x < W; x += spacing) {
-      gctx.beginPath();
-      gctx.moveTo(x, 0);
-      gctx.lineTo(x, H);
-      gctx.stroke();
-    }
-    for (let y = 0; y < H; y += spacing) {
-      gctx.beginPath();
-      gctx.moveTo(0, y);
-      gctx.lineTo(W, y);
-      gctx.stroke();
-    }
+    gctx.clearRect(0,0,W,H);
+    gctx.strokeStyle='rgba(0,150,255,0.15)';
+    gctx.lineWidth=1;
+    for(let x=0;x<W;x+=spacing){ gctx.beginPath(); gctx.moveTo(x,0); gctx.lineTo(x,H); gctx.stroke();}
+    for(let y=0;y<H;y+=spacing){ gctx.beginPath(); gctx.moveTo(0,y); gctx.lineTo(W,y); gctx.stroke();}
   }
   drawGrid();
 
-  // --- Planetary Gears ---
-  const pitch = 8.2;
-  function pitchRadius(teeth) { return (pitch * teeth) / (2 * Math.PI); }
+  const pitch=8.2;
+  function pitchRadius(teeth){return (pitch*teeth)/(2*Math.PI);}
 
-  function drawGear(cx, cy, R, teeth, angle, opt = { inner: false, bright: false }) {
-    const toothDepth = R * 0.08;
-    const step = (2 * Math.PI) / teeth;
-
-    ctx.save();
-    ctx.translate(cx, cy);
-    ctx.rotate(angle);
-
-    // Glow fill
-    const grad = ctx.createRadialGradient(0, 0, R * 0.2, 0, 0, R * 1.2);
-    grad.addColorStop(0, opt.bright ? 'rgba(0,255,255,0.4)' : 'rgba(0,255,255,0.15)');
-    grad.addColorStop(1, 'rgba(0,255,255,0)');
-    ctx.fillStyle = grad;
-    ctx.beginPath();
-    ctx.arc(0, 0, R, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Outline
-    ctx.strokeStyle = opt.bright ? 'rgba(0,255,255,0.9)' : 'rgba(0,255,255,0.6)';
-    ctx.lineWidth = 1.4;
-    ctx.beginPath();
-    ctx.arc(0, 0, R, 0, Math.PI * 2);
-    ctx.stroke();
-
-    // Teeth
-    for (let i = 0; i < teeth; i++) {
-      ctx.save();
-      ctx.rotate(i * step);
-      ctx.beginPath();
-      ctx.rect(-step * R * 0.25, R - toothDepth, step * R * 0.5, toothDepth);
-      ctx.fillStyle = 'rgba(0,255,255,0.8)';
-      ctx.fill();
-      ctx.restore();
-    }
-
+  function drawGear(cx,cy,R,teeth,angle,opt={inner:false,bright:false}){
+    const toothDepth=R*0.08;
+    const step=(2*Math.PI)/teeth;
+    ctx.save(); ctx.translate(cx,cy); ctx.rotate(angle);
+    const grad=ctx.createRadialGradient(0,0,R*0.2,0,0,R*1.2);
+    grad.addColorStop(0,opt.bright?'rgba(192,192,192,0.4)':'rgba(192,192,192,0.15)');
+    grad.addColorStop(1,'rgba(192,192,192,0)'); ctx.fillStyle=grad; ctx.beginPath(); ctx.arc(0,0,R,0,Math.PI*2); ctx.fill();
+    ctx.strokeStyle=opt.bright?'rgba(192,192,192,0.9)':'rgba(192,192,192,0.6)'; ctx.lineWidth=1.4; ctx.beginPath(); ctx.arc(0,0,R,0,Math.PI*2); ctx.stroke();
+    for(let i=0;i<teeth;i++){ ctx.save(); ctx.rotate(i*step); ctx.beginPath(); ctx.rect(-step*R*0.25,R-toothDepth,step*R*0.5,toothDepth); ctx.fillStyle='rgba(192,192,192,0.8)'; ctx.fill(); ctx.restore(); }
     ctx.restore();
   }
 
-  const Ts = 40, Tp = 20, Tr = Ts + 2 * Tp;
-  const Rs = pitchRadius(Ts) * 1.5;
-  const Rp = pitchRadius(Tp) * 1.5;
-  const Rr = pitchRadius(Tr) * 1.5;
-  const centerDist = Rs + Rp;
-  const omegaSun = 0.6, omegaRing = -0.05;
-  const ratio = Tr / Ts;
-  const omegaCarrier = ((ratio * omegaRing) + omegaSun) / (1 + ratio);
-  const planetAngles = [0, (2 * Math.PI) / 3, (4 * Math.PI) / 3];
-  function planetSpin() { return (omegaSun * Rs) / Rp - omegaCarrier; }
+  const Ts=40,Tp=20,Tr=Ts+2*Tp;
+  const Rs=pitchRadius(Ts)*1.5,Rp=pitchRadius(Tp)*1.5,Rr=pitchRadius(Tr)*1.5;
+  const centerDist=Rs+Rp;
+  const omegaSun=0.6,omegaRing=-0.05;
+  const ratio=Tr/Ts;
+  const omegaCarrier=((ratio*omegaRing)+omegaSun)/(1+ratio);
+  const planetAngles=[0,2*Math.PI/3,4*Math.PI/3];
+  function planetSpin(){return (omegaSun*Rs)/Rp-omegaCarrier;}
 
-  function loop() {
-    t += 1 / 60;
-    ctx.clearRect(0, 0, W, H);
-    const cx = W / 2;
-    const cy = H / 2;
-    drawGear(cx, cy, Rr, Tr, omegaRing * t, { inner: true, bright: true });
-    drawGear(cx, cy, Rs, Ts, omegaSun * t, { bright: true });
-    const carrierAngle = omegaCarrier * t;
-    for (let i = 0; i < 3; i++) {
-      const ang = carrierAngle + planetAngles[i];
-      const px = cx + Math.cos(ang) * centerDist;
-      const py = cy + Math.sin(ang) * centerDist;
-      drawGear(px, py, Rp, Tp, planetSpin() * t, { bright: false });
-    }
+  function loop(){
+    t+=1/60;
+    ctx.clearRect(0,0,W,H);
+    const cx=W/2, cy=H/2;
+    drawGear(cx,cy,Rr,Tr,omegaRing*t,{inner:true,bright:true});
+    drawGear(cx,cy,Rs,Ts,omegaSun*t,{bright:true});
+    const carrierAngle=omegaCarrier*t;
+    for(let i=0;i<3;i++){ const ang=carrierAngle+planetAngles[i]; const px=cx+Math.cos(ang)*centerDist; const py=cy+Math.sin(ang)*centerDist; drawGear(px,py,Rp,Tp,planetSpin()*t,{bright:false});}
     requestAnimationFrame(loop);
   }
   loop();
 
-  // --- Navigation Logic ---
-  function showWindow(id) {
-    windows.forEach(w => w.classList.remove('active'));
-    navLinks.forEach(l => l.classList.remove('active'));
-    const el = document.getElementById(id);
-    if (el) el.classList.add('active');
-    const link = Array.from(navLinks).find(l => l.dataset.target === id);
-    if (link) link.classList.add('active');
-    if (id === 'about') {
-      grid.style.display = 'block';
-      gears.style.display = 'block';
-      setTimeout(() => (gears.style.opacity = 1), 100);
-    } else {
-      gears.style.opacity = 0;
-      setTimeout(() => {
-        grid.style.display = 'none';
-        gears.style.display = 'none';
-      }, 1000);
-    }
+  function showWindow(id){
+    windows.forEach(w=>w.classList.remove('active'));
+    navLinks.forEach(l=>l.classList.remove('active'));
+    const el=document.getElementById(id); if(el) el.classList.add('active');
+    const link=Array.from(navLinks).find(l=>l.dataset.target===id); if(link) link.classList.add('active');
+    if(id==='about') { grid.style.display='block'; gears.style.display='block'; setTimeout(()=>gears.style.opacity=1,100); }
+    else { gears.style.opacity=0; setTimeout(()=>{grid.style.display='none'; gears.style.display='none';},1000);}
   }
-
-  navLinks.forEach(l => l.addEventListener('click', () => showWindow(l.dataset.target)));
+  navLinks.forEach(l=>l.addEventListener('click',()=>showWindow(l.dataset.target)));
   showWindow('about');
 });
 </script>
-
 </body>
 </html>
