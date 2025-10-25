@@ -1,4 +1,4 @@
--<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -7,106 +7,87 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
+  <!-- ===== Navigation Bar ===== -->
   <header>
-    <a href="index.html" class="logo">Jasper Lee</a>
+    <h1 class="logo">Jasper Lee</h1>
     <nav>
-      <a href="#about">About</a>
-      <a href="#leftbrain">Left Brain</a>
-      <a href="#rightbrain">Right Brain</a>
+      <a href="#about" class="active">About</a>
+      <a href="#left-brain">Left Brain</a>
+      <a href="#right-brain">Right Brain</a>
       <a href="#contact">Contact</a>
     </nav>
   </header>
 
-  <main>
-    <!-- ABOUT -->
-    <section id="about" class="page-section active">
-      <img src="IMG_1144.jpeg" alt="Jasper Lee portrait" class="profile-pic" />
-      <div class="bio">
-        <h1>About Me</h1>
-        <p>
-          I’m Jasper Lee — a Mechanical Engineer passionate about the intersection of 
-          robotics, biomechanics, and flight. My work blends precision engineering 
-          with creative design to push the boundaries of human–machine interaction.
-        </p>
-      </div>
-    </section>
-
-    <!-- LEFT BRAIN -->
-    <section id="leftbrain" class="page-section">
-      <h1>Left Brain</h1>
-      <div class="project-grid">
-        <a href="project-bionichand.html" class="project">
-          <img src="images/bionichand.jpg" alt="Bionic Hand project" />
-          <h2>COM& Aerial Bionic Hand</h2>
-        </a>
-        <a href="project-cad.html" class="project">
-          <img src="images/cad.jpg" alt="CAD Simulation project" />
-          <h2>Shape-Shifting Tri-Copter Drone</h2>
-        </a>
-        <!-- Add more projects here -->
-      </div>
-    </section>
-
-    <!-- RIGHT BRAIN -->
-    <section id="rightbrain" class="page-section">
-      <h1>Right Brain</h1>
-      <div class="project-grid">
-        <div class="project">
-          <iframe width="100%" height="200" src="https://www.youtube.com/embed/VlcR8Cx_-2w"
-            title="YouTube video player" frameborder="0"
-            allowfullscreen></iframe>
-          <h2>Morningside Music Bridge @ New England Conservatory - Rachmaninoff Cello Sonata</h2>
-        </div>
-        <div class="project">
-          <iframe width="100%" height="200" src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-            title="YouTube video player" frameborder="0"
-            allowfullscreen></iframe>
-          <h2>Design Concept Demo</h2>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact">
-      <h2>Contact</h2>
+  <!-- ===== ABOUT ===== -->
+  <section id="about" class="section about">
+    <img src="your-photo.jpg" alt="Jasper Lee" class="profile-photo" />
+    <div class="bio">
+      <h2>About Me</h2>
       <p>
-      I’m always open to discussing new ideas, collaborations, or engineering challenges.
+        I’m Jasper Lee — a mechanical engineer, designer, and builder exploring
+        how engineering and art merge to shape the future of human–machine interaction.
+        My work balances analytical rigor with creative intuition, from robotics
+        and product design to art and motion.
       </p>
-      <p>
-      📧 <a href="mailto:jasper@yourdomain.com" style="color: cyan;">jasper@yourdomain.com</a>
-      </p>
-      <p>
-      🧠 <a href="https://www.linkedin.com/in/yourprofile" style="color: cyan;" target="_blank">LinkedIn</a>
-      </p>
-    </section>
+    </div>
+  </section>
 
-<footer>
-  © 2025 Jasper Lee
-</footer>
+  <!-- ===== LEFT BRAIN ===== -->
+  <section id="left-brain" class="section left-brain">
+    <h2>Left Brain</h2>
+    <p>Engineering, robotics, and technical projects.</p>
+    <div class="projects">
+      <a href="project1.html" class="project">
+        <img src="project1.jpg" alt="Project 1" />
+        <div class="caption">Bionic Hand Prototype</div>
+      </a>
+      <a href="project2.html" class="project">
+        <img src="project2.jpg" alt="Project 2" />
+        <div class="caption">Composite Beam Analysis</div>
+      </a>
+      <a href="project3.html" class="project">
+        <img src="project3.jpg" alt="Project 3" />
+        <div class="caption">Drone Control System</div>
+      </a>
+    </div>
+  </section>
 
-  </main>
+  <!-- ===== RIGHT BRAIN ===== -->
+  <section id="right-brain" class="section right-brain">
+    <h2>Right Brain</h2>
+    <div class="creative-content">
+      <img src="creative-photo.jpg" alt="Creative Work" class="float-right" />
+      <p>
+        My creative work explores visuals, sound, and kinetic art — translating
+        motion and emotion into form. I draw inspiration from patterns in
+        nature, music, and robotics, turning them into expressive physical
+        experiences. Whether through film, sculpture, or design, I aim to make
+        technology feel human.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT ===== -->
+  <section id="contact" class="section contact">
+    <h2>Contact</h2>
+    <p>Email: <a href="mailto:jasper@example.com">jasper@example.com</a></p>
+    <p>LinkedIn: <a href="https://linkedin.com/in/yourprofile" target="_blank">linkedin.com/in/yourprofile</a></p>
+    <p>GitHub: <a href="https://github.com/jjasper-llee" target="_blank">github.com/jjasper-llee</a></p>
+  </section>
+
+  <footer>
+    <p>© 2025 Jasper Lee</p>
+  </footer>
 
   <script>
-    // Navigation logic
-    const navLinks = document.querySelectorAll('nav a');
-    const sections = document.querySelectorAll('.page-section');
-
-    navLinks.forEach(link => {
+    // Smooth scroll for navigation
+    document.querySelectorAll('nav a').forEach(link => {
       link.addEventListener('click', e => {
         e.preventDefault();
-        const target = link.getAttribute('href').substring(1);
-
-        sections.forEach(sec => sec.classList.remove('active'));
-        document.getElementById(target).classList.add('active');
-
-        navLinks.forEach(n => n.classList.remove('active'));
-        link.classList.add('active');
-
-        window.scrollTo(0, 0);
+        const target = document.querySelector(link.getAttribute('href'));
+        window.scrollTo({ top: target.offsetTop - 60, behavior: 'smooth' });
       });
     });
   </script>
-
 </body>
 </html>
