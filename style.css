@@ -59,6 +59,10 @@ main {
   text-align: center;
 }
 
+.brain-hero-spacer {
+  height: clamp(320px, 70vh, 620px);
+}
+
 .page {
   display: none;
   animation: fadeIn 0.5s ease;
@@ -185,31 +189,31 @@ footer {
 
 /* === Brain Theme Overrides === */
 body.brain-theme {
-  background: radial-gradient(circle at 50% -10%, #f5f8ff 0%, #d4e1ff 45%, #a6bce9 100%);
-  color: #122b56;
+  background: radial-gradient(circle at 50% -20%, #1a2b5a 0%, #081028 48%, #020712 100%);
+  color: #e5ecff;
   min-height: 100vh;
 }
 
 body.brain-theme header {
-  background: rgba(246, 249, 255, 0.82);
-  border-bottom: 1px solid rgba(148, 170, 220, 0.45);
-  box-shadow: 0 18px 45px rgba(93, 122, 180, 0.18);
-  backdrop-filter: blur(18px);
+  background: rgba(5, 12, 32, 0.82);
+  border-bottom: 1px solid rgba(38, 66, 124, 0.45);
+  box-shadow: 0 20px 55px rgba(3, 10, 29, 0.55);
+  backdrop-filter: blur(16px);
   position: relative;
   z-index: 2;
 }
 
 body.brain-theme .logo {
-  color: #1a2f60;
+  color: #d7e5ff;
 }
 
 body.brain-theme nav a {
-  color: #1a2f60;
+  color: #c3d6ff;
 }
 
 body.brain-theme nav a:hover,
 body.brain-theme nav a.active {
-  color: #3f67ff;
+  color: #7fb6ff;
 }
 
 body.brain-theme main {
@@ -219,39 +223,39 @@ body.brain-theme main {
 }
 
 body.brain-theme .page {
-  background: rgba(255, 255, 255, 0.64);
-  border: 1px solid rgba(175, 192, 234, 0.45);
+  background: rgba(5, 13, 35, 0.78);
+  border: 1px solid rgba(67, 104, 186, 0.55);
   border-radius: 24px;
   padding: 2.5rem 2rem;
-  box-shadow: 0 28px 80px rgba(86, 116, 174, 0.18);
-  backdrop-filter: blur(22px);
+  box-shadow: 0 35px 90px rgba(2, 6, 20, 0.7);
+  backdrop-filter: blur(12px);
 }
 
 body.brain-theme h2 {
-  color: #1f3366;
+  color: #f2f6ff;
 }
 
 body.brain-theme p {
-  color: #273b70;
+  color: rgba(217, 228, 255, 0.92);
 }
 
 body.brain-theme .profile-photo {
-  box-shadow: 0 20px 50px rgba(83, 112, 168, 0.24);
-  border: 2px solid rgba(204, 218, 255, 0.65);
+  box-shadow: 0 25px 60px rgba(9, 20, 54, 0.65);
+  border: 2px solid rgba(92, 134, 220, 0.6);
 }
 
 body.brain-theme .project {
-  border: 1px solid rgba(183, 198, 236, 0.6);
-  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(70, 103, 175, 0.65);
+  background: rgba(9, 19, 44, 0.75);
   color: inherit;
 }
 
 body.brain-theme .project:hover {
-  box-shadow: 0 20px 42px rgba(84, 114, 174, 0.22);
+  box-shadow: 0 22px 48px rgba(6, 14, 35, 0.65);
 }
 
 body.brain-theme .caption {
-  color: #2d4274;
+  color: rgba(216, 226, 255, 0.85);
 }
 
 body.brain-theme .creative-content {
@@ -259,17 +263,17 @@ body.brain-theme .creative-content {
 }
 
 body.brain-theme .video-grid iframe {
-  box-shadow: 0 20px 45px rgba(82, 110, 168, 0.22);
+  box-shadow: 0 24px 60px rgba(6, 12, 32, 0.7);
 }
 
 body.brain-theme #contact a {
-  color: #3f67ff;
+  color: #7fb6ff;
 }
 
 body.brain-theme footer {
-  background: rgba(242, 247, 255, 0.88);
-  border-top: 1px solid rgba(160, 182, 231, 0.45);
-  color: #22386b;
+  background: rgba(4, 11, 29, 0.88);
+  border-top: 1px solid rgba(38, 66, 124, 0.45);
+  color: rgba(203, 218, 255, 0.85);
   position: relative;
   z-index: 1;
 }
