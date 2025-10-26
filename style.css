@@ -218,6 +218,14 @@ body.brain-theme header {
   z-index: 2;
 }
 
+body.brain-theme.project-detail header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+}
+
 body.brain-theme .logo {
   color: #ffffff;
   font-weight: 400;
@@ -302,24 +310,6 @@ body.project-detail header {
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 1rem 2rem;
-}
-
-body.project-detail .sub-nav {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-body.project-detail .back-link {
-  color: #7fb6ff;
-  font-size: 0.95rem;
-  text-decoration: none;
-  letter-spacing: 0.02em;
-  transition: color 0.3s ease;
-}
-
-body.project-detail .back-link:hover {
-  color: #ffe07a;
 }
 
 .project-page {
