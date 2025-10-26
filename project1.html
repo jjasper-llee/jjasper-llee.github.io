@@ -4,55 +4,93 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Project Title | Jasper Lee</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v=20240621" />
 </head>
-<body>
+<body class="brain-theme project-detail">
+  <canvas id="brain-canvas"></canvas>
+
   <header>
     <div class="nav-left">
       <h1 class="logo">Jasper Lee</h1>
       <nav>
-        <a href="index.html">Back to Left Brain</a>
+        <a href="index.html#about">About</a>
+        <a href="left-brain.html" class="active">Left Brain</a>
+        <a href="right-brain.html">Right Brain</a>
+        <a href="index.html#contact">Contact</a>
       </nav>
     </div>
   </header>
 
   <main class="project-page">
-    <h2>Project Title</h2>
+    <section class="project-shell">
+      <h2>Project Title</h2>
+      <p class="project-tagline">A concise sentence that explains what makes this build exciting.</p>
 
-    <!-- === YouTube Video === -->
-    <div class="project-video">
-      <iframe
-        src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
-        title="Project Video"
-        frameborder="0"
-        allowfullscreen
-      ></iframe>
-    </div>
+      <div class="project-section">
+        <div class="project-media">
+          <img src="project-image-1.jpg" alt="Prototype of the project" />
+        </div>
+        <div class="project-copy">
+          <h3>Origin Story</h3>
+          <p>
+            Describe the challenge that sparked this idea. Explain the problem space and what inspired you to
+            pursue a technical, left-brain approach. Mention any research or early sketches that shaped the concept.
+          </p>
+        </div>
+      </div>
 
-    <!-- === Project Image === -->
-    <img src="project-image.jpg" alt="Project Image" class="project-image" />
+      <div class="project-section reverse">
+        <div class="project-media">
+          <img src="project-image-2.jpg" alt="In-progress build of the project" />
+        </div>
+        <div class="project-copy">
+          <h3>Engineering the Solution</h3>
+          <p>
+            Detail the hardware, software, and fabrication choices. Call out the control algorithms, sensors, and
+            materials that make the system perform. Bullet points help readers scan the technical stack quickly.
+          </p>
+          <ul>
+            <li>Microcontrollers: Arduino Nano + ODrive</li>
+            <li>Motors: Brushless DC with planetary gear reduction</li>
+            <li>Control: Position + torque feedback with encoders</li>
+          </ul>
+        </div>
+      </div>
 
-    <!-- === Description === -->
-    <div class="project-description">
-      <p>
-        Brief description of your project goes here — explain the motivation,
-        design process, and results. You can also talk about the tools, materials,
-        or technologies used.
-      </p>
-      <ul>
-        <li>Microcontrollers: Arduino Nano + ODrive</li>
-        <li>Motors: Brushless DC with planetary gear reduction</li>
-        <li>Control: Position + torque feedback with encoders</li>
-      </ul>
-      <p>
-        This project represents the intersection of engineering precision and
-        creative design — making robotics feel expressive and intuitive.
-      </p>
-    </div>
+      <div class="project-section">
+        <div class="project-media">
+          <img src="project-image-3.jpg" alt="Finished project in action" />
+        </div>
+        <div class="project-copy">
+          <h3>Impact &amp; Next Steps</h3>
+          <p>
+            Share what you learned, how the prototype performed, and how you plan to iterate. Tie the story back to the
+            user experience or mission and invite collaborators to reach out.
+          </p>
+        </div>
+      </div>
+
+      <div class="project-video">
+        <h3>See It in Motion</h3>
+        <div class="video-frame">
+          <iframe
+            src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
+            title="Project Video"
+            frameborder="0"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer>
     <p>© 2025 Jasper Lee</p>
   </footer>
+
+  <script>
+    window.pendingBrainHighlight = 'none';
+  </script>
+  <script src="brain.js?v=20240621" defer></script>
 </body>
 </html>
