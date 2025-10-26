@@ -180,7 +180,7 @@
         ? `rgba(255, 217, 102, ${Math.min(0.9, alpha)})`
         : `rgba(255, 255, 255, ${Math.min(0.65, alpha)})`;
 
-      ctx.lineWidth = accent ? 0.5 : 0.5;
+      ctx.lineWidth = accent ? 0.1 : 0.1;
       ctx.beginPath();
       ctx.moveTo(nodeA.x, nodeA.y);
       ctx.lineTo(nodeB.x, nodeB.y);
