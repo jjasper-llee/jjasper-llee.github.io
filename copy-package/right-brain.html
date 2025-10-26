@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Right Brain | Jasper Lee</title>
+  <link rel="stylesheet" href="style.css?v=20240621" />
+</head>
+<body class="brain-theme">
+  <canvas id="brain-canvas"></canvas>
+
+  <header>
+    <div class="nav-left">
+      <h1 class="logo">Jasper Lee</h1>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="left-brain.html">Left Brain</a>
+        <a href="right-brain.html" class="active">Right Brain</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="brain-hero-spacer" aria-hidden="true"></div>
+
+  <main>
+    <section class="page visible">
+      <h2>Creative Side</h2>
+      <div class="creative-content">
+        <img src="creative-photo.jpg" alt="Creative Work" class="float-right" />
+        <p>
+          Exploring visuals, sound, and motion. Turning structured logic into expressive form.
+        </p>
+      </div>
+
+      <section class="videos">
+        <h3>Projects &amp; Videos</h3>
+        <div class="video-grid">
+          <iframe src="https://www.youtube.com/embed/WQO-aOdJLiw" title="Taika Waititi on creativity" allowfullscreen></iframe>
+          <iframe src="https://www.youtube.com/embed/u1ZB_rGFyeU" title="OK Go - I Won't Let You Down" allowfullscreen></iframe>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Jasper Lee</p>
+  </footer>
+
+  <script>
+    window.pendingBrainHighlight = 'right';
+  </script>
+  <script src="brain.js?v=20240621" defer></script>
+</body>
+</html>

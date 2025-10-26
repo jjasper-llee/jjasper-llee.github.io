@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jasper Lee</title>
+  <link rel="stylesheet" href="style.css?v=20240621" />
+</head>
+<body class="brain-theme">
+  <canvas id="brain-canvas"></canvas>
+  <header>
+    <div class="nav-left">
+      <h1 class="logo">Jasper Lee</h1>
+      <nav>
+        <a href="#" data-section="about" class="active">About</a>
+        <a href="#" data-section="left-brain">Left Brain</a>
+        <a href="#" data-section="right-brain">Right Brain</a>
+        <a href="#" data-section="contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="brain-hero-spacer" aria-hidden="true"></div>
+
+  <main>
+    <!-- === ABOUT === -->
+    <section id="about" class="page visible">
+      <img src="profile-pic.jpg" alt="Jasper Lee" class="profile-photo" />
+      <h2>About Me</h2>
+      <p>
+        I’m Jasper Lee — a mechanical engineer and designer exploring how
+        engineering and art merge to shape the future of human–machine
+        interaction. My work balances analytical rigor with creative intuition,
+        from robotics and product design to art and motion.
+      </p>
+    </section>
+
+    <!-- === LEFT BRAIN === -->
+    <section id="left-brain" class="page">
+      <h2>Left Brain</h2>
+      <p>Engineering, robotics, and technical projects.</p>
+      <div class="projects">
+        <a href="project1.html" class="project">
+          <img src="project1.jpg" alt="Project 1" />
+          <div class="caption">Bionic Hand Prototype</div>
+        </a>
+        <a href="project2.html" class="project">
+          <img src="project2.jpg" alt="Project 2" />
+          <div class="caption">Composite Beam Analysis</div>
+        </a>
+        <a href="project3.html" class="project">
+          <img src="project3.jpg" alt="Project 3" />
+          <div class="caption">Drone Control System</div>
+        </a>
+      </div>
+    </section>
+
+    <!-- === RIGHT BRAIN === -->
+    <section id="right-brain" class="page">
+      <h2>Right Brain</h2>
+      <div class="creative-content">
+        <img src="creative-photo.jpg" alt="Creative Work" class="float-right" />
+        <p>
+          My creative work explores visuals, sound, and kinetic art — translating
+          motion and emotion into form. I draw inspiration from nature, music, and
+          robotics, turning them into expressive physical experiences that bridge
+          logic and feeling.
+        </p>
+      </div>
+
+      <!-- === YouTube Video Grid === -->
+      <div class="video-grid">
+        <!-- Replace with your YouTube video IDs -->
+        <iframe
+          src="https://www.youtube.com/embed/WQO-aOdJLiw"
+          title="Taika Waititi on creativity"
+          frameborder="0"
+          allowfullscreen
+        ></iframe>
+        <iframe
+          src="https://www.youtube.com/embed/Q3oItpVa9fs"
+          title="Cymatics: Science Vs. Music"
+          frameborder="0"
+          allowfullscreen
+        ></iframe>
+        <iframe
+          src="https://www.youtube.com/embed/aqz-KE-bpKQ"
+          title="NASA: Journey to the ISS"
+          frameborder="0"
+          allowfullscreen
+        ></iframe>
+      </div>
+    </section>
+
+    <!-- === CONTACT === -->
+    <section id="contact" class="page">
+      <h2>Contact</h2>
+      <p>Email: <a href="mailto:jasper@example.com">jasper@example.com</a></p>
+      <p>LinkedIn: <a href="https://linkedin.com/in/yourprofile" target="_blank">linkedin.com/in/yourprofile</a></p>
+      <p>GitHub: <a href="https://github.com/jjasper-llee" target="_blank">github.com/jjasper-llee</a></p>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Jasper Lee</p>
+  </footer>
+
+  <script src="brain.js?v=20240621" defer></script>
+  <script>
+    // Page switching navigation
+    const navLinks = document.querySelectorAll('nav a');
+    const pages = document.querySelectorAll('.page');
+
+    function requestBrainHighlight(mode) {
+      if (window.setBrainHighlight) {
+        window.setBrainHighlight(mode);
+      } else {
+        window.pendingBrainHighlight = mode;
+      }
+    }
+
+    function updateBrainHighlight(section) {
+      if (section === 'left-brain') {
+        requestBrainHighlight('left');
+      } else if (section === 'right-brain') {
+        requestBrainHighlight('right');
+      } else {
+        requestBrainHighlight('none');
+      }
+    }
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const target = link.dataset.section;
+
+        pages.forEach(p => p.classList.remove('visible'));
+        document.getElementById(target).classList.add('visible');
+
+        navLinks.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+
+        updateBrainHighlight(target);
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+
+    updateBrainHighlight('about');
+  </script>
+</body>
+</html>
