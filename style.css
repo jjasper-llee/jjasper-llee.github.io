@@ -225,6 +225,14 @@ body.brain-theme header {
   backdrop-filter: blur(16px);
 }
 
+body.brain-theme.project-detail header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+}
+
 body.brain-theme .logo {
   color: #ffffff;
   font-weight: 400;
