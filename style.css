@@ -209,13 +209,20 @@ body.brain-theme {
   min-height: 100vh;
 }
 
+body.brain-theme:not(.project-detail) {
+  padding-top: clamp(72px, 11vh, 112px);
+}
+
 body.brain-theme header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
   background: rgba(5, 12, 32, 0.82);
   border-bottom: 1px solid rgba(38, 66, 124, 0.45);
   box-shadow: 0 20px 55px rgba(3, 10, 29, 0.55);
   backdrop-filter: blur(16px);
-  position: relative;
-  z-index: 2;
 }
 
 body.brain-theme.project-detail header {
@@ -310,26 +317,6 @@ body.project-detail header {
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 1rem 2rem;
-}
-
-.project-detail .back-link {
-  color: #c3d6ff;
-  text-decoration: none;
-  font-size: 0.95rem;
-  letter-spacing: 0.02em;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  margin-left: auto;
-  margin-right: 0;
-  padding: 0.45rem clamp(0.9rem, 2vw, 1.35rem) 0.45rem
-    calc(clamp(4ch, 6vw, 10ch) - 10px);
-  transition: color 0.3s ease, transform 0.3s ease;
-}
-
-.project-detail .back-link:hover {
-  color: #ffe07a;
-  transform: translateX(-2px);
 }
 
 .project-page {
@@ -459,12 +446,15 @@ body.brain-theme {
 }
 
 body.brain-theme header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
   background: rgba(5, 12, 32, 0.82);
   border-bottom: 1px solid rgba(38, 66, 124, 0.45);
   box-shadow: 0 20px 55px rgba(3, 10, 29, 0.55);
   backdrop-filter: blur(16px);
-  position: relative;
-  z-index: 2;
 }
 
 body.brain-theme .logo {
