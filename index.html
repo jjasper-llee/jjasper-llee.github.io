@@ -12,10 +12,10 @@
     <div class="nav-left">
       <h1 class="logo">Jasper Lee</h1>
       <nav>
-        <a href="#" data-section="about" class="active">About</a>
-        <a href="#" data-section="left-brain">Left Brain</a>
-        <a href="#" data-section="right-brain">Right Brain</a>
-        <a href="#" data-section="contact">Contact</a>
+        <a href="#about" data-section="about" class="active">About</a>
+        <a href="#left-brain" data-section="left-brain">Left Brain</a>
+        <a href="#right-brain" data-section="right-brain">Right Brain</a>
+        <a href="#contact" data-section="contact">Contact</a>
       </nav>
     </div>
   </header>
@@ -111,6 +111,25 @@
     const navLinks = document.querySelectorAll('nav a');
     const pages = document.querySelectorAll('.page');
 
+    const navigationEntries =
+      typeof performance.getEntriesByType === 'function'
+        ? performance.getEntriesByType('navigation')
+        : [];
+
+    const isReload = navigationEntries.length
+      ? navigationEntries[0].type === 'reload'
+      : typeof performance !== 'undefined' &&
+        performance.navigation &&
+        performance.navigation.type === performance.navigation.TYPE_RELOAD;
+
+    if (isReload) {
+      history.replaceState(
+        null,
+        '',
+        `${window.location.pathname}${window.location.search}`
+      );
+    }
+
     function requestBrainHighlight(mode) {
       if (window.setBrainHighlight) {
         window.setBrainHighlight(mode);
@@ -129,24 +148,53 @@
       }
     }
 
-    navLinks.forEach(link => {
-      link.addEventListener('click', e => {
-        e.preventDefault();
-        const target = link.dataset.section;
+    const sectionIds = new Set(Array.from(pages).map(page => page.id));
 
-        pages.forEach(p => p.classList.remove('visible'));
-        document.getElementById(target).classList.add('visible');
+    function showSection(section, { scroll = true } = {}) {
+      if (!sectionIds.has(section)) {
+        section = 'about';
+      }
 
-        navLinks.forEach(l => l.classList.remove('active'));
-        link.classList.add('active');
+      pages.forEach(page => {
+        page.classList.toggle('visible', page.id === section);
+      });
 
-        updateBrainHighlight(target);
+      navLinks.forEach(link => {
+        link.classList.toggle('active', link.dataset.section === section);
+      });
 
+      updateBrainHighlight(section);
+
+      if (scroll) {
         window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function handleHashChange({ scroll = true } = {}) {
+      const section = window.location.hash.replace('#', '') || 'about';
+      showSection(section, { scroll });
+    }
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', event => {
+        const target = link.dataset.section;
+        if (!target) {
+          return;
+        }
+
+        event.preventDefault();
+
+        if (window.location.hash === `#${target}`) {
+          showSection(target);
+        } else {
+          window.location.hash = target;
+        }
       });
     });
 
-    updateBrainHighlight('about');
+    window.addEventListener('hashchange', () => handleHashChange());
+
+    handleHashChange({ scroll: false });
   </script>
 </body>
 </html>
