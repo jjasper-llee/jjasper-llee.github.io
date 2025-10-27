@@ -312,6 +312,26 @@ body.project-detail header {
   gap: 1rem 2rem;
 }
 
+.project-detail .back-link {
+  color: #c3d6ff;
+  text-decoration: none;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-left: auto;
+  margin-right: 0;
+  padding: 0.45rem clamp(0.9rem, 2vw, 1.35rem) 0.45rem
+    calc(clamp(4ch, 6vw, 10ch) - 10px);
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.project-detail .back-link:hover {
+  color: #ffe07a;
+  transform: translateX(-2px);
+}
+
 .project-page {
   padding: 7.5rem 2rem 4rem;
   position: relative;
