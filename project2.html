@@ -24,18 +24,20 @@
 
   <main class="project-page">
     <section class="project-shell">
-      <h2>Shape-Shifting Tricopter Drone</h2>
-      <p class="project-tagline">A concise sentence that explains what makes this build exciting.</p>
+      <h2>Transforming Tricopter Drone</h2>
+      <p class="project-tagline">The very first tricoptre built to shape shift with an expansion and contraction mechanism that for adaptive reconfiguration optimizing combinations of resilience and agillity.</p>
 
       <div class="project-section">
         <div class="project-media">
           <img src="project-image-1.jpg" alt="Prototype of the project" />
         </div>
         <div class="project-copy">
-          <h3>Origin Story</h3>
+          <h3>Background/Origin</h3>
           <p>
-            Describe the challenge that sparked this idea. Explain the problem space and what inspired you to
-            pursue a technical, left-brain approach. Mention any research or early sketches that shaped the concept.
+            As a part of MIT's MISTI France Program, I conducted an internship with the Systèmes Bio-Inspiré Robotics Laboratory in Marseille, France.
+            There, I under the guidance of Professor Stéphane Viollet, I designed, and fabricated my tricopter drone from scratch. From 
+            handrawn paper models and precise CAD with integrated electroncis to a custom PCB board tailored to the rotational mechanism of the drone, 
+            I was able to get the carbon-fiber-teflon hybrid drone into the air by the end of the my 2 month stay.
           </p>
         </div>
       </div>
@@ -45,15 +47,23 @@
           <img src="project-image-2.jpg" alt="In-progress build of the project" />
         </div>
         <div class="project-copy">
-          <h3>Engineering the Solution</h3>
+          <h3>Engineering the Drone</h3>
           <p>
-            Detail the hardware, software, and fabrication choices. Call out the control algorithms, sensors, and
-            materials that make the system perform. Bullet points help readers scan the technical stack quickly.
+            Starting out with wooden, prototypes, I quickly transitioned to 3D printed carbon fiber parts. By employing a planar design for the drone
+            ,suitable for rotational mechanisms, I was able to streamline the fabrication process. I implemented a servo motor at the center of the drone
+            to control its rotational state, and teflon spacers as lubrication between frictional surfaces. Next, I used EaglePCB to design my own PCB board, 
+            and tested various motors from IQ to T-motor models.
+            I measured the thrust and drag with the RC Benchmark Thrust Stand from Tyto Robotics, which allowed me to ensure the drone will takeoff.
+            For controls, I built a simple command loop based on DRhem VTOL. The controller begins by passing in raw IMU gyro and accelerometer values 
+            for each axis into the Madgwick filter, which then calculates a prediction step and gradient-descent-based correction step to arrive at 
+            an attitude estimation; these values are converted into angles. Below is a list of materials I used for the final product:
           </p>
           <ul>
-            <li>Microcontrollers: Arduino Nano + ODrive</li>
-            <li>Motors: Brushless DC with planetary gear reduction</li>
-            <li>Control: Position + torque feedback with encoders</li>
+            <li>Microcontroller: Teensy 4.0 </li>
+            <li>Motors: F1507 Brushless DC T-motor</li>
+            <li>ESCs: LIBEE 20A Favourite</li>
+            <li>Radio: Spektrum Receiver & Transmitter</li>
+            <li>Materials: Bambu Lab PAHT-CF, Teflon </li>
           </ul>
         </div>
       </div>
