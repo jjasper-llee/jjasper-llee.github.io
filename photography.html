@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Title | Jasper Lee</title>
+  <link rel="stylesheet" href="style.css?v=20240621" />
+</head>
+<body class="brain-theme project-detail">
+  <canvas id="brain-canvas"></canvas>
+
+  <header>
+    <div class="nav-left">
+      <h1 class="logo">Jasper Lee</h1>
+      <nav>
+        <a href="index.html#about">About</a>
+        <a href="index.html#left-brain" class="active">Left Brain</a>
+        <a href="index.html#right-brain">Right Brain</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+    </div>
+    <!-- <a class="back-link" href="index.html#left-brain">← Back to Left Brain</a> -->
+  </header>
+
+  <!-- <main class="project-page">
+    <section class="project-shell">
+      <h2>Transforming Tricopter Drone</h2>
+      <p class="project-tagline">The very first tricoptre built to shape shift with an expansion and contraction mechanism that for adaptive reconfiguration optimizing combinations of resilience and agillity.</p>
+
+      <div class="project-section">
+        <div class="project-media">
+          <img src="copter_cad.heic" alt="Prototype of the project" />
+        </div>
+        <div class="project-copy">
+          <h3>Background/Origin</h3>
+          <p>
+            As a part of MIT's MISTI France Program, I conducted an internship with the Systèmes Bio-Inspiré Robotics Laboratory in Marseille, France.
+            There, I under the guidance of Professor Stéphane Viollet, I designed, and fabricated my tricopter drone from scratch. From 
+            handrawn paper models and precise CAD with integrated electroncis to a custom PCB board tailored to the rotational mechanism of the drone, 
+            I was able to get the carbon-fiber-teflon hybrid drone into the air by the end of the my 2 month stay.
+          </p>
+        </div>
+      </div> -->
+
+     
+
+    <h2>Photography</h2>
+    <div class="video-grid">
+        <!-- Replace with your YouTube video IDs -->
+        <iframe
+          src="https://www.youtube.com/embed/zupK081erVk"
+          title="Britten"
+          frameborder="0"
+          allowfullscreen
+        ></iframe>
+        <iframe
+          src="https://www.youtube.com/embed/VlcR8Cx_-2w"
+          title="Rach Sonata"
+          frameborder="0"
+          allowfullscreen
+        ></iframe>
+        <iframe
+          src="https://www.youtube.com/embed/FqO-5J4umaw"
+          title="Bach Suite III"
+          frameborder="0"
+          allowfullscreen
+        ></iframe>
+        <iframe
+          src="https://www.youtube.com/embed/ORzaIAaJ6bg"
+          title="Myaskovsky"
+          frameborder="0"
+          allowfullscreen
+        ></iframe>
+        <iframe
+          src="https://www.youtube.com/embed/_t_MBDvVGL0"
+          title="Smetana Piano Trio"
+          frameborder="0"
+          allowfullscreen
+        ></iframe>
+        <iframe
+          src="https://www.youtube.com/embed/6ZXxoSSx9tQ"
+          title="Ghost Trio"
+          frameborder="0"
+          allowfullscreen
+        ></iframe>
+        <iframe
+          src="https://www.youtube.com/embed/thjBS7mDWXA"
+          title="Dvorak Piano trio"
+          frameborder="0"
+          allowfullscreen
+        ></iframe>
+        <iframe
+          src="https://www.youtube.com/embed/lxlcMh5MRLQ"
+          title="Grieg"
+          frameborder="0"
+          allowfullscreen
+        ></iframe>
+        
+        <iframe
+          src="https://www.youtube.com/embed/nBBgEOe109w"
+          title="Prokofiev"
+          frameborder="0"
+          allowfullscreen
+        ></iframe>
+        <iframe
+          src="https://www.youtube.com/embed/L2IKDHzffIw"
+          title="Hayden Rider"
+          frameborder="0"
+          allowfullscreen
+        ></iframe>
+        <iframe
+          src="https://www.youtube.com/embed/dQxwrbtbP38"
+          title="Mendy Quartet fmior"
+          frameborder="0"
+          allowfullscreen
+        ></iframe>
+        <iframe
+          src="https://www.youtube.com/embed/87ZJvGDjxJY"
+          title="Prokofiev"
+          frameborder="0"
+          allowfullscreen
+        ></iframe>
+        <iframe
+          src="https://www.youtube.com/embed/OcbwWBQAoQ4"
+          title="Beethoven Quartet Pueri"
+          frameborder="0"
+          allowfullscreen
+        ></iframe>
+        <iframe
+          src="https://www.youtube.com/embed/7POcUOZQhP4"
+          title="bloch trio"
+          frameborder="0"
+          allowfullscreen
+        ></iframe>
+        <iframe
+          src="https://www.youtube.com/embed/UtUlo4MIsfc"
+          title="fairy tale yang trio"
+          frameborder="0"
+          allowfullscreen
+        ></iframe>
+        <iframe
+          src="https://www.youtube.com/embed/N1e9fcLQllw"
+          title="Mendy Octet"
+          frameborder="0"
+          allowfullscreen
+        ></iframe>
+        <iframe
+          src="https://www.youtube.com/embed/d_xAeGKAZws"
+          title="Borodin w/ SFS"
+          frameborder="0"
+          allowfullscreen
+        ></iframe>
+        <iframe
+          src="https://www.youtube.com/embed/jVwnkbXuXAw"
+          title="Beethoven String at MIT"
+          frameborder="0"
+          allowfullscreen
+        ></iframe>
+      </div>
+
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Jasper Lee</p>
+  </footer>
+
+  <script>
+    (function () {
+      const desiredHighlight = 'left';
+
+      function applyHighlight() {
+        if (window.setBrainHighlight) {
+          window.setBrainHighlight(desiredHighlight);
+        } else {
+          window.pendingBrainHighlight = desiredHighlight;
+        }
+      }
+
+      if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        applyHighlight();
+      } else {
+        document.addEventListener('DOMContentLoaded', applyHighlight);
+      }
+    })();
+  </script>
+  <script src="brain.js?v=20240621" defer></script>
+</body>
+</html>
