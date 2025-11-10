@@ -5,6 +5,98 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Project Title | Jasper Lee</title>
   <link rel="stylesheet" href="style.css?v=20240621" />
+  <style>
+    .project-detail .project-copy .detail-intro {
+      color: rgba(217, 228, 255, 0.92);
+      margin-bottom: 1.5rem;
+    }
+
+    .project-detail .project-copy .detail-grid {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(1rem, 2.5vw, 1.75rem);
+      margin-bottom: clamp(1.75rem, 3vw, 2.5rem);
+      width: min(100%, 90vw);
+      margin-inline: auto;
+    }
+
+    .project-detail .project-copy .detail-card {
+      background: rgba(10, 22, 58, 0.55);
+      border: 1px solid rgba(80, 124, 210, 0.4);
+      border-radius: 16px;
+      box-shadow: 0 22px 55px rgba(3, 9, 28, 0.55);
+      padding: clamp(1.1rem, 2.4vw, 1.6rem);
+      min-width: 0;
+      width: min(100%, 90vw);
+      box-sizing: border-box;
+      margin-inline: auto;
+    }
+
+    .project-detail .project-copy .detail-card h4 {
+      margin-top: 0;
+      margin-bottom: 0.85rem;
+      font-weight: 500;
+      color: #f2f6ff;
+    }
+
+    .project-detail .project-copy .detail-card ul {
+      margin: 0;
+      padding-left: 1.1rem;
+      line-height: 1.65;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+    }
+
+    .project-detail .project-copy .detail-card ul li + li {
+      margin-top: 0.35rem;
+    }
+
+    .project-detail .project-copy .code-card {
+      margin-top: clamp(1.5rem, 3vw, 2.5rem);
+    }
+
+    .project-detail .project-copy .code-card p {
+      margin-bottom: 1rem;
+      color: rgba(217, 228, 255, 0.85);
+    }
+
+    .project-detail .project-copy .code-card pre {
+      background: rgba(8, 18, 46, 0.75);
+      border: 1px solid rgba(82, 124, 210, 0.38);
+      border-radius: 14px;
+      padding: 1.1rem clamp(1.1rem, 2.5vw, 1.75rem);
+      margin: 0;
+      overflow-x: auto;
+      box-shadow: inset 0 0 25px rgba(6, 12, 32, 0.55);
+      max-width: 100%;
+    }
+
+    .project-detail .project-copy .code-card code {
+      display: block;
+      font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.92rem;
+      line-height: 1.6;
+      color: #f4f8ff;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+    }
+
+    @media (max-width: 640px) {
+      .project-detail .project-copy .detail-card {
+        padding: clamp(1rem, 4vw, 1.35rem);
+      }
+
+      .project-detail .project-copy .code-card pre {
+        padding: clamp(0.85rem, 4vw, 1.25rem);
+      }
+
+      .project-detail .project-copy .code-card code {
+        font-size: 0.88rem;
+      }
+    }
+  </style>
 </head>
 <body class="brain-theme project-detail">
   <canvas id="brain-canvas"></canvas>
@@ -56,59 +148,59 @@
         </div>
         <div class="project-copy">
           <h3>Engineering the Solution</h3>
-          <p>
-          I have broken down this projct into simple categories: hardware and software. 
-            
-            <br><br>
-            Hardware: 
-            <ul>
-              <li>MCU/Radio Transmitter & Receiver: ESP32 </li>
-              <li>Driver: ODrive for BLDC motors </li>
-              <li>Finger Pulley Actuation: BLDC + planetary gear reduction for smooth control and high torque</li>
-              <li>Center Thrust: Large flat pancake motors with high torque + ducted propeller as main center thrust force</li>
-              <li>Angular Thrust: Micro motors + propellers to change the angle of the hand</li>
-              <li>Sensors: EMG + flex sensors to determine the positioning and movement of the user's hand</li>
-              <li>Material: CFRP (Carbon Fiber Reinforced Polymer) for low density + strength</li>
-              <li>IMU: ICM-20948 for compactness + 9DOF + low power consumption</li>
-            </ul>
-            <br><br>
-
-            Software:
-            <pre><code>
-              
-              loop_fixed_2ms() { // 500 Hz
-              imu_read();                               // ISR filled buffer
-              quat = mahony_update(gyro, accel, mag);   // state estimation
-              att_err = att_target - quat_to_euler(quat);
-              rate_cmd = angle_pid(att_err) + feedforward;
-              motor_cmds = mix(rate_cmd, thrust_target);
-              actuators_write(motor_cmds);
-            }
-            
-            loop_10ms() { // 100 Hz
-              emg_feats = emg_process(raw_emg);
-              cmd = gesture_map(emg_feats, mode);
-              att_target = shape(cmd.attitude);         // LPF + slew limit
-              thrust_target = shape(cmd.thrust);
-              safety_check();
-            }
-            
-            loop_25ms() { // 40 Hz
-              if (pos_ctrl_enabled) {
-                pos_err = pos_target - pos_estimate();
-                att_target += pos_pid(pos_err);
-              }
-              telemetry_send();
-            }
-              
-            </code></pre>
-            
+          <p class="detail-intro">
+            I’ve structured the system around two core pillars—hardware and software—so each part of the build stays
+            modular and easy to iterate as the prototypes evolve.
           </p>
-          <ul>
-            <li>Microcontrollers: Arduino Nano + ODrive</li>
-            <li>Motors: Brushless DC with planetary gear reduction</li>
-            <li>Control: Position + torque feedback with encoders</li>
-          </ul>
+
+          <div class="detail-grid">
+            <div class="detail-card">
+              <h4>Hardware Stack</h4>
+              <ul>
+                <li>MCU/Radio Link: ESP32 handling telemetry and user input bridging</li>
+                <li>Driver: ODrive to synchronize and current-control the BLDC motors</li>
+                <li>Finger Actuation: BLDC motors with planetary reduction for smooth, high-torque finger pulls</li>
+                <li>Center Thrust: High-torque pancake motor with a ducted prop for the primary lift vector</li>
+                <li>Angular Thrust: Micro motors with props to roll and pitch the wrist orientation in flight</li>
+                <li>Sensing: EMG + flex arrays to map the operator’s intent into proportional gestures</li>
+                <li>Structure: Carbon Fiber Reinforced Polymer for stiffness at low weight</li>
+                <li>IMU: ICM-20948 to capture 9-DOF state feedback with minimal footprint</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="detail-card code-card">
+            <h4>Software Loop Cadence</h4>
+            <p>
+              Three cooperative loops keep the hand stable in the air: a fast 500&nbsp;Hz attitude loop, a 100&nbsp;Hz
+              intent decoder, and a slower supervisory layer that blends in position hold and telemetry.
+            </p>
+            <pre><code>loop_fixed_2ms() { // 500 Hz
+  imu_read();                               // ISR filled buffer
+  quat = mahony_update(gyro, accel, mag);   // state estimation
+  att_err = att_target - quat_to_euler(quat);
+  rate_cmd = angle_pid(att_err) + feedforward;
+  motor_cmds = mix(rate_cmd, thrust_target);
+  actuators_write(motor_cmds);
+}
+
+loop_10ms() { // 100 Hz
+  emg_feats = emg_process(raw_emg);
+  cmd = gesture_map(emg_feats, mode);
+  att_target = shape(cmd.attitude);         // LPF + slew limit
+  thrust_target = shape(cmd.thrust);
+  safety_check();
+}
+
+loop_25ms() { // 40 Hz
+  if (pos_ctrl_enabled) {
+    pos_err = pos_target - pos_estimate();
+    att_target += pos_pid(pos_err);
+  }
+  telemetry_send();
+}
+</code></pre>
+          </div>
         </div>
       </div>
 
