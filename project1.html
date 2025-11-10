@@ -15,11 +15,12 @@
       display: grid;
       gap: clamp(1rem, 2.5vw, 1.75rem);
       margin-bottom: clamp(1.75rem, 3vw, 2.5rem);
+      grid-template-columns: minmax(0, 1fr);
     }
 
     @media (min-width: 720px) {
       .project-detail .project-copy .detail-grid {
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
 
