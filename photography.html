@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Photography | Jasper Lee</title>
+  <link rel="stylesheet" href="style.css?v=20240621" />
+  <style>
+    .gallery-page main {
+      max-width: min(1200px, 92vw);
+      margin: 0 auto 5rem;
+      padding: clamp(6rem, 12vh, 8.5rem) clamp(1.5rem, 4vw, 2.5rem) 0;
+      position: relative;
+      z-index: 1;
+      text-align: left;
+    }
+
+    .gallery-intro {
+      max-width: 780px;
+      margin: 0 auto clamp(2rem, 4vw, 3rem);
+      text-align: center;
+    }
+
+    .gallery-intro h1 {
+      font-weight: 500;
+      margin-bottom: 0.75rem;
+      color: #f6f8ff;
+    }
+
+    .gallery-intro p {
+      margin: 0 auto;
+      color: rgba(220, 228, 255, 0.82);
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    .photo-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: clamp(1.1rem, 2.5vw, 1.85rem);
+      margin-bottom: clamp(3rem, 6vw, 4.5rem);
+    }
+
+    .photo-card {
+      background: rgba(9, 19, 49, 0.6);
+      border: 1px solid rgba(88, 130, 216, 0.42);
+      border-radius: 18px;
+      box-shadow: 0 22px 48px rgba(4, 9, 26, 0.55);
+      padding: clamp(0.85rem, 2vw, 1.2rem);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      min-height: 220px;
+    }
+
+    .photo-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 28px 60px rgba(8, 16, 40, 0.6);
+    }
+
+    .photo-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .photo-card figcaption {
+      margin-top: 0.75rem;
+      font-size: 0.95rem;
+      color: rgba(219, 230, 255, 0.78);
+      text-align: center;
+    }
+
+    @media (max-width: 640px) {
+      .gallery-page main {
+        padding-top: clamp(5rem, 18vw, 6.5rem);
+      }
+
+      .photo-card {
+        min-height: 180px;
+      }
+    }
+  </style>
+</head>
+<body class="brain-theme gallery-page">
+  <canvas id="brain-canvas"></canvas>
+
+  <header>
+    <div class="nav-left">
+      <h1 class="logo">Jasper Lee</h1>
+      <nav>
+        <a href="index.html#about">About</a>
+        <a href="index.html#left-brain">Left Brain</a>
+        <a href="index.html#right-brain" class="active">Right Brain</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="gallery-intro">
+      <h1>Photography</h1>
+      <p>
+        Moments I’ve captured on my travels and projects. Each photo is scaled to fit the
+        frame so you can explore every detail—no awkward crops or cut-off edges.
+      </p>
+    </section>
+
+    <section class="photo-gallery" aria-label="Photography gallery">
+      <figure class="photo-card">
+        <img src="crc.jpg" alt="Concert hall performance stage lighting" />
+      </figure>
+      <figure class="photo-card">
+        <img src="crc2.jpg" alt="Outdoor performance with cello" />
+      </figure>
+      <figure class="photo-card">
+        <img src="dvorakpic.jpeg" alt="Portrait with cello against a warm background" />
+      </figure>
+      <figure class="photo-card">
+        <img src="profile-pic.jpg" alt="Portrait of Jasper Lee" />
+      </figure>
+      <figure class="photo-card">
+        <img src="drone_small.heic" alt="Transforming tricopter drone hovering" />
+      </figure>
+      <figure class="photo-card">
+        <img src="copter.heic" alt="Close-up of tricopter drone" />
+      </figure>
+      <figure class="photo-card">
+        <img src="copter_cad.heic" alt="CAD rendering of drone components" />
+      </figure>
+      <figure class="photo-card">
+        <img src="hand4.heic" alt="Bionic aerial hand prototype" />
+      </figure>
+      <figure class="photo-card">
+        <img src="bionic_hand.png" alt="Detailed render of bionic hand design" />
+      </figure>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Jasper Lee</p>
+  </footer>
+
+  <script>
+    (function () {
+      const desiredHighlight = 'right';
+
+      function applyHighlight() {
+        if (window.setBrainHighlight) {
+          window.setBrainHighlight(desiredHighlight);
+        } else {
+          window.pendingBrainHighlight = desiredHighlight;
+        }
+      }
+
+      if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        applyHighlight();
+      } else {
+        document.addEventListener('DOMContentLoaded', applyHighlight);
+      }
+    })();
+  </script>
+  <script src="brain.js?v=20240621" defer></script>
+</body>
+</html>
