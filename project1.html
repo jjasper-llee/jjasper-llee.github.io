@@ -34,27 +34,18 @@
         <div class="project-copy">
           <h3>Origin Story</h3>
           <p>
-            Against the backdrop of my building a transforming tricopter drone and learning that my grandmother
-            fell down the stairs, breaking her arm, unable to get her phone to call for help, I began to 
-            think of ways that would allow us to manipulate and control objects beyond our physical reach, saving 
-            physical contact and potential dangers.
-
-            While many technologies address single challenges, from accessibility and exploration to search and
-rescue, very few aim to create a unified solution. I am starting with one of the most versatile tools we
-already have: the human hand.
-My vision is an aerial bionic hand, designed to not only mirror human dexterity but also to extend our
-reach into dangerous environments. With the simple extension of the arm, and flick of the wrist, we will
-be able to take issues into our own hands using mechanical precision and strength to perform tasks
-without risking safety. Whether it be cutting a seatbelt to free a victim trapped under earthquake rubble,
-providing rapid medical support to soldiers, reaching for the phone after falling down stairs, or simply
-grabbing a cup of coffee across the room, this aerial bionic hand will do it.
-Unlike prosthetics or exoskeletons, this project isn’t just about replacement or enhancement—it’s about
-expansion. Where numerous companies are developing prosthetics and exoskeletons, my vision goes one
-step further: expanding human capability. Rather than relying on artificial intelligent robots to perform
-our tasks, becoming increasingly dependent, we will remain in control of what happens around us,
-commanding space beyond the limits of our bodies.
-This vision builds on my previous experience of designing and building a shape-shifting tri-copter drone
-from scratch, where I integrated mechanical design, flight dynamics, and control systems. 
+            While building a transforming tricopter drone, I learned that my grandmother had fallen down the stairs, 
+            breaking her arm and unable to reach her phone for help. That moment made me think deeply about how we 
+            could extend human capability—to manipulate and control objects beyond our physical reach, reducing the 
+            need for direct contact and preventing harm.
+            Many technologies tackle specific challenges—accessibility, exploration, search and rescue—but few aim to
+            unify them into a single solution. I decided to start with one of humanity’s most powerful tools: the hand.
+            My vision is an aerial bionic hand—a device that not only mirrors human dexterity but also extends our reach 
+            into environments too dangerous or distant for us to access. With a simple extension of the arm and a curl of 
+            the finger, we could take problems literally into our own hands—using mechanical precision and strength to act 
+            safely at a distance. Whether it’s cutting a seatbelt to free a trapped passenger, delivering medical aid to 
+            soldiers, retrieving a phone after a fall, or simply grabbing a cup of coffee across the room, this aerial 
+            bionic hand brings the future of human-robot interaction closer to the everyday world.
           </p>
         </div>
       </div>
@@ -69,12 +60,46 @@ from scratch, where I integrated mechanical design, flight dynamics, and control
             I have broken down this projct into simple categories: hardware and software. 
             
             Hardware: 
-            Form the materials standpoint, the two main categories of materials I will need are 
-            ultra-light and durable materials and compact hight-torque motors. With this pair I will not only 
-            reduce nonlinear coupling between comparably complex bionic finger joints and flight components but will able to reduce 
-            the overall weight needed for liftoff.
+            <li>MCU/Radio Transmitter & Receiver: ESP32 </li>
+            <li>Driver: ODrive for BLDC motors </li>
+            <li>Finger Pulley Actuation: BLDC + planetary gear reduction for smooth control and high torque</li>
+            <li>Center Thrust: Large flat pancake motors with high torque + ducted propeller as main center thrust force</li>
+            <li>Angular Thrust: Micro motors + propellers to change the angle of the hand</li>
+            <li>Sensors: EMG + flex sensors to determine the positioning and movement of the user's hand</li>
+            <li>Material: CFRP (Carbon Fiber Reinforced Polymer) for low density + strength</li>
+            <li>IMU: ICM-20948 for compactness + 9DOF + low power consumption</li>
 
-            From a controls standpoint
+            <br><br>
+
+            Software:
+            <pre><code>
+              
+              loop_fixed_2ms() { // 500 Hz
+              imu_read();                               // ISR filled buffer
+              quat = mahony_update(gyro, accel, mag);   // state estimation
+              att_err = att_target - quat_to_euler(quat);
+              rate_cmd = angle_pid(att_err) + feedforward;
+              motor_cmds = mix(rate_cmd, thrust_target);
+              actuators_write(motor_cmds);
+            }
+            
+            loop_10ms() { // 100 Hz
+              emg_feats = emg_process(raw_emg);
+              cmd = gesture_map(emg_feats, mode);
+              att_target = shape(cmd.attitude);         // LPF + slew limit
+              thrust_target = shape(cmd.thrust);
+              safety_check();
+            }
+            
+            loop_25ms() { // 40 Hz
+              if (pos_ctrl_enabled) {
+                pos_err = pos_target - pos_estimate();
+                att_target += pos_pid(pos_err);
+              }
+              telemetry_send();
+            }
+              
+            </code></pre>
             
           </p>
           <ul>
