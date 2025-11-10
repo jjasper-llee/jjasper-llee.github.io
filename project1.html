@@ -157,7 +157,7 @@
 
           <div class="detail-grid">
             <div class="detail-card">
-              <h4>Hardware Stack</h4>
+              <h4>Hardware :</h4>
               <ul>
                 <li>MCU/Radio Link: ESP32 handling telemetry and user input bridging</li>
                 <li>Driver: ODrive to synchronize and current-control the BLDC motors</li>
@@ -172,11 +172,11 @@
           </div>
 
           <div class="detail-card code-card">
-            <h4>Software Loop Cadence</h4>
-            <p>
+            <h4>Software: </h4>
+            <!-- <p>
               Three cooperative loops keep the hand stable in the air: a fast 500&nbsp;Hz attitude loop, a 100&nbsp;Hz
               intent decoder, and a slower supervisory layer that blends in position hold and telemetry.
-            </p>
+            </p> -->
             <pre><code>
               
               loop_fixed_2ms() { // 500 Hz
