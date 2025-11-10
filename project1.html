@@ -77,17 +77,24 @@
               
               loop_fixed_2ms() { // 500 Hz
               imu_read();                                  // Reads gyro/accel/magnetometer data from IMU
-              quat = mahony_update(gyro, accel, mag);      // Runs Mahony filter to fuse gyro + accel + ma) into a stable quaternion
+              quat = mahony_update(gyro, accel, mag);      // Runs Mahony filter to fuse gyro + accel + ma) 
+                                                              into a stable quaternion
               att_err = att_target - quat_to_euler(quat);  // Converts quaternion into euler angles
-              rate_cmd = angle_pid(att_err) + feedforward; // Computes the attitude error: the difference between where the hand should be and where it is
-              motor_cmds = mix(rate_cmd, thrust_target);   // PID controller generates angular-rate commands (how fast to rotate each axis); Feed-forward terms anticipate motion
-              actuators_write(motor_cmds);                 // Converts roll/pitch/yaw + thrust commands into motor outputs w/ a mixer matrix
+              rate_cmd = angle_pid(att_err) + feedforward; // Computes the attitude error: the difference 
+                                                              between where the hand should be and where it is
+              motor_cmds = mix(rate_cmd, thrust_target);   // PID controller generates angular-rate commands 
+                                                              (how fast to rotate each axis); Feed-forward terms 
+                                                              anticipate motion
+              actuators_write(motor_cmds);                 // Converts roll/pitch/yaw + thrust commands into 
+                                                              motor outputs w/ a mixer matrix
             }
             
             loop_10ms() { // 100 Hz
-              emg_feats = emg_process(raw_emg);         // Filters and extracts features (RMS, envelope, etc.) from the EMG signals
+              emg_feats = emg_process(raw_emg);         // Filters and extracts features (RMS, envelope, etc.) 
+                                                           from the EMG signals
               cmd = gesture_map(emg_feats, mode);       // Maps muscle patterns to commands or gestures
-              att_target = shape(cmd.attitude);         // Applies low-pass filtering and slew-rate limiting for smooth motions
+              att_target = shape(cmd.attitude);         // Applies low-pass filtering and slew-rate limiting 
+                                                           for smooth motions
               thrust_target = shape(cmd.thrust);
               safety_check();
             }
@@ -97,7 +104,8 @@
                 pos_err = pos_target - pos_estimate(); // Difference between desired and current position
                 att_target += pos_pid(pos_err);        // Converts position error into small attitude corrections
               }
-              telemetry_send();                        // Sends data (orientation, battery, EMG state) back to EMG for monitoring
+              telemetry_send();                        // Sends data (orientation, battery, EMG state) 
+                                                          back to EMG for monitoring
             }
               
             </code></pre>
