@@ -11,21 +11,27 @@
       margin-bottom: 1.5rem;
     }
 
-   .project-detail .project-copy .detail-grid {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: stretch;                  /* don’t center-squeeze */
-    gap: clamp(1rem, 2.5vw, 1.75rem);
-    width: 100%;
-    max-width: min(1200px, 95vw);
-    margin-inline: auto;
-  }
-  
-  .project-detail .project-copy .detail-card {
-    flex: 1 1 340px;                       /* grows, shrinks, but never below ~340px */
-    max-width: none;                        /* remove prior clamp cap */
-    width: auto;                            /* let flex decide */
-  }
+    .project-detail .project-copy .detail-grid {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(1rem, 2.5vw, 1.75rem);
+      margin-bottom: clamp(1.75rem, 3vw, 2.5rem);
+      width: min(100%, 90vw);
+      margin-inline: auto;
+    }
+
+    .project-detail .project-copy .detail-card {
+      background: rgba(10, 22, 58, 0.55);
+      border: 1px solid rgba(80, 124, 210, 0.4);
+      border-radius: 16px;
+      box-shadow: 0 22px 55px rgba(3, 9, 28, 0.55);
+      padding: clamp(1.1rem, 2.4vw, 1.6rem);
+      min-width: 0;
+      width: min(100%, 90vw);
+      box-sizing: border-box;
+      margin-inline: auto;
+    }
 
     .project-detail .project-copy .detail-card h4 {
       margin-top: 0;
