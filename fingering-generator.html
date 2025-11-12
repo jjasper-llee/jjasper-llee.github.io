@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fingering Generator | Jasper Lee</title>
+  <link rel="stylesheet" href="style.css?v=20240621" />
+  <style>
+    .project-detail .project-shell {
+      max-width: 1100px;
+    }
+
+    .embed-wrapper {
+      background: rgba(8, 18, 46, 0.72);
+      border: 1px solid rgba(82, 124, 210, 0.42);
+      border-radius: 18px;
+      box-shadow: 0 24px 60px rgba(3, 9, 28, 0.55);
+      padding: clamp(1rem, 3vw, 1.75rem);
+      margin-top: clamp(1.75rem, 4vw, 2.5rem);
+    }
+
+    .embed-wrapper iframe {
+      width: 100%;
+      min-height: 70vh;
+      border: none;
+      border-radius: 12px;
+      background: #020615;
+    }
+
+    .embed-fallback {
+      margin-top: clamp(1.5rem, 3vw, 2.25rem);
+      padding: clamp(1rem, 2.5vw, 1.5rem);
+      border-radius: 14px;
+      border: 1px solid rgba(118, 160, 255, 0.35);
+      background: rgba(6, 14, 36, 0.8);
+      color: rgba(217, 228, 255, 0.9);
+      line-height: 1.6;
+    }
+
+    .embed-fallback a {
+      color: #8fb1ff;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body class="brain-theme project-detail">
+  <canvas id="brain-canvas"></canvas>
+
+  <header>
+    <div class="nav-left">
+      <h1 class="logo">Jasper Lee</h1>
+      <nav>
+        <a href="index.html#about">About</a>
+        <a href="index.html#left-brain" class="active">Left Brain</a>
+        <a href="index.html#right-brain">Right Brain</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="project-page">
+    <section class="project-shell">
+      <h2>Interactive Fingering Generator</h2>
+      <p class="project-tagline">
+        Explore optimal cello fingerings with the web app I built for the Fingering Generator project.
+      </p>
+
+      <div class="project-section">
+        <div class="project-copy">
+          <h3>Live Demo</h3>
+          <p>
+            The Fingering Generator analyzes passages and suggests efficient fingerings tailored to different
+            technical goals. You can experiment with the algorithm directly below—adjust the parameters, enter
+            new passages, and see the recommended positions update in real time.
+          </p>
+          <div class="embed-wrapper">
+            <iframe
+              src="https://jjasper-llee.github.io/FingeringGenerator/"
+              title="Fingering Generator Web App"
+              loading="lazy"
+              allowfullscreen
+            ></iframe>
+          </div>
+          <div class="embed-fallback">
+            Having trouble loading the embedded app? Open it in a new tab here:
+            <a href="https://jjasper-llee.github.io/FingeringGenerator/" target="_blank" rel="noopener">
+              Fingering Generator on GitHub Pages
+            </a>.
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="brain.js" defer></script>
+</body>
+</html>
