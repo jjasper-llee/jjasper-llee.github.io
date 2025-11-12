@@ -35,11 +35,12 @@
         <div class="project-copy">
           <h3>Background/Origin</h3>
           <p>
-            As a cello mentor, I noticed that beginners encounter finger coordination obstacles, leading to them tensing up their hands 
-            as overcompensation, where they make themselves injury prone. As principal cellist of the San Francisco Youth Symphony Orchestra 
-            and my school's orchestra, I have seen this as well when I lead sectionals. Instead of moving their 
+            As a cello mentor, I noticed that beginners often encounter finger coordination obstacles, leading to them tensing up their hands 
+            as overcompensation and making themselves injury prone. As principal cellist of the San Francisco Youth Symphony Orchestra 
+            and my school's orchestra, I have seen similar situations when I lead sectionals. Instead of moving their 
             fingers off of rhythm, they force their fingers to move. To help with this,
-            I created this illuminating fingerboard that aims to ameliorate this issue. By lighting up individual LEDs 
+            I created this illuminating fingerboard that aims to ameliorate this issue. By lighting up individual LEDs at the right moments,
+            according to a programmed piece, players are able to coordinate their fingers with a live visual instructions.
           </p>
         </div>
       </div>
@@ -49,21 +50,18 @@
           <img src="fingerboard.heic" alt="In-progress build of the project" />
         </div>
         <div class="project-copy">
-          <h3>Engineering the Drone</h3>
+          <h3>Engineering/Coding the fingerboard</h3>
           <p>
-            Starting out with wooden, prototypes, I quickly transitioned to 3D printed carbon fiber parts. By employing a planar design for the drone
-            ,suitable for rotational mechanisms, I was able to streamline the fabrication process. I implemented a servo motor at the center of the drone
-            to control its rotational state, and teflon spacers as lubrication between frictional surfaces. Next, I used EaglePCB to design my own PCB board, 
-            and tested various motors from IQ to T-motor models.
-            I measured the thrust and drag with the RC Benchmark Thrust Stand from Tyto Robotics, which allowed me to ensure the drone will takeoff.
-            For controls, I built a simple command loop based on DRhem VTOL. The controller begins by passing in raw IMU gyro and accelerometer values 
-            for each axis into the Madgwick filter, which then calculates a prediction step and gradient-descent-based correction step to arrive at 
-            an attitude estimation; these values are converted into angles. Below is a list of materials I used for the final product:
+            Beginning with a piece of scrap wood I found in the garage, I drilled holes and integrated LED's into the wood to create a 
+            makeshift fingerboard. I connected every row of 4 LEDs in parallel, (a total of 4 fifths across 4 strings) and had 4 rows,
+            making up "first position" on the cello. This allowed me to control each LED with a simple on off program that corresponded 
+            to a written music piece, enabling users to play multiple pieces, as long as they are pre-programmed into the MCU. After 
+            ensuring that the electrical components worked, I transitioned to a real life cello, taking apart the fingerboard and
+            installing the electrical circuits. 
           </p>
           <ul>
-            <li>Microcontroller: Teensy 4.0 </li>
-            <li>Motors: F1507 Brushless DC T-motor</li>
-            <li>ESCs: LIBEE 20A Favourite</li>
+            <li>Microcontroller: Raspberry Pi 4 Model B </li>
+            <li>Resistors: 2KΩ Resistors </li>
             <li>Radio: Spektrum Receiver & Transmitter</li>
             <li>Materials: Bambu Lab PAHT-CF, Teflon </li>
           </ul>
