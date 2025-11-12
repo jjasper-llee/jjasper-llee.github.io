@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Title | Jasper Lee</title>
+  <link rel="stylesheet" href="style.css?v=20240621" />
+</head>
+<body class="brain-theme project-detail">
+  <canvas id="brain-canvas"></canvas>
+
+  <header>
+    <div class="nav-left">
+      <h1 class="logo">Jasper Lee</h1>
+      <nav>
+        <a href="index.html#about">About</a>
+        <a href="index.html#left-brain" class="active">Left Brain</a>
+        <a href="index.html#right-brain">Right Brain</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+    </div>
+    <!-- <a class="back-link" href="index.html#left-brain">← Back to Left Brain</a> -->
+  </header>
+
+  <main class="project-page">
+    <section class="project-shell">
+      <h2>Transforming Tricopter Drone</h2>
+      <p class="project-tagline">The very first tricoptre built to shape shift with an expansion and contraction mechanism that for adaptive reconfiguration optimizing combinations of resilience and agillity.</p>
+
+      <div class="project-section">
+        <div class="project-media">
+          <img src="fingerboard.heic" alt="Prototype of the project" />
+        </div>
+        <div class="project-copy">
+          <h3>Background/Origin</h3>
+          <p>
+            As a part of MIT's MISTI France Program, I conducted an internship with the Systèmes Bio-Inspiré Robotics Laboratory in Marseille, France.
+            There, I under the guidance of Professor Stéphane Viollet, I designed, and fabricated my tricopter drone from scratch. From 
+            handrawn paper models and precise CAD with integrated electroncis to a custom PCB board tailored to the rotational mechanism of the drone, 
+            I was able to get the carbon-fiber-teflon hybrid drone into the air by the end of the my 2 month stay.
+          </p>
+        </div>
+      </div>
+
+      <div class="project-section reverse">
+        <div class="project-media">
+          <img src="fingerboard.heic" alt="In-progress build of the project" />
+        </div>
+        <div class="project-copy">
+          <h3>Engineering the Drone</h3>
+          <p>
+            Starting out with wooden, prototypes, I quickly transitioned to 3D printed carbon fiber parts. By employing a planar design for the drone
+            ,suitable for rotational mechanisms, I was able to streamline the fabrication process. I implemented a servo motor at the center of the drone
+            to control its rotational state, and teflon spacers as lubrication between frictional surfaces. Next, I used EaglePCB to design my own PCB board, 
+            and tested various motors from IQ to T-motor models.
+            I measured the thrust and drag with the RC Benchmark Thrust Stand from Tyto Robotics, which allowed me to ensure the drone will takeoff.
+            For controls, I built a simple command loop based on DRhem VTOL. The controller begins by passing in raw IMU gyro and accelerometer values 
+            for each axis into the Madgwick filter, which then calculates a prediction step and gradient-descent-based correction step to arrive at 
+            an attitude estimation; these values are converted into angles. Below is a list of materials I used for the final product:
+          </p>
+          <ul>
+            <li>Microcontroller: Teensy 4.0 </li>
+            <li>Motors: F1507 Brushless DC T-motor</li>
+            <li>ESCs: LIBEE 20A Favourite</li>
+            <li>Radio: Spektrum Receiver & Transmitter</li>
+            <li>Materials: Bambu Lab PAHT-CF, Teflon </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="project-section">
+        <div class="project-media">
+          <img src="copter.heic" alt="Finished project in action" />
+        </div>
+        <div class="project-copy">
+          <h3>Final Notes / Next Steps</h3>
+          <p>
+            After completing this project, I wrote a research paper that will be submitted to the journal "Drones" early next year. 
+            I have attached it below. I calculated the Equations of Motion using Lagrangian Mechanics to be able to predict the drones
+            behavior with the coupling of the expansion/contraction mechanism. 
+
+            Given the physical limitations of all drones alike, I wanted to invent a device that could manipulate objects like us, controled by us--
+            enter my Aerial Bionic Hand vision.
+          </p>
+        </div>
+      </div>
+
+      <div class="project-video">
+        <h3>See It in Motion</h3>
+        <div class="video-frame">
+          <iframe
+            src="https://www.youtube.com/embed/pOO97-lJyPk"
+            title="Project Video"
+            frameborder="0"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+
+      <div class="project-pdf">
+        <h3>Read the Full Specification</h3>
+        <div class="pdf-frame">
+          <iframe
+            src="IEEE_Conference_Tricopter.pdf"
+            title="Shape-Shifting Tricopter Drone PDF"
+            frameborder="0"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Jasper Lee</p>
+  </footer>
+
+  <script>
+    (function () {
+      const desiredHighlight = 'left';
+
+      function applyHighlight() {
+        if (window.setBrainHighlight) {
+          window.setBrainHighlight(desiredHighlight);
+        } else {
+          window.pendingBrainHighlight = desiredHighlight;
+        }
+      }
+
+      if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        applyHighlight();
+      } else {
+        document.addEventListener('DOMContentLoaded', applyHighlight);
+      }
+    })();
+  </script>
+  <script src="brain.js?v=20240621" defer></script>
+</body>
+</html>
