@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Instrument SPV Exchange</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=20240621" />
+  <script defer src="app.js?v=20240621"></script>
+</head>
+<body>
+  <div class="page-gradient"></div>
+  <header class="shell">
+    <div class="brand">
+      <div class="logo-mark">ƒ</div>
+      <div>
+        <p class="eyebrow">COM& Labs</p>
+        <h1>Instrument Exchange</h1>
+      </div>
+    </div>
+    <nav>
+      <a href="#how-it-works">How it works</a>
+      <a href="#market">Marketplace</a>
+      <a href="#account">Account</a>
+      <a href="#vote">Vote</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <button class="ghost">Launch WebApp</button>
+  </header>
+
+  <main>
+    <section class="hero shell">
+      <div class="hero-text">
+        <p class="eyebrow">Robinhood for rare instruments</p>
+        <h2>Own shares, fund sessions, and decide who plays.</h2>
+        <p class="lede">
+          Every instrument on the platform is a Special Purpose Vehicle with transparent governance,
+          insured storage, and yield from performances, touring, and fractional rentals.
+        </p>
+        <div class="cta-group">
+          <button class="solid" data-scroll="#account">Create account</button>
+          <button class="ghost" data-scroll="#market">Browse instruments</button>
+        </div>
+        <ul class="hero-bullets">
+          <li>FDIC-aligned cash sweep partners</li>
+          <li>Instant bank connections via Plaid</li>
+          <li>Community voting for every session</li>
+        </ul>
+      </div>
+      <div class="hero-card">
+        <div class="hero-card__header">
+          <p>Account Snapshot</p>
+          <span>Updated just now</span>
+        </div>
+        <div class="balance" id="balanceDisplay">$0.00</div>
+        <div class="balance-sub">
+          <p>Buying power</p>
+          <p id="buyingPower">$0.00</p>
+        </div>
+        <div class="hero-metrics" id="heroMetrics"></div>
+        <p class="micro">Simulated data. Connect your bank to activate.</p>
+      </div>
+    </section>
+
+    <section class="stats shell">
+      <article>
+        <p class="eyebrow">Total managed</p>
+        <h3>$48.6M</h3>
+        <p>Across 126 curated instruments.</p>
+      </article>
+      <article>
+        <p class="eyebrow">Average annualized yield</p>
+        <h3>7.8%</h3>
+        <p>Blended performance, touring, and streaming.</p>
+      </article>
+      <article>
+        <p class="eyebrow">Sessions funded</p>
+        <h3>942</h3>
+        <p>Community voting decides each residency.</p>
+      </article>
+      <article>
+        <p class="eyebrow">Payout cadence</p>
+        <h3>Monthly</h3>
+        <p>Pro-rata cash deposits into your balance.</p>
+      </article>
+    </section>
+
+    <section class="spv shell">
+      <div>
+        <p class="eyebrow">Structured like Wall Street</p>
+        <h3>Each instrument lives inside its own SPV.</h3>
+        <p>
+          Fractional shares are issued by the SPV with waterfall structures familiar to private credit investors.
+          Instrument care, insurance, and touring logistics sit in the SPV while you retain pure exposure to music cashflow.
+        </p>
+      </div>
+      <ul>
+        <li>
+          <h4>Vault-grade custody</h4>
+          <p>Smithsonian-grade humidity, vibration control, and 24/7 monitoring.</p>
+        </li>
+        <li>
+          <h4>Performance rights</h4>
+          <p>Every appearance routes revenue into the SPV and the pro-rata payouts to holders.</p>
+        </li>
+        <li>
+          <h4>Transparent covenants</h4>
+          <p>Quarterly statements, ESG-style repair approvals, and public voting records.</p>
+        </li>
+      </ul>
+    </section>
+
+    <section class="how-it-works shell" id="how-it-works">
+      <div class="section-heading">
+        <p class="eyebrow">Step-by-step</p>
+        <h3>How it works</h3>
+      </div>
+      <div class="step-grid">
+        <article>
+          <span>01</span>
+          <h4>Verify & create</h4>
+          <p>Sign up with government ID, add a 2FA device, and set your investing preferences.</p>
+        </article>
+        <article>
+          <span>02</span>
+          <h4>Connect your bank</h4>
+          <p>Secure Plaid-style connection with instant micro-deposits and recurring auto-transfer options.</p>
+        </article>
+        <article>
+          <span>03</span>
+          <h4>Fund & allocate</h4>
+          <p>Move cash into your wallet, lock in shares, and monitor performance in real time.</p>
+        </article>
+        <article>
+          <span>04</span>
+          <h4>Vote on residencies</h4>
+          <p>Every gig, tour, or recording session is put to a shareholder vote inside the app.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="market shell" id="market">
+      <div class="section-heading">
+        <p class="eyebrow">Live marketplace</p>
+        <h3>Buy shares of iconic instruments</h3>
+      </div>
+      <div id="instrument-grid" class="instrument-grid" aria-live="polite"></div>
+    </section>
+
+    <section class="account shell" id="account">
+      <div class="section-heading">
+        <p class="eyebrow">Your capital stack</p>
+        <h3>Open an account, connect a bank, add cash, and deploy.</h3>
+      </div>
+      <div class="account-panels">
+        <form id="signupForm" class="panel">
+          <h4>Create account</h4>
+          <label>Full name<input type="text" name="name" required placeholder="Ada Cellist" /></label>
+          <label>Email<input type="email" name="email" required placeholder="ada@lumicello.com" /></label>
+          <label>Password<input type="password" name="password" required minlength="8" placeholder="••••••••" /></label>
+          <button type="submit" class="solid">Create profile</button>
+          <p class="micro" id="signupStatus">Secure KYC/AML powered workflow.</p>
+        </form>
+
+        <form id="bankForm" class="panel">
+          <h4>Connect bank</h4>
+          <label>Institution<select name="institution" required>
+            <option value="">Select</option>
+            <option>Ally Bank</option>
+            <option>Chase</option>
+            <option>Capital One</option>
+            <option>Wells Fargo</option>
+          </select></label>
+          <label>Account nickname<input type="text" name="nickname" placeholder="Touring Savings" required /></label>
+          <button type="submit" class="solid">Link via Plaid</button>
+          <p class="micro" id="bankStatus">256-bit encrypted session.</p>
+        </form>
+
+        <form id="addMoneyForm" class="panel">
+          <h4>Add money</h4>
+          <label>Amount<input type="number" name="amount" required min="25" step="25" placeholder="500" /></label>
+          <label>Frequency<select name="frequency">
+            <option>One-time</option>
+            <option>Weekly</option>
+            <option>Monthly</option>
+          </select></label>
+          <button type="submit" class="solid">Transfer</button>
+          <p class="micro">Funds clear instantly up to $25k.</p>
+        </form>
+
+        <form id="buyForm" class="panel">
+          <h4>Buy shares</h4>
+          <label>Instrument<select id="instrumentSelect" required></select></label>
+          <label>Shares<input type="number" name="shares" required min="1" step="1" placeholder="5" /></label>
+          <button type="submit" class="solid">Review order</button>
+          <p class="micro" id="buyStatus">Fractional ownership, no trading fees.</p>
+        </form>
+      </div>
+    </section>
+
+    <section class="vote shell" id="vote">
+      <div class="section-heading">
+        <p class="eyebrow">Community control</p>
+        <h3>Vote on who gets to play next.</h3>
+      </div>
+      <div class="vote-grid" id="voteGrid"></div>
+    </section>
+
+    <section class="timeline shell">
+      <div class="section-heading">
+        <p class="eyebrow">Roadmap</p>
+        <h3>Safety-first infrastructure.</h3>
+      </div>
+      <ul>
+        <li>
+          <h4>Q3 2024</h4>
+          <p>Launch Reg CF offering portal with FINRA-aligned disclosures.</p>
+        </li>
+        <li>
+          <h4>Q4 2024</h4>
+          <p>Roll out debit card for instant withdrawals and cash-back on merch.</p>
+        </li>
+        <li>
+          <h4>Q1 2025</h4>
+          <p>Introduce automated vault lending to orchestras with revenue share.</p>
+        </li>
+      </ul>
+    </section>
+
+    <section class="faq shell" id="faq">
+      <div class="section-heading">
+        <p class="eyebrow">Need details?</p>
+        <h3>Frequently asked questions</h3>
+      </div>
+      <div class="faq-grid">
+        <article>
+          <h4>Is this regulated?</h4>
+          <p>We leverage SPVs with Reg D / Reg CF exemptions, audited annually, and serviced by a registered transfer agent.</p>
+        </article>
+        <article>
+          <h4>What is the voting power?</h4>
+          <p>One share equals one vote. Quorum is 25% of outstanding shares before a residency is confirmed.</p>
+        </article>
+        <article>
+          <h4>How are returns generated?</h4>
+          <p>Performance fees, streaming royalties, museum partnerships, and appreciation on eventual resale.</p>
+        </article>
+        <article>
+          <h4>Can I sell my shares?</h4>
+          <p>A secondary bulletin board is being piloted with 30-day liquidity windows and issuer buybacks.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="shell">
+    <p>© <span id="year"></span> Instrument Exchange · Built for musicians, investors, and fans.</p>
+    <div>
+      <a href="mailto:jasper@mit.edu">Contact</a>
+      <a href="https://github.com/jjasper-llee">GitHub</a>
+      <a href="https://www.linkedin.com/in/jjasperlee/">LinkedIn</a>
+    </div>
+  </footer>
+</body>
+</html>
