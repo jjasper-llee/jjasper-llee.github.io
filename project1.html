@@ -83,6 +83,27 @@
       overflow-wrap: anywhere;
     }
 
+    .project-detail .follow-progress {
+      justify-content: center;
+    }
+
+    .project-detail .progress-button {
+      display: inline-block;
+      padding: 0.9rem 1.8rem;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #6fa8ff, #4a72d9);
+      color: #0a122e;
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: 0 12px 35px rgba(20, 74, 170, 0.35);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .project-detail .progress-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 40px rgba(20, 74, 170, 0.45);
+    }
+
     .project-detail .project-section.reverse .project-copy {
       flex: 1 1 100%;
       width: 100%;
@@ -253,6 +274,19 @@
           ></iframe>
         </div>
       </div> -->
+
+      <div class="project-section follow-progress">
+        <div class="project-copy">
+          <a
+            class="progress-button"
+            href="https://docs.google.com/document/d/1"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Click to follow my progress
+          </a>
+        </div>
+      </div>
     </section>
   </main>
 
