@@ -547,3 +547,10 @@ body.brain-theme footer {
   position: relative;
   z-index: 1;
 }
+
+.center-img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 100%;
+}
