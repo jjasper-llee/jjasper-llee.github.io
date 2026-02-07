@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Title | Jasper Lee</title>
+  <link rel="stylesheet" href="style.css?v=20240621" />
+</head>
+<body class="brain-theme project-detail">
+  <canvas id="brain-canvas"></canvas>
+
+  <header>
+    <div class="nav-left">
+      <h1 class="logo">Jasper Lee</h1>
+      <nav>
+        <a href="index.html#about">About</a>
+        <a href="index.html#left-brain" class="active">Left Brain</a>
+        <a href="index.html#right-brain">Right Brain</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+    </div>
+    <!-- <a class="back-link" href="index.html#left-brain">← Back to Left Brain</a> -->
+  </header>
+
+  <main class="project-page">
+    <section class="project-shell">
+      <h2>Transforming Tricopter Drone</h2>
+      <p class="project-tagline">Single frame quadcopter with custom esp32-c3 receiver and BetaFlight flight controller. Pairs with my custom IMU powered transmitter.</p>
+
+      <div class="project-section">
+        <div class="project-media">
+          <img src="quadcopter_cad.png" alt="Prototype of the project" />
+        </div>
+        <div class="project-copy">
+          <h3>Background/Origin</h3>
+          <p>
+            For this custom radio transmitter and receiver quadcopter, I decided to design a frame that encompassed all electronics without the use of layering with hex screws and bolts. This would take more time to CAD, 
+            however it would ultimately be more simple and allow for straight-forward structural analysis.
+          </p>
+        </div>
+      </div>
+
+      <div class="project-section reverse">
+        <div class="project-media">
+          <img src="FC_esp32_wiring.png" alt="In-progress build of the project" />
+        </div>
+        <div class="project-copy">
+          <h3>Engineering the Drone</h3>
+          <p>
+            I will focus on the drone-specific components (ie: the receiver and flight controller portion). Connceting my esp32-c3 to my Radio Link F722 flight controller (FC)
+            through RX and TX pads, I sent signals received from the esp32-c3 over Wifi to the FC RX 2 and TX 2, which then connected to my 4 in 1 ESC that controller the motors. 
+            Initially I used UART1, and the drone would not respond to my transmitter, however I later discovered that RadioLink had set UART5 to be the auxiliary channel. 
+            I will be checking the channel settings first next time! I Below is a list of materials I used on the drone-side of things:
+          </p>
+          <ul>
+            <li>Microcontroller: Esp32-c3 (Receiver)</li>
+            <li>Motors: F1507 Brushless DC T-motor</li>
+            <li>ESCs: 4 in 1 ESC</li>
+            <li>Flight Controller: Radio Link F722 | BetaFlight </li>
+            <li>Materials: Bambu Lab PLA Infill 100% </li>
+            <li>Battery: Ovonic 850 mAh 3S LiPo </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="project-section">
+        <div class="project-media">
+          <img src="copter.heic" alt="Finished project in action" />
+        </div>
+        <div class="project-copy">
+          <h3>Final Notes / Next Steps</h3>
+          <p>
+            After completing this project, I wrote a research paper that will be submitted to the journal "Drones" early next year. 
+            I have attached it below. I calculated the Equations of Motion using Lagrangian Mechanics to be able to predict the drones
+            behavior with the coupling of the expansion/contraction mechanism. 
+
+            Given the physical limitations of all drones alike, I wanted to invent a device that could manipulate objects like us, controled by us--
+            enter my Aerial Bionic Hand vision.
+          </p>
+        </div>
+      </div>
+
+      <div class="project-video">
+        <h3>See It in Motion</h3>
+        <div class="video-frame">
+          <iframe
+            src="https://www.youtube.com/embed/pOO97-lJyPk"
+            title="Project Video"
+            frameborder="0"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+
+      <div class="project-pdf">
+        <h3>Read the Full Specification</h3>
+        <div class="pdf-frame">
+          <iframe
+            src="IEEE_Conference_Tricopter.pdf"
+            title="Shape-Shifting Tricopter Drone PDF"
+            frameborder="0"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Jasper Lee</p>
+  </footer>
+
+  <script>
+    (function () {
+      const desiredHighlight = 'left';
+
+      function applyHighlight() {
+        if (window.setBrainHighlight) {
+          window.setBrainHighlight(desiredHighlight);
+        } else {
+          window.pendingBrainHighlight = desiredHighlight;
+        }
+      }
+
+      if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        applyHighlight();
+      } else {
+        document.addEventListener('DOMContentLoaded', applyHighlight);
+      }
+    })();
+  </script>
+  <script src="brain.js?v=20240621" defer></script>
+</body>
+</html>
