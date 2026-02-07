@@ -64,7 +64,11 @@
       </div>
 
       <div class="project-video">
-        <h3>See It in Motion</h3>
+        <h3>Demonstrating how IMU orientation maps to the attitude displayed in Betaflight: IMU RX to Esp32-C3 TX & FC TX.</h3>
+        <p>
+            The video below demonstrates a successful RX to TX communication through Esp32 ESPNOW Wifi Protocol. IMU orientation is reflected in
+          the Betaflight GUI, showing undelayed real time response. 
+          </p>
         <div class="video-frame">
           <iframe
             src="https://youtube.com/shorts/hDf78mtOetc?feature=share"
@@ -82,12 +86,12 @@
         <div class="project-copy">
           <h3>Final Notes / Next Steps</h3>
           <p>
-            After completing this project, I wrote a research paper that will be submitted to the journal "Drones" early next year. 
-            I have attached it below. I calculated the Equations of Motion using Lagrangian Mechanics to be able to predict the drones
-            behavior with the coupling of the expansion/contraction mechanism. 
-
-            Given the physical limitations of all drones alike, I wanted to invent a device that could manipulate objects like us, controled by us--
-            enter my Aerial Bionic Hand vision.
+            This project is proof that there is no need for a remote controller to control drones, all we need is this setup that I have demonstrated
+            and our hand, which will be the futuristic remote controller for FPVs. Similarly, this shows that ESPNOW Wifi proves to be a reliable and quick
+            radio signal protocol. However, at this stage, my setup is far from something reliable. I will need to implement multiple additional features, including 
+            a safety feature for bad initial IMU orientation (to prevent the PID controller from freaking out), reliable drone vertical takeoff, and 
+            IMU filters that convert noisy hand waving data into dependable positioning data similar to the modern RC transmitter.
+            
           </p>
         </div>
       </div>
