@@ -241,62 +241,9 @@
             to the FC over UART at 420 kbaud at ~150 Hz. Added a watchdog failsafe that 
             disarms and drops throttle if packets are not received within 300 ms.
           </p>
-          <ul>
-            <li>Microcontroller: Teensy 4.0 </li>
-            <li>Motors: F1507 Brushless DC T-motor</li>
-            <li>ESCs: LIBEE 20A Favourite</li>
-            <li>Radio: Spektrum Receiver & Transmitter</li>
-            <li>Materials: Bambu Lab PAHT-CF, Teflon </li>
-          </ul>
         </div>
       </div>
-    
-
-          
-      <div class="project-section">
-        <div class="project-copy">
-          <h3>Camera Pipeline</h3>
-          <p>
-            Using Nvidia's camera stack, "nvarguscamerasrc" talks to the Rpi Cam;
-            then the pipeline converts the camera output into BGR frames that OpenCV 
-            can use. I discard old frames to keep latency low, instead of building up delay. 
-            This is vital for real-time tracking.
-          </p>
-        </div>
-        <div class="project-copy">
-          <h3>Servo Control</h3>
-          <p>
-            I first set the PWM frequency to 50 Hz (typical servo frequency). Next I convert
-            the angle into pulse width using a calibrated range of (700, 2300). After that,
-            I convert microseconds to PCA "ticks." This produces a stable servo output that is
-            independent of Jetson PWM quirks.
-          </p>
-        </div>
-        <div class="project-copy">
-          <h3>Computer Vision techniques</h3>
-          <p>
-            To start, I converted each frame to HSV then threshold it into my "green" range of lower 
-            [40, 80, 80] to upper [85, 255, 255]. This separates "color" or hue from "lighting" or value. 
-            This would be more stable than RGB under brightness changes. Next, I applied a simple
-            morphological opening that removes small specks and cleans the "green blob" detected by the 
-            Rpi Cam. I then find the contour of the object by enclosing the largest contour detected--a 
-            heuristic approach that assumes the dominant green object as the target. Similarly, I set
-            an area threshold that prevents false detections when tiny green pixels exist inside the image
-            captures. Finally, I find the centroid via "moments". 
-          </p>
-        </div>
-        <div class="project-copy">
-          <h3>Control Algorithm</h3>
-          <p>
-            Each frame, I compute the error between the target centroid measured from moments, and
-            the image center. I make sure to add a Deadband to supress jitter. Next, I implement 
-            P - control (Proportional control) to update the desired servo angles. P-control means 
-            the larger the pixel error, the greater the servo correction is. I then run an EMA/1st order
-            low-pass filter on the command signal to make the motion smoother and less oscillatory.
-          </p>
-        </div>
-      </div>
-
+      
    
 
       <div class="project-section follow-progress">
