@@ -229,27 +229,6 @@
           <img src="esp32c3.HEIC" alt="Prototype of the project" />
         </div>
         <div class="project-copy">
-          <h3>IMU-Based RC Transmitter over ESP-NOW (ESP32 + ICM-20948)</h3>
-          <p>
-            The way this custom wireless transmitter works is by having the ESP32 act like a RC transmitter.
-            First, the ESP32 reads an ICM-20948 IMU over I²C, computes roll and pitch from accelerometer tilt 
-            equations, and estimates yaw via gyro integration with wraparound handling. Throttle is then read from 
-            an analog potentiometer and all channels are smoothed using tuned exponential movng average low-pass filters to 
-            reduce jitter. The system maps attitude and throttle to standard RC PWM-equivalent values 
-            (1000–2000 µs) for roll, pitch, throttle, yaw, and an AUX arming channel. Following, commands are broadcast 
-            at 150 Hz using ESP-NOW on a fixed Wi-Fi channel with power saving disabled for low latency, and 
-            include sequence numbers for debugging and packet integrity monitoring. Finally, I implemented a safety-focused 
-            arming toggle with debounce and throttle-low interlock.
-          </p>
-        </div>
-      </div>
-
-      
-      <div class="project-section reverse">
-        <div class="project-media">
-          <img src="esp32c3.HEIC" alt="In-progress build of the project" />
-        </div>
-        <div class="project-copy">
           <h3>ESP-NOW to CRSF Receiver Bridge (ESP32-C3 → Betaflight Flight Controller)</h3>
           <p>
             Implemented a low-latency receiver that converts ESP-NOW packets into CRSF 
@@ -263,8 +242,8 @@
           </p>
         </div>
       </div>
-      
-   
+
+    
 
       <div class="project-section follow-progress">
         <div class="project-copy">
