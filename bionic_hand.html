@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Title | Jasper Lee</title>
+  <link rel="stylesheet" href="style.css?v=20240621" />
+</head>
+<body class="brain-theme project-detail">
+  <canvas id="brain-canvas"></canvas>
+
+  <header>
+    <div class="nav-left">
+      <h1 class="logo">Jasper Lee</h1>
+      <nav>
+        <a href="index.html#about">About</a>
+        <a href="index.html#left-brain" class="active">Left Brain</a>
+        <a href="index.html#right-brain">Right Brain</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+    </div>
+    <!-- <a class="back-link" href="index.html#left-brain">← Back to Left Brain</a> -->
+  </header>
+
+  <main class="project-page">
+    <section class="project-shell">
+      <h2>Hand Responsive Bionic Hand</h2>
+      <p class="project-tagline">Wireless / standalone human hand controlled bionic hand.</p>
+
+      <div class="project-section">
+        <div class="project-media">
+          <img src="hand.heic" alt="Prototype of the project" />
+        </div>
+        <div class="project-copy">
+          <h3>Background/Origin</h3>
+          <p>
+            As humans, we do everything with our hands. As one who is intrigued by mechanisms, controls and electronics, 
+            I wanted to make my own bionic hand that responded and mimicked our very motions.
+          </p>
+        </div>
+      </div>
+
+      <div class="project-section reverse">
+        <!-- <div class="project-media">
+          <img src="hand.heic" alt="In-progress build of the project" />
+        </div> -->
+        
+        <div class="project-copy">
+          <h3>Engineering the Hand (Mechanics)</h3>
+          <p>
+            aufoidshjlifoasdhp;fjsdjh;
+          </p>
+        </div>
+        <div class="video-frame">
+          <iframe
+            src="https://www.youtube.com/embed/Mar15_RfvNI"
+            title="YouTube Short"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+            allowfullscreen>
+          </iframe>
+       </div>
+      </div>
+      
+      <div class="project-section">
+        <div class="project-media">
+          <img src="copter_cad.heic" alt="Prototype of the project" />
+        </div>
+        <div class="project-copy">
+          <h3>Engineering the Hand (Electronics)</h3>
+          <p>
+            As humans, we do everything with our hands. As one who is intrigued by mechanisms, controls and electronics, 
+            I wanted to make my own bionic hand that responded and mimicked our very motions.
+          </p>
+          <ul>
+            <li>Microcontroller: Teensy 4.0 </li>
+            <li>AS560 Absolute Magnetic Encoder</li>
+            <li>ESCs: LIBEE 20A Favourite</li>
+            <li>Radio: Spektrum Receiver & Transmitter</li>
+            <li>Materials: Bambu Lab PAHT-CF, Teflon </li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="project-video">
+        <h3>See It in Motion</h3>
+        <p>
+            Encoder stuff here + motors
+        </p>
+        <div class="video-frame">
+          <iframe
+            src="https://www.youtube.com/embed/RbYOa9zTChI"
+            title="YouTube Video"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+      
+      <div class="project-video">
+        <h3>See It in Motion</h3>
+        <p>
+            Exo skeloen 
+        </p>
+        <div class="video-frame">
+          <iframe
+            src="https://www.youtube.com/embed/-4s0vXGN7Lc"
+            title="YouTube Short"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+
+      <div class="project-section">
+        <div class="project-media">
+          <img src="encoder_2motor.png" alt="Adding Motors" />
+        </div>
+        <div class="project-copy">
+          <h3>Final Notes / Next Steps</h3>
+          <p>
+            My next steps for this project would be to integrate the electronics into the mechanical design. 
+            As this is simply CAD work, and doesn't involve learning anything substantial, I decided to put a
+            pause on this. With the working electronics and mechanics for the bionic hand, this to me is
+            already a working prototype (just not assembled into a familiar form).
+          </p>
+        </div>
+      </div>
+
+      <div class="project-video">
+        <h3>See It in Motion</h3>
+        <div class="video-frame">
+          <iframe
+            src="https://www.youtube.com/embed/pOO97-lJyPk"
+            title="Project Video"
+            frameborder="0"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+
+      
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Jasper Lee</p>
+  </footer>
+
+  <script>
+    (function () {
+      const desiredHighlight = 'left';
+
+      function applyHighlight() {
+        if (window.setBrainHighlight) {
+          window.setBrainHighlight(desiredHighlight);
+        } else {
+          window.pendingBrainHighlight = desiredHighlight;
+        }
+      }
+
+      if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        applyHighlight();
+      } else {
+        document.addEventListener('DOMContentLoaded', applyHighlight);
+      }
+    })();
+  </script>
+  <script src="brain.js?v=20240621" defer></script>
+</body>
+</html>
