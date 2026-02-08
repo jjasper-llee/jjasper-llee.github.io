@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Title | Jasper Lee</title>
+  <link rel="stylesheet" href="style.css?v=20240621" />
+</head>
+<body class="brain-theme project-detail">
+  <canvas id="brain-canvas"></canvas>
+
+  <header>
+    <div class="nav-left">
+      <h1 class="logo">Jasper Lee</h1>
+      <nav>
+        <a href="index.html#about">About</a>
+        <a href="index.html#left-brain" class="active">Left Brain</a>
+        <a href="index.html#right-brain">Right Brain</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+    </div>
+    <!-- <a class="back-link" href="index.html#left-brain">← Back to Left Brain</a> -->
+  </header>
+
+  <main class="project-page">
+    <section class="project-shell">
+      <h2>Spider Circuit</h2>
+      <p class="project-tagline">The very first tricoptre built to shape shift with an expansion and contraction mechanism that for adaptive reconfiguration optimizing combinations of resilience and agillity.</p>
+
+      <div class="project-section">
+        <div class="project-media">
+          <img src="circuit_spider.heic" alt="Prototype of the project" />
+        </div>
+        <div class="project-copy">
+          <h3>Background/Origin</h3>
+          <p>
+            I wanted to make a special Christmas present for family and friends. I decided to create an electronics circuit
+            and turn it into art! The result was a spider circuit made of resistors and capacitor that allowed the spider's
+            eyes to glow even after the battery is removed, due to the capacitor's relatively slow discharge.
+          </p>
+        </div>
+      </div>
+
+      <div class="project-section reverse">
+        <div class="project-media">
+          <img src="spider_circuit_depth" alt="In-progress build of the project" />
+        </div>
+        <div class="project-copy">
+          <h3>Engineering the Circuit</h3>
+          <p>
+            To create this circuit, I used a total of 19 resistors (15 of which were for decoration and in fact dissapated charge and heat).
+            When the 3V battery touches the front legs of the spider, the circuit is complete and a voltage difference is inacted 
+            between the two terminals, creating current through the resistors and capacitor. After a few seconds, the LED begins to 
+            increase in intensity, and even after the battery is withdrawn, the LED stays lit, due to the capacitor discharging! 
+            I used the following components:
+          </p>
+          <ul>
+            <li>1000 micro-farad Capacitor</li>
+            <li>3V Panasonic Battery/li>
+            <li>Assorted Resistors</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="project-section">
+        <!-- <div class="project-media">
+          <img src="quadcopter_noprops.heic" alt="Final Result" />
+        </div> -->
+        <div class="project-copy">
+          <h3>Final Notes / Next Steps</h3>
+          <p>
+            I plan to come up with more complex circuits that could model more complex organisms such as animals. By removing a few legs, and adding a pair of wings
+            I made a dragonfly. Meanwhile, have fun making a circuit-art yourself!
+          </p>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Jasper Lee</p>
+  </footer>
+
+  <script>
+    (function () {
+      const desiredHighlight = 'left';
+
+      function applyHighlight() {
+        if (window.setBrainHighlight) {
+          window.setBrainHighlight(desiredHighlight);
+        } else {
+          window.pendingBrainHighlight = desiredHighlight;
+        }
+      }
+
+      if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        applyHighlight();
+      } else {
+        document.addEventListener('DOMContentLoaded', applyHighlight);
+      }
+    })();
+  </script>
+  <script src="brain.js?v=20240621" defer></script>
+</body>
+</html>
