@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Title | Jasper Lee</title>
+  <link rel="stylesheet" href="style.css?v=20240621" />
+
+  <style>
+    .project-detail .project-copy .detail-intro {
+      color: rgba(217, 228, 255, 0.92);
+      margin-bottom: 1.5rem;
+    }
+
+    .project-detail .project-copy .detail-grid {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(1rem, 2.5vw, 1.75rem);
+      margin-bottom: clamp(1.75rem, 3vw, 2.5rem);
+      width: min(100%, 90vw);
+      margin-inline: auto;
+    }
+
+    .project-detail .project-copy .detail-card {
+      background: rgba(10, 22, 58, 0.55);
+      border: 1px solid rgba(80, 124, 210, 0.4);
+      border-radius: 16px;
+      box-shadow: 0 22px 55px rgba(3, 9, 28, 0.55);
+      padding: clamp(1.1rem, 2.4vw, 1.6rem);
+      min-width: 0;
+      width: min(100%, 90vw);
+      box-sizing: border-box;
+      margin-inline: auto;
+    }
+
+    .project-detail .project-copy .detail-card h4 {
+      margin-top: 0;
+      margin-bottom: 0.85rem;
+      font-weight: 500;
+      color: #f2f6ff;
+    }
+
+    .project-detail .project-copy .detail-card ul {
+      margin: 0;
+      padding-left: 1.1rem;
+      line-height: 1.65;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+    }
+
+    .project-detail .project-copy .detail-card ul li + li {
+      margin-top: 0.35rem;
+    }
+
+    .project-detail .project-copy .code-card {
+      margin-top: clamp(1.5rem, 3vw, 2.5rem);
+    }
+
+    .project-detail .project-copy .code-card p {
+      margin-bottom: 1rem;
+      color: rgba(217, 228, 255, 0.85);
+    }
+
+    .project-detail .project-copy .code-card pre {
+      background: rgba(8, 18, 46, 0.75);
+      border: 1px solid rgba(82, 124, 210, 0.38);
+      border-radius: 14px;
+      padding: 1.1rem clamp(1.1rem, 2.5vw, 1.75rem);
+      margin: 0;
+      overflow-x: auto;
+      box-shadow: inset 0 0 25px rgba(6, 12, 32, 0.55);
+      max-width: 100%;
+    }
+
+    .project-detail .project-copy .code-card code {
+      display: block;
+      font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.92rem;
+      line-height: 1.6;
+      color: #f4f8ff;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+    }
+
+    .project-detail .follow-progress {
+      justify-content: center;
+    }
+
+    .project-detail .progress-button {
+      display: inline-block;
+      padding: 0.9rem 1.8rem;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #6fa8ff, #4a72d9);
+      color: #0a122e;
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: 0 12px 35px rgba(20, 74, 170, 0.35);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .project-detail .progress-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 40px rgba(20, 74, 170, 0.45);
+    }
+
+    /* .project-detail .project-section.reverse .project-copy {
+      flex: 1 1 100%;
+      width: 100%;
+    } */
+
+    @media (max-width: 640px) {
+      .project-detail .project-copy .detail-card {
+        padding: clamp(1rem, 4vw, 1.35rem);
+      }
+
+      .project-detail .project-copy .code-card pre {
+        padding: clamp(0.85rem, 4vw, 1.25rem);
+      }
+
+      .project-detail .project-copy .code-card code {
+        font-size: 0.88rem;
+      }
+    }
+  </style>
+  
+</head>
+  
+<body class="brain-theme project-detail">
+  <canvas id="brain-canvas"></canvas>
+
+  <header>
+    <div class="nav-left">
+      <h1 class="logo">Jasper Lee</h1>
+      <nav>
+        <a href="index.html#about">About</a>
+        <a href="index.html#left-brain" class="active">Left Brain</a>
+        <a href="index.html#right-brain">Right Brain</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+    </div>
+    <!-- <a class="back-link" href="index.html#left-brain">← Back to Left Brain</a> -->
+  </header>
+
+  <main class="project-page">
+    <section class="project-shell">
+      <h2>Fingering Optimization Algorithm</h2>
+      <p class="project-tagline">The very first cello fingering optimization algorithm based on dynamic programming.</p>
+
+      <div class="project-section">
+        <div class="project-media">
+          <img src="copter_cad.heic" alt="Prototype of the project" />
+        </div>
+        <div class="project-copy">
+          <h3>Background/Origin</h3>
+          <p>
+            As principal cellist of my school's orchestra and SFSYO, I often noticed that my peers had trouble
+            with fingering. I noticed similar things when I mentored younger students as well.
+            A seemingly difficult passage could in fact be made easy with optimal fingering, streamlining
+            cello playing. This inspired me to design an algorithm that could optimize fingering choices
+            given a set of music notes.
+          </p>
+        </div>
+      </div>
+
+      <div class="project-section reverse">
+        <div class="project-media">
+          <img src="pcb.heic" alt="In-progress build of the project" />
+        </div>
+        <div class="project-copy">
+          <h3>Coding the Algorithm</h3>
+          <p>
+            In a nutshell, this algorithm takes in a set of values that correspond to specific notes on the cello
+            then runs them through my dynamic programming algorithm which optimizes the total cost of each possible path 
+            (similar to Traveling Salesman Problem approach). To do this, I implemented python dictionaries that 
+            documented the cost of each possible shift, labeling each shift with a number, representing its difficulty.
+            The algorithm would then add up all these "difficulty" numbers to find the set of fingerings that is least costly
+            and return it to the user. For more details, check out my published paper below.
+            
+          </p>
+          
+        </div>
+      </div>
+
+      <div class="project-section">
+        <div class="project-media">
+          <img src="copter.heic" alt="Finished project in action" />
+        </div>
+        <div class="project-copy">
+          <h3>Final Notes / Next Steps</h3>
+          <p>
+            Given that this algorithm was coded for the cello, it could in turn be applied to all bowed instruments alike.
+            Users could simply change the cost tables, and be able to personalize the algorithm for their own use, as
+            every musician has their own fingering preferences. This makes the code very versatile.
+
+            As a start, I have only documented the cost tables to the 4th position on the cello, however with time,
+            the tables would come to encompass all of the cello, and allow for a full-scale fingering optimizer. Another
+            future step is to turn this algorithm into an app that allows users with varying experiences to use.
+          </p>
+        </div>
+      </div>
+
+      <div class="project-section follow-progress">
+        <div class="project-copy">
+          <a
+            class="progress-button"
+            href="https://www.researchgate.net/publication/379989789_Optimizing_Fingerings_on_Bowed_Instruments_particularly_the_cello"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            ResearchGate Page
+          </a>
+        </div>
+      </div>
+
+      <div class="project-section follow-progress">
+        <div class="project-copy">
+          <a
+            class="progress-button"
+            href="https://www.jsr.org/hs/index.php/path/article/view/5467"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Journal of Student Research Page
+          </a>
+        </div>
+      </div>
+
+      <div class="project-pdf">
+        <h3>Read the Full Specification</h3>
+        <div class="pdf-frame">
+          <iframe
+            src="5467-Article Text-40116-1-10-20240421.pdf"
+            title="Optimizing Fingerings on Bowed Instruments PDF"
+            frameborder="0"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Jasper Lee</p>
+  </footer>
+
+  <script>
+    (function () {
+      const desiredHighlight = 'left';
+
+      function applyHighlight() {
+        if (window.setBrainHighlight) {
+          window.setBrainHighlight(desiredHighlight);
+        } else {
+          window.pendingBrainHighlight = desiredHighlight;
+        }
+      }
+
+      if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        applyHighlight();
+      } else {
+        document.addEventListener('DOMContentLoaded', applyHighlight);
+      }
+    })();
+  </script>
+  <script src="brain.js?v=20240621" defer></script>
+</body>
+</html>
