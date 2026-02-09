@@ -166,10 +166,18 @@
         <div class="project-copy">
           <h3>Engineering the Drone</h3>
           <p>
-            I will focus on the drone-specific components (ie: the receiver and flight controller portion). Connceting my esp32-c3 to my Radio Link F722 flight controller (FC)
-            through RX and TX pads, I sent signals received from the esp32-c3 over Wifi to the FC RX 2 and TX 2, which then connected to my 4 in 1 ESC that controller the motors. 
-            Initially I used UART1, and the drone would not respond to my transmitter, however I later discovered that RadioLink had set UART5 to be the auxiliary channel. 
-            I will be checking the channel settings first next time! I Below is a list of materials I used on the drone-side of things:
+            I focus here on the drone-side electronics — specifically the receiver and flight controller integration. 
+            I connected an ESP32-C3 to a RadioLink F722 flight controller (FC) via dedicated RX and TX pads, enabling 
+            wireless command transmission from my custom transmitter over ESP-NOW WiFi. The ESP32-C3 received 
+            IMU-based control packets and forwarded them to the flight controller through a serial interface, which 
+            then routed commands to the 4-in-1 ESC responsible for driving the motors.
+
+            My initial implementation used UART1 on the flight controller, which prevented the drone from responding to control inputs. 
+            After debugging, I discovered that RadioLink had configured UART5 as the auxiliary control channel instead — a key 
+            hardware-specific detail I had overlooked. This experience reinforced the importance of verifying firmware pin mappings 
+            and peripheral assignments before integrating custom electronics.
+
+            Below is a list of materials used on the drone side of the system:
           </p>
           <ul>
             <li>Microcontroller: Esp32-c3 (Receiver)</li>
@@ -186,9 +194,12 @@
         <div class="project-video">
           <h3>How IMU Attitude Affects Motor Speed in Real Time.</h3>
             <p>
-              The video below demonstrates the next step of a successful RX to TX communication through Esp32 ESPNOW Wifi Protocol. Given IMU orientation 
-            the flight controller responds by increaseing and decreasing throttle of each motor, evidently changing pitch, roll, & yaw. Furthermore,
-            a control of thrust is shown.
+              The video below demonstrates the next stage of the RX–TX system, where IMU 
+              data transmitted over the ESP32 ESP-NOW protocol is used to actively control the drone. 
+              As the handheld IMU changes orientation, the flight controller dynamically adjusts 
+              the throttle of each motor in real time, producing controlled changes in pitch, roll, and yaw. 
+              The demonstration also shows independent thrust control, confirming that the system can 
+              modulate overall lift while maintaining responsive attitude control.
             </p>
           <div class="video-frame">
             <iframe 
@@ -227,15 +238,23 @@
         <div class="project-copy">
           <h3>Final Notes / Next Steps</h3>
           <p>
-            This project is proof that there is no need for a remote controller to control drones, all we need is this setup that I have demonstrated
-            and our hand, which will be the futuristic remote controller for FPVs. Similarly, this shows that ESPNOW Wifi proves to be a reliable and quick
-            radio signal protocol. However, at this stage, my setup is far from something reliable. I will need to implement multiple additional features, including 
-            a safety feature for bad initial IMU orientation (to prevent the PID controller from freaking out), reliable drone vertical takeoff, and 
-            IMU filters that convert noisy hand waving data into dependable positioning data similar to the modern RC transmitter.
+            This project demonstrates that a conventional handheld RC transmitter is not strictly 
+            necessary to control a drone. By combining an IMU-based hand controller with an 
+            ESP32 receiver and the ESP-NOW protocol, I showed that intuitive, motion-based 
+            control of an FPV drone is feasible using only human hand movement. 
+            The system also validates ESP-NOW as a low-latency and reliable wireless 
+            communication protocol for real-time flight control.</br>
 
-            As for the physical frame, the ends ended up snapping when the drone flipped and crashed into the ground. This means that I will need
-            to strengthn the structure between the motor mount and the drone arm. Another option is I could use SLA or PETG to print my frame, which
-            would offer a stronger and stiffer solution that would sustain more impact and external forces. 
+            However, the current implementation is still a prototype rather than a flight-ready system. 
+          Future improvements include a safety initialization routine to handle poor initial IMU orientation, 
+          more robust takeoff logic for stable vertical ascent, and improved sensor fusion filters to 
+          transform noisy hand motion into smooth, predictable control signals comparable to those of a modern RC transmitter.</br>
+
+            Mechanically, the drone frame revealed weaknesses during testing — the arm-to-motor 
+          joints fractured after a crash. To address this, I plan to reinforce the structural connection 
+          between the arms and motor mounts or redesign the frame for better load distribution. Alternatively, 
+          printing the frame in SLA resin or PETG would likely provide greater stiffness and impact 
+          resistance than the current material, improving durability under real-world flight conditions.
             
           </p>
         </div>
