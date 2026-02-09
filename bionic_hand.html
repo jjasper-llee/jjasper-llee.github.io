@@ -34,8 +34,10 @@
         <div class="project-copy">
           <h3>Background/Origin</h3>
           <p>
-            As humans, we do everything with our hands. As one who is intrigued by mechanisms, controls and electronics, 
-            I wanted to make my own bionic hand that responded and mimicked our very motions.
+             Our hands are central to how we interact with the world.
+            I became fascinated by the idea of translating natural human motion into mechanical action. 
+            Motivated by my interests in mechanisms, control systems, and electronics, 
+            I set out to design a bionic hand that could sense and mimic the movements of a real human hand in real time.
           </p>
         </div>
       </div>
@@ -48,7 +50,16 @@
         <div class="project-copy">
           <h3>Engineering the Hand (Mechanics)</h3>
           <p>
-            aufoidshjlifoasdhp;fjsdjh;
+            Starting from hand sketches, I iterated through multiple CAD designs to develop 
+            finger joints that balanced low friction with compact spacing, preventing 
+            unwanted lateral motion while preserving smooth rotation. Each joint uses a peg-and-pin 
+            configuration that allows free rotation and enables spring-based actuation. I initially 
+            experimented with cable-driven systems using lanyard, rope, floss, and fishing line, 
+            but friction from multiple pulley turns introduced excessive resistance and poor repeatability. 
+            I ultimately transitioned to a spring-based design, where carefully tuned stiffness ratios 
+            allowed each finger to move in a more natural, human-like way. In retrospect, 
+            this approach better resembles biological hands, in which tendons behave like 
+            springs with different stiffnesses and are driven by rotational motion at the joints.
           </p>
         </div>
         <div class="video-frame">
@@ -69,15 +80,19 @@
         <div class="project-copy">
           <h3>Engineering the Hand (Electronics)</h3>
           <p>
-            As humans, we do everything with our hands. As one who is intrigued by mechanisms, controls and electronics, 
-            I wanted to make my own bionic hand that responded and mimicked our very motions.
+            To actuate the hand, I used stepper motors controlled through dedicated stepper motor drivers. 
+            Each driver was connected to an I²C multiplexer, enabling coordinated control of multiple motors 
+            from a single microcontroller. I integrated absolute magnetic encoders at each joint to measure 
+            finger angles with high resolution, and powered the entire system from a portable 5V battery pack for mobility. 
+            Encoder data were streamed wirelessly to the motor controller over ESP-NOW, creating a low-latency 
+            link between the wearable exoskeleton and the mechanical hand. This closed-loop setup allowed 
+            the hand to respond directly to a simple bend of the user’s finger in real time.
           </p>
           <ul>
-            <li>Microcontroller: Teensy 4.0 </li>
-            <li>AS560 Absolute Magnetic Encoder</li>
-            <li>ESCs: LIBEE 20A Favourite</li>
-            <li>Radio: Spektrum Receiver & Transmitter</li>
-            <li>Materials: Bambu Lab PAHT-CF, Teflon </li>
+            <li>Microcontroller: ESP32 DevKit </li>
+            <li>AS5600 Absolute Magnetic Encoder</li>
+            <li>I²C multiplexer</li>
+            <li>Stepper Motors</li>
           </ul>
         </div>
       </div>
@@ -85,7 +100,11 @@
       <div class="project-video">
         <h3>See It in Motion</h3>
         <p>
-            Encoder stuff here + motors
+            In this demonstration, the stepper motor responds in real time to 
+          the rotation of a magnet mounted on top of an absolute encoder. 
+          The motion data are transmitted wirelessly over ESP-NOW, enabling 
+          fully cable-free control of the motor from the wearable exoskeleton.
+
         </p>
         <div class="video-frame">
           <iframe
@@ -101,7 +120,8 @@
       <div class="project-video">
         <h3>See It in Motion</h3>
         <p>
-            Exo skeloen 
+            This view highlights the exoskeleton mechanism and its integrated slot for the absolute magnetic encoder, 
+          which measures joint rotation for real-time control of the robotic hand.
         </p>
         <div class="video-frame">
           <iframe
@@ -121,10 +141,13 @@
         <div class="project-copy">
           <h3>Final Notes / Next Steps</h3>
           <p>
-            My next steps for this project would be to integrate the electronics into the mechanical design. 
-            As this is simply CAD work, and doesn't involve learning anything substantial, I decided to put a
-            pause on this. With the working electronics and mechanics for the bionic hand, this to me is
-            already a working prototype (just not assembled into a familiar form).
+            My next step for this project would be to fully integrate the electronics into the 
+            mechanical structure, consolidating wiring, mounting, and power distribution into a 
+            single cohesive system. While this stage is primarily mechanical packaging in 
+            CAD rather than a new technical challenge, I chose to pause here. With functional electronics, 
+            reliable sensing, and working actuation already demonstrated, I consider this a successful 
+            working prototype — one that is fully operational in principle, even if not yet packaged 
+            in a final, polished form.
           </p>
         </div>
       </div>
