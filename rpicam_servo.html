@@ -152,17 +152,15 @@
         <div class="project-copy">
           <h3>Background/Origin</h3>
           <p>
-            I decided to learn more about computer vision / object detection and went ahead to work on a simple
-            yet deceptively complex marker tracking system. I implemented a real-time visual servoing system that 
-            tracks a green colored marker (which I cut out of a KF94 Mask packaging) and drives a two-axis servo 
-            mechanism to keep the target centered in 
-            the camera frame. To do this I built a low-latency CSI capture pipeline on Jetson using nvarguscamerasrc 
-            and OpenCV GStreamer along with per-frame detection using HSV color 
-            segmentation, morphological denoising, contour extraction, and 
-            centroid estimation via image moments. I then closed the loop with proportional control 
-            (pixel error → angle update), deadband jitter suppression, saturation limits, and exponential 
-            smoothing for stable motion. Servo commands are generated through a servo driver over I²C with 
-            calibrated pulse-width limits and 50 Hz PWM timing.
+            I built a real-time visual servoing system to deepen my understanding of computer vision and closed-loop control. 
+            The system tracks a green marker in live video from a Raspberry Pi camera connected to an NVIDIA Jetson Orin Nano, 
+            and continuously drives a two-axis pan–tilt mechanism to keep the target centered in the image. 
+            I implemented a low-latency CSI capture pipeline using nvarguscamerasrc and an OpenCV–GStreamer workflow, 
+            then performed per-frame detection via HSV color segmentation, morphological denoising, contour extraction, 
+            and centroid estimation using image moments. I closed the loop with proportional feedback control 
+            that maps pixel error to angular motion, incorporating deadband jitter suppression, saturation limits, 
+            and exponential smoothing for stable behavior. Servo commands are generated through an I²C servo driver 
+            using calibrated pulse-width limits and a 50 Hz PWM timing scheme.
           </p>
         </div>
        
@@ -172,10 +170,15 @@
         <div class="project-copy">
           <h3>Engineering the Solution</h3>
           <p class="detail-intro">
-            A Raspberr Pi (Rpi) camera streams video into the Jetson Orin Nano. The code detects a colored marker 
-          (a green piece of plastic) in each frame, computes its centroid, and then commands two servos 
-          (X and Y axes) to translate/aim so the marker stays centered in the image. This is essentially
-          visual servoing: camera feedback → error → actuator commands. Below is my System Architecture:
+            A Raspberry Pi camera streams live video to an NVIDIA Jetson Orin Nano, 
+            where each frame is processed in real time to track a colored marker (a green plastic target). 
+            The software identifies the marker in every frame, computes its centroid, and compares 
+            this position to the center of the image. The resulting error signal is used to command 
+            two servos (X and Y axes), which rotate to keep the marker centered in view. 
+            This closed-loop process — camera perception → error computation → actuator 
+            response — is a classic example of visual servoing.</br>
+
+            The overall system architecture is shown below.
           </p>
 
           <div class="detail-grid">
@@ -277,10 +280,11 @@
           </p>
         </div>
       </div>
+      </div>
 
    
 
-      <div class="project-section follow-progress">
+      <!-- <div class="project-section follow-progress">
         <div class="project-copy">
           <a
             class="progress-button"
@@ -291,7 +295,7 @@
             Click to follow my progress
           </a>
         </div>
-      </div>
+      </div> -->
     </section>
   </main>
 
