@@ -152,10 +152,15 @@
         <div class="project-copy">
           <h3>Background/Origin</h3>
           <p>
-            The thought of being able to control devices with our bare hands fascinates me, espcially when those
-            devices are out of our reach. This gives us command of environments that extend beyond our physical capabilities. 
-            I decided to start with the classic quadcopter, and build a custom radio communication system. After some research
-            I decided to use ESPNOW from Esp32 modules, a reliable and quick way of sending signals.
+            The idea of controlling devices directly with our hands — especially when those devices are physically 
+            out of reach — has always fascinated me. It suggests a future in which human intention can extend 
+            seamlessly into the surrounding environment, allowing us to interact with and shape spaces beyond 
+            our immediate physical limits.</br>
+
+            To explore this concept, I began with a familiar platform: the quadcopter. Rather than using a commercial 
+          remote controller, I set out to design a custom wireless control system from scratch. 
+          After evaluating several options, I chose ESP-NOW on ESP32 modules as the communication backbone 
+          due to its low latency, reliability, and suitability for real-time control.
           </p>
         </div>
       </div>
@@ -164,10 +169,15 @@
         <div class="project-copy">
           <h3>Engineering the Solution</h3>
           <p class="detail-intro">
-            A Raspberr Pi (Rpi) camera streams video into the Jetson Orin Nano. The code detects a colored marker 
-          (a green piece of plastic) in each frame, computes its centroid, and then commands two servos 
-          (X and Y axes) to translate/aim so the marker stays centered in the image. This is essentially
-          visual servoing: camera feedback → error → actuator commands. Below is my System Architecture:
+            A Raspberry Pi camera streams live video to an NVIDIA Jetson Orin Nano, where 
+            each frame is processed in real time to track a colored marker (a green plastic target). 
+            The software identifies the marker using color-based segmentation, computes its 
+            centroid in the image plane, and continuously compares this position to the center of the frame. 
+            The resulting error signal is used to command two servos (pan and tilt), which adjust the 
+            camera’s orientation so that the marker remains centered. 
+            This closed-loop pipeline — camera perception → error computation → actuator response — constitutes a classic visual servoing system.
+
+            </br>The overall system architecture is shown below.
           </p>
 
           <div class="detail-grid">
@@ -189,8 +199,9 @@
             <div class="project-video">
               <h3>Demonstrating how IMU orientation maps to the attitude displayed in Betaflight: IMU RX to Esp32-C3 TX & FC TX.</h3>
                 <p>
-                  The video below demonstrates a successful RX to TX communication through Esp32 ESPNOW Wifi Protocol. IMU orientation is reflected in
-                the Betaflight GUI, showing undelayed real time response. 
+                  The video below shows a working ESP32-based RX–TX link using the ESP-NOW protocol. 
+                  Handheld IMU motion is streamed wirelessly and visualized in real time within the Betaflight interface, 
+                  demonstrating minimal latency and reliable data transmission.
                 </p>
               <div class="video-frame">
                 <iframe 
@@ -211,15 +222,19 @@
         <div class="project-copy">
           <h3>IMU-Based RC Transmitter over ESP-NOW (ESP32 + ICM-20948)</h3>
           <p>
-            The way this custom wireless transmitter works is by having the ESP32 act like a RC transmitter.
-            First, the ESP32 reads an ICM-20948 IMU over I²C, computes roll and pitch from accelerometer tilt 
-            equations, and estimates yaw via gyro integration with wraparound handling. Throttle is then read from 
-            an analog potentiometer and all channels are smoothed using tuned exponential movng average low-pass filters to 
-            reduce jitter. The system maps attitude and throttle to standard RC PWM-equivalent values 
-            (1000–2000 µs) for roll, pitch, throttle, yaw, and an AUX arming channel. Following, commands are broadcast 
-            at 150 Hz using ESP-NOW on a fixed Wi-Fi channel with power saving disabled for low latency, and 
-            include sequence numbers for debugging and packet integrity monitoring. Finally, I implemented a safety-focused 
-            arming toggle with debounce and throttle-low interlock.
+            The custom wireless transmitter functions as a fully self-contained 
+            RC controller built around an ESP32. The ESP32 reads an ICM-20948 IMU over I²C, 
+            computing roll and pitch from accelerometer tilt equations while estimating 
+            yaw through integrated gyroscope data with wraparound handling. 
+            Throttle is sampled from an analog potentiometer, and all control channels 
+            are passed through tuned exponential moving-average (first-order) low-pass 
+            filters to reduce noise and jitter. These signals are then mapped to standard 
+            RC PWM-equivalent values (1000–2000 µs) for roll, pitch, throttle, yaw, and 
+            an auxiliary arming channel. Control commands are broadcast at 150 Hz over 
+            ESP-NOW on a fixed Wi-Fi channel with power saving disabled to minimize latency, 
+            and each packet includes a sequence number for debugging and integrity monitoring. 
+            To enhance safety, I implemented a debounced arming toggle with a throttle-low 
+            interlock to prevent accidental arming at high power.
           </p>
         </div>
       </div>
@@ -231,14 +246,15 @@
         <div class="project-copy">
           <h3>ESP-NOW to CRSF Receiver Bridge (ESP32-C3 → Betaflight Flight Controller)</h3>
           <p>
-            Implemented a low-latency receiver that converts ESP-NOW packets into CRSF 
-            serial frames for a drone flight controller. The ESP32-C3 listens on a 
-            fixed Wi-Fi channel, parses a packed 5-channel control struct 
-            (roll/pitch/throttle/yaw/arm), maps 1000–2000 µs RC values into CRSF’s 
-            11-bit channel range, bit-packs 16 channels into the 22-byte CRSF payload, 
-            and appends a CRC8 (poly 0xD5) for protocol integrity. Frames are streamed 
-            to the FC over UART at 420 kbaud at ~150 Hz. Added a watchdog failsafe that 
-            disarms and drops throttle if packets are not received within 300 ms.
+            I implemented a low-latency ESP32-C3 receiver that bridges ESP-NOW packets to the 
+            CRSF protocol used by a drone flight controller. The receiver listens on a fixed 
+            Wi-Fi channel, parses a packed five-channel control message (roll, pitch, throttle, yaw, arm), 
+            and converts standard 1000–2000 µs RC values into CRSF’s 11-bit channel range. 
+            It then bit-packs 16 channels into the 22-byte CRSF payload and appends a 
+            CRC-8 checksum (polynomial 0xD5) to ensure protocol integrity. Complete CRSF frames 
+            are streamed to the flight controller over UART at 420 kbaud at approximately 150 Hz. 
+            A watchdog failsafe was added that automatically disarms and reduces throttle if 
+            no valid packets are received within 300 ms.
           </p>
         </div>
       </div>
