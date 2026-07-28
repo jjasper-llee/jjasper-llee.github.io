@@ -2,17 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <script>document.documentElement.classList.add('js');</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Project Title | Jasper Lee</title>
-  <link rel="stylesheet" href="style.css?v=20240621" />
+  <link rel="stylesheet" href="style.css?v=20260728" />
 </head>
 <body class="brain-theme project-detail">
-  <canvas id="brain-canvas"></canvas>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <canvas id="brain-canvas" aria-hidden="true"></canvas>
 
   <header>
     <div class="nav-left">
-      <h1 class="logo">Jasper Lee</h1>
-      <nav>
+      <a class="logo" href="index.html">Jasper Lee</a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+      </button>
+      <nav id="site-nav" class="site-nav">
         <a href="index.html#about">About</a>
         <a href="index.html#left-brain" class="active">Left Brain</a>
         <a href="index.html#right-brain">Right Brain</a>
@@ -22,7 +29,7 @@
     <!-- <a class="back-link" href="index.html#left-brain">← Back to Left Brain</a> -->
   </header>
 
-  <main class="project-page">
+  <main id="main-content" class="project-page">
     <section class="project-shell">
       <h2>Spider Circuit</h2>
       <p class="project-tagline">Turning circuitry into insect art.</p>
@@ -105,6 +112,6 @@
       }
     })();
   </script>
-  <script src="brain.js?v=20240621" defer></script>
+  <script src="brain.js?v=20260728" defer></script>
 </body>
 </html>

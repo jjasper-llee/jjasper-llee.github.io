@@ -2,16 +2,23 @@
 <html lang="en"> 
 <head>
   <meta charset="UTF-8" />
+  <script>document.documentElement.classList.add('js');</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Jasper Lee</title>
-  <link rel="stylesheet" href="style.css?v=20240621" />
+  <link rel="stylesheet" href="style.css?v=20260728" />
 </head>
 <body class="brain-theme">
-  <canvas id="brain-canvas"></canvas>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <canvas id="brain-canvas" aria-hidden="true"></canvas>
   <header>
     <div class="nav-left">
-      <h1 class="logo">Jasper Lee</h1>
-      <nav>
+      <a class="logo" href="index.html">Jasper Lee</a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+      </button>
+      <nav id="site-nav" class="site-nav">
         <a href="#about" data-section="about" class="active">About</a>
         <a href="#left-brain" data-section="left-brain">Left Brain</a>
         <a href="#right-brain" data-section="right-brain">Right Brain</a>
@@ -22,7 +29,7 @@
 
   <div class="brain-hero-spacer" aria-hidden="true"></div>
 
-  <main>
+  <main id="main-content">
     <!-- === ABOUT === -->
     <section id="about" class="page">
       <img src="profile-pic.jpg" alt="Jasper Lee" class="float-right" loading="lazy" decoding="async" width="734" height="760" />
@@ -234,111 +241,93 @@ Jasper has attended summer programs including Morningside Music Bridge, Music@Me
           src="https://www.youtube.com/embed/zupK081erVk"
           title="Britten"
           frameborder="0"
-          allowfullscreen
-        ></iframe>
+          allowfullscreen loading="lazy"></iframe>
         <iframe
           src="https://www.youtube.com/embed/VlcR8Cx_-2w"
           title="Rach Sonata"
           frameborder="0"
-          allowfullscreen
-        ></iframe>
+          allowfullscreen loading="lazy"></iframe>
         <iframe
           src="https://www.youtube.com/embed/FqO-5J4umaw"
           title="Bach Suite III"
           frameborder="0"
-          allowfullscreen
-        ></iframe>
+          allowfullscreen loading="lazy"></iframe>
         <iframe
           src="https://www.youtube.com/embed/ORzaIAaJ6bg"
           title="Myaskovsky"
           frameborder="0"
-          allowfullscreen
-        ></iframe>
+          allowfullscreen loading="lazy"></iframe>
         <iframe
           src="https://www.youtube.com/embed/_t_MBDvVGL0"
           title="Smetana Piano Trio"
           frameborder="0"
-          allowfullscreen
-        ></iframe>
+          allowfullscreen loading="lazy"></iframe>
         <iframe
           src="https://www.youtube.com/embed/6ZXxoSSx9tQ"
           title="Ghost Trio"
           frameborder="0"
-          allowfullscreen
-        ></iframe>
+          allowfullscreen loading="lazy"></iframe>
         <iframe
           src="https://www.youtube.com/embed/thjBS7mDWXA"
           title="Dvorak Piano trio"
           frameborder="0"
-          allowfullscreen
-        ></iframe>
+          allowfullscreen loading="lazy"></iframe>
         <iframe
           src="https://www.youtube.com/embed/lxlcMh5MRLQ"
           title="Grieg"
           frameborder="0"
-          allowfullscreen
-        ></iframe>
+          allowfullscreen loading="lazy"></iframe>
         
         <iframe
           src="https://www.youtube.com/embed/nBBgEOe109w"
           title="Prokofiev"
           frameborder="0"
-          allowfullscreen
-        ></iframe>
+          allowfullscreen loading="lazy"></iframe>
         <iframe
           src="https://www.youtube.com/embed/L2IKDHzffIw"
           title="Hayden Rider"
           frameborder="0"
-          allowfullscreen
-        ></iframe>
+          allowfullscreen loading="lazy"></iframe>
         <iframe
           src="https://www.youtube.com/embed/dQxwrbtbP38"
           title="Mendy Quartet fmior"
           frameborder="0"
-          allowfullscreen
-        ></iframe>
+          allowfullscreen loading="lazy"></iframe>
         <iframe
           src="https://www.youtube.com/embed/87ZJvGDjxJY"
           title="Prokofiev"
           frameborder="0"
-          allowfullscreen
-        ></iframe>
+          allowfullscreen loading="lazy"></iframe>
         <iframe
           src="https://www.youtube.com/embed/OcbwWBQAoQ4"
           title="Beethoven Quartet Pueri"
           frameborder="0"
-          allowfullscreen
-        ></iframe>
+          allowfullscreen loading="lazy"></iframe>
         <iframe
           src="https://www.youtube.com/embed/7POcUOZQhP4"
           title="bloch trio"
           frameborder="0"
-          allowfullscreen
-        ></iframe>
+          allowfullscreen loading="lazy"></iframe>
         <iframe
           src="https://www.youtube.com/embed/UtUlo4MIsfc"
           title="fairy tale yang trio"
           frameborder="0"
-          allowfullscreen
-        ></iframe>
+          allowfullscreen loading="lazy"></iframe>
         <iframe
           src="https://www.youtube.com/embed/N1e9fcLQllw"
           title="Mendy Octet"
           frameborder="0"
-          allowfullscreen
-        ></iframe>
+          allowfullscreen loading="lazy"></iframe>
         <iframe
           src="https://www.youtube.com/embed/d_xAeGKAZws"
           title="Borodin w/ SFS"
           frameborder="0"
-          allowfullscreen
-        ></iframe>
+          allowfullscreen loading="lazy"></iframe>
         <iframe
           src="https://www.youtube.com/embed/jVwnkbXuXAw"
           title="Beethoven String at MIT"
           frameborder="0"
-          allowfullscreen
-        ></iframe>
+          allowfullscreen loading="lazy"></iframe>
       </div>
     </section>
 
@@ -355,7 +344,7 @@ Jasper has attended summer programs including Morningside Music Bridge, Music@Me
     <p>© 2025 Jasper Lee</p>
   </footer>
 
-  <script src="brain.js?v=20240621" defer></script>
+  <script src="brain.js?v=20260728" defer></script>
   <script>
     // Page switching navigation
     const navLinks = document.querySelectorAll('nav a');
@@ -414,6 +403,10 @@ Jasper has attended summer programs including Morningside Music Bridge, Music@Me
       });
 
       updateBrainHighlight(section);
+
+      // retints every accent on the page (nav underline, panel rim, tile glow)
+      document.body.dataset.hemi =
+        section === 'left-brain' ? 'left' : section === 'right-brain' ? 'right' : '';
 
       if (scroll) {
         window.scrollTo({ top: 0, behavior: 'smooth' });

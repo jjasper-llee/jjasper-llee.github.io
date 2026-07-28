@@ -1,556 +1,891 @@
-/* === Base === */
-html, body {
+/* ============================================================================
+   ABYSS  —  jjasper-llee.github.io
+   A deep-space / deep-ocean theme: nebula and starfield behind, bioluminescent
+   glow and underwater motion in front.
+
+   Structure
+     1  Design tokens
+     2  Base + reset
+     3  Backdrop layers (starfield, nebula, godrays, marine snow)
+     4  Header + mobile nav
+     5  Layout + glass panels
+     6  Project tiles
+     7  Right brain / video grid
+     8  Contact + footer
+     9  Project detail pages
+    10  Page-specific components (gallery, embeds)
+    11  Keyframes
+    12  Responsive
+    13  Reduced motion / high contrast
+
+   Note: this file previously contained the "Brain Theme Overrides" block twice
+   with conflicting values (the second silently won), and #brain-canvas twice.
+   Both duplications are gone, and the ~116-line <style> block that was
+   copy-pasted into 9 project pages now lives in section 9.
+   ========================================================================= */
+
+/* ============================================================
+   1  DESIGN TOKENS
+   ============================================================ */
+:root {
+  color-scheme: dark;
+
+  /* Depth ramp — the water column */
+  --abyss-1000: #01030a;
+  --abyss-900:  #03060f;
+  --abyss-800:  #050b1c;
+  --abyss-700:  #071228;
+  --abyss-600:  #0b1b38;
+  --abyss-500:  #10264c;
+
+  /* Glass surfaces, composited over the backdrop */
+  --surface-glass:   rgba(8, 18, 40, 0.62);
+  --surface-glass-2: rgba(11, 25, 54, 0.72);
+  --surface-glass-3: rgba(15, 33, 68, 0.85);
+  --surface-header:  rgba(5, 12, 28, 0.72);
+  --surface-sunken:  rgba(3, 9, 22, 0.72);
+  --surface-scrim:   rgba(2, 6, 16, 0.96);
+
+  /* Borders */
+  --border-hairline: rgba(126, 214, 235, 0.14);
+  --border-soft:     rgba(126, 214, 235, 0.22);
+  --border-active:   rgba(126, 214, 235, 0.38);
+  --border-glow:     rgba(79, 227, 208, 0.45);
+  --border-inner:    rgba(190, 235, 255, 0.08);
+
+  /* Text tiers — all verified >= WCAG AA on every surface below */
+  --text-1: #eef4ff;
+  --text-2: #b9cbe8;
+  --text-3: #8296b8;   /* 4.83:1 worst case — never below 16px, never a link */
+  --text-on-accent: #03060f;
+
+  /* Bioluminescence */
+  --biolume:        #4fe3d0;
+  --biolume-bright: #7ff5e6;
+  --biolume-wash:   rgba(79, 227, 208, 0.14);
+
+  /* Aurora */
+  --aurora:        #a37bff;
+  --aurora-bright: #c4a6ff;
+
+  /* Hemisphere pair — left = analytical cyan, right = creative violet */
+  --hemi-left:       #3fd8f5;
+  --hemi-left-soft:  rgba(63, 216, 245, 0.16);
+  --hemi-left-glow:  rgba(63, 216, 245, 0.34);
+  --hemi-right:      #c273ff;
+  --hemi-right-soft: rgba(194, 115, 255, 0.16);
+  --hemi-right-glow: rgba(194, 115, 255, 0.34);
+
+  /* Default accent; overridden per section below */
+  --hemi:      var(--biolume);
+  --hemi-soft: var(--biolume-wash);
+  --hemi-glow: rgba(79, 227, 208, 0.34);
+
+  /* Nebula stops */
+  --neb-core:   rgba(58, 96, 196, 0.42);
+  --neb-teal:   rgba(22, 122, 138, 0.30);
+  --neb-violet: rgba(104, 62, 176, 0.26);
+  --neb-void:   rgba(1, 3, 10, 0);
+
+  /* Elevation */
+  --shadow-1: 0 1px 2px rgba(0,0,0,.40), 0 6px 18px rgba(2,8,22,.38);
+  --shadow-2: 0 2px 4px rgba(0,0,0,.35), 0 18px 46px rgba(2,8,22,.52);
+  --shadow-3: 0 4px 8px rgba(0,0,0,.30), 0 36px 88px rgba(1,5,16,.66);
+  --shadow-inset: inset 0 1px 0 0 var(--border-inner);
+  --glow-cyan:   0 0 0 1px var(--border-glow),
+                 0 14px 44px rgba(23,168,152,.26),
+                 0 0 72px rgba(79,227,208,.16);
+  --glow-violet: 0 0 0 1px rgba(163,123,255,.42),
+                 0 14px 44px rgba(104,62,176,.28),
+                 0 0 72px rgba(163,123,255,.16);
+
+  /* Radii / blur */
+  --r-xs: 6px;  --r-sm: 10px; --r-md: 14px;
+  --r-lg: 20px; --r-xl: 28px; --r-pill: 999px;
+  --blur-sm: 8px; --blur-md: 16px; --blur-lg: 28px;
+
+  /* Spacing */
+  --sp-1: .25rem; --sp-2: .5rem;  --sp-3: .75rem; --sp-4: 1rem;
+  --sp-5: 1.5rem; --sp-6: 2rem;   --sp-7: 2.5rem; --sp-8: 3rem;
+  --sp-9: 4rem;   --sp-10: 5rem;
+
+  /* Layout */
+  --measure: 68ch;
+  --wrap: 1080px;
+  --wrap-wide: 1280px;
+  --header-h: 4.5rem;
+
+  /* Motion */
+  --dur-1: 120ms; --dur-2: 220ms; --dur-3: 380ms; --dur-4: 640ms;
+  --dur-sheen: 900ms;
+  --amb-bob: 7s; --amb-caustic: 26s; --amb-godray: 19s;
+  --amb-drift: 58s; --amb-nebula: 44s;
+
+  --ease-out:   cubic-bezier(.22,.61,.36,1);
+  --ease-water: cubic-bezier(.33,.90,.25,1);
+  --ease-spring:cubic-bezier(.34,1.36,.64,1);
+  --ease-inout: cubic-bezier(.65,0,.35,1);
+
+  /* Type */
+  --font-sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+               Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Monaco,
+               Consolas, 'Liberation Mono', monospace;
+}
+
+/* One rule wires the accent pair to context, so no component hardcodes it. */
+body[data-hemi="left"],  #left-brain  {
+  --hemi: var(--hemi-left);  --hemi-soft: var(--hemi-left-soft);  --hemi-glow: var(--hemi-left-glow);
+}
+body[data-hemi="right"], #right-brain {
+  --hemi: var(--hemi-right); --hemi-soft: var(--hemi-right-soft); --hemi-glow: var(--hemi-right-glow);
+}
+
+/* ============================================================
+   2  BASE + RESET
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  background: var(--abyss-900);
+  scroll-padding-top: calc(var(--header-h) + var(--sp-4));
+  -webkit-text-size-adjust: 100%;
+}
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+
+body {
   margin: 0;
-  padding: 0;
-  font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
-  font-weight: 300;
-  color: #ffffff;
-  background: #020712;
-  overflow-x: hidden;
+  /* `clip` rather than `hidden`: hidden makes html a scroll container, which
+     breaks position:sticky descendants and causes scroll-anchoring jitter. */
+  overflow-x: clip;
+  background: transparent;
+  color: var(--text-1);
+  font-family: var(--font-sans);
+  font-weight: 380;
+  font-size: clamp(1rem, .96rem + .18vw, 1.075rem);
+  line-height: 1.65;
+  min-height: 100vh;
+  min-height: 100svh;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 { margin-block: 0 var(--sp-3); text-wrap: balance; }
+h1 { font-size: clamp(2rem, 1.55rem + 2.25vw, 3.2rem); font-weight: 560; line-height: 1.06; letter-spacing: -.028em; }
+h2 { font-size: clamp(1.55rem, 1.3rem + 1.15vw, 2.3rem);  font-weight: 520; line-height: 1.14; letter-spacing: -.02em;  color: var(--text-1); }
+h3 { font-size: clamp(1.18rem, 1.08rem + .45vw, 1.45rem); font-weight: 520; line-height: 1.25; letter-spacing: -.012em; color: var(--text-1); }
+h4 { font-size: 1.02rem; font-weight: 540; color: var(--text-1); }
+
+p { margin: 0 0 var(--sp-4); max-width: var(--measure); line-height: 1.7; color: var(--text-2); text-wrap: pretty; }
+img, iframe, canvas, video { display: block; max-width: 100%; }
+img { height: auto; background: var(--abyss-800); }
+
+a {
+  color: var(--biolume-bright);
+  text-decoration-color: var(--border-glow);
+  text-underline-offset: .18em;
+  text-decoration-thickness: 1px;
+  transition: color var(--dur-1) var(--ease-out), text-decoration-color var(--dur-1) var(--ease-out);
+}
+a:hover { color: #a9fbef; text-decoration-color: currentColor; }
+
+:focus-visible { outline: 2px solid var(--biolume-bright); outline-offset: 3px; border-radius: var(--r-xs); }
+:focus:not(:focus-visible) { outline: none; }
+
+::selection { background: var(--biolume-wash); color: var(--biolume-bright); }
+
+.skip-link {
+  position: absolute; left: var(--sp-4); top: var(--sp-4); z-index: 200;
+  padding: var(--sp-3) var(--sp-4); border-radius: var(--r-sm);
+  background: var(--biolume-bright); color: var(--text-on-accent);
+  font-weight: 560; text-decoration: none;
+  transform: translateY(-180%);
+  transition: transform var(--dur-2) var(--ease-spring);
+}
+.skip-link:focus-visible { transform: translateY(0); }
+
+/* The SPA hides sections with display:none. Without JS that blanks the whole
+   site, so un-hide everything until JS confirms it is running. */
+html:not(.js) .page { display: block !important; }
+
+/* ============================================================
+   3  BACKDROP LAYERS
+   Painted with four fixed pseudo-elements — no extra markup.
+   Order: stars(-3) -> nebula(-2) -> godrays(-1) -> canvas(1)
+          -> marine snow(2) -> content(3)
+   ============================================================ */
+html::before, html::after, body::before, body::after {
+  content: ""; position: fixed; pointer-events: none;
+}
+
+/* Starfield, slow diagonal parallax. Tile size == translate distance, so the
+   loop is seamless. */
+html::before {
+  inset: -50vh -50vw; z-index: -3;
+  background-image:
+    radial-gradient(1.6px 1.6px at 18% 22%, rgba(232,246,255,.95), transparent 55%),
+    radial-gradient(1.1px 1.1px at 71% 41%, rgba(190,225,255,.75), transparent 55%),
+    radial-gradient(1.4px 1.4px at 43% 78%, rgba(255,255,255,.85), transparent 55%),
+    radial-gradient(1px   1px   at 88% 12%, rgba(160,230,240,.70), transparent 55%),
+    radial-gradient(1.9px 1.9px at 9%  63%, rgba(200,240,255,.90), transparent 55%),
+    radial-gradient(1px   1px   at 61% 91%, rgba(255,255,255,.60), transparent 55%);
+  background-size: 420px 420px;
+  opacity: .55;
+  animation: star-drift 190s linear infinite;
+}
+
+/* Nebula clouds, breathing */
+html::after {
+  inset: -30%; z-index: -2;
+  background:
+    radial-gradient(52% 40% at 24% 12%, var(--neb-core),   var(--neb-void) 68%),
+    radial-gradient(46% 38% at 82% 30%, var(--neb-violet), var(--neb-void) 70%),
+    radial-gradient(64% 46% at 50% 88%, var(--neb-teal),   var(--neb-void) 74%),
+    radial-gradient(38% 30% at 8%  72%, rgba(12,64,120,.28), var(--neb-void) 70%);
+  filter: blur(52px);
+  opacity: .72;
+  animation: nebula-breathe var(--amb-nebula) var(--ease-inout) infinite;
+}
+
+/* Godrays — surface light spearing down through the column */
+body::before {
+  inset: -20vh -30vw; z-index: -1;
+  background: repeating-linear-gradient(101deg,
+      transparent 0px,
+      rgba(150,225,255,.055) 42px,
+      rgba(190,245,255,.085) 78px,
+      rgba(150,225,255,.045) 108px,
+      transparent 188px);
+  -webkit-mask-image: radial-gradient(72% 92% at 50% -12%, #000 8%, transparent 76%);
+          mask-image: radial-gradient(72% 92% at 50% -12%, #000 8%, transparent 76%);
+  filter: blur(3px);
+  mix-blend-mode: screen;
+  opacity: .5;
+  animation: godray-sweep var(--amb-godray) var(--ease-inout) infinite;
+}
+
+/* Marine snow — drifting motes, above the brain canvas for depth */
+body::after {
+  inset: -120px; z-index: 2;
+  background-image:
+    radial-gradient(1.8px 1.8px at 26% 18%, rgba(200,245,255,.30), transparent 60%),
+    radial-gradient(1.2px 1.2px at 74% 52%, rgba(160,230,255,.24), transparent 60%),
+    radial-gradient(2.4px 2.4px at 48% 84%, rgba(220,255,255,.20), transparent 60%),
+    radial-gradient(1.4px 1.4px at 12% 66%, rgba(180,240,255,.26), transparent 60%);
+  background-size: 340px 340px;
+  opacity: .5;
+  mix-blend-mode: screen;
+  animation: marine-snow var(--amb-drift) linear infinite;
 }
 
 #brain-canvas {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  position: fixed; inset: 0;
+  width: 100%; height: 100%;
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
 }
 
-#brain-canvas {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* === Header === */
+/* ============================================================
+   4  HEADER + MOBILE NAV
+   ============================================================ */
 header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background: #fff;
-  border-bottom: 1px solid #ddd;
-  padding: 1rem 2rem;
-  z-index: 10;
+  position: fixed; inset: 0 0 auto; z-index: 100;
+  padding: var(--sp-3) clamp(var(--sp-4), 4vw, var(--sp-7));
+  background: var(--surface-header);
+  border-bottom: 1px solid var(--border-hairline);
+  box-shadow: 0 1px 0 0 var(--border-inner), var(--shadow-2);
+}
+@supports (backdrop-filter: blur(1px)) {
+  header { background: rgba(5,12,28,.55); backdrop-filter: blur(var(--blur-md)) saturate(1.4); }
 }
 
-.nav-left {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-}
+.nav-left { display: flex; align-items: center; gap: var(--sp-5); min-height: 3rem; }
 
 .logo {
-  font-weight: 600;
-  font-size: 1.2rem;
-  margin-right: 1rem;
+  margin: 0;                       /* h1 default margin used to inflate the header */
+  margin-inline-end: auto;
+  font-size: 1.15rem; font-weight: 560; letter-spacing: -.015em;
+  color: var(--text-1); text-decoration: none; white-space: nowrap;
+  transition: color var(--dur-1) var(--ease-out);
 }
+.logo:hover { color: var(--biolume-bright); }
+
+nav, .site-nav { display: flex; align-items: center; gap: clamp(var(--sp-4), 2.2vw, var(--sp-6)); }
 
 nav a {
-  color: inherit;
-  text-decoration: none;
-  margin-right: 1.5rem;
-  font-size: 1rem;
-  transition: color 0.3s ease;
+  position: relative;
+  color: var(--text-2); text-decoration: none;
+  font-size: .95rem; font-weight: 420;
+  padding: var(--sp-2) 0; white-space: nowrap;
+  transition: color var(--dur-2) var(--ease-out);
 }
-nav a:hover, nav a.active {
-  color: #ffe07a;
+/* bioluminescent underline that swims in */
+nav a::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--hemi), transparent);
+  box-shadow: 0 0 10px var(--hemi-glow);
+  transform: scaleX(0);
+  transition: transform var(--dur-3) var(--ease-water);
 }
+nav a:hover, nav a.active { color: var(--text-1); }
+nav a:hover::after, nav a.active::after { transform: scaleX(1); }
 
-/* === Layout === */
-main {
-  max-width: 900px;
-  margin: 0 auto 4rem;
-  padding: 0 2rem;
-  text-align: center;
-}
-
-.brain-hero-spacer {
-  height: clamp(420px, 78vh, 720px);
-}
-
-.page {
+/* Bars are absolutely positioned rather than grid rows, so the open-state X
+   lands exactly on centre regardless of how the box resolves its row heights. */
+.nav-toggle {
   display: none;
-  animation: fadeIn 0.5s ease;
+  position: relative;
+  width: 2.75rem; height: 2.75rem; padding: 0;   /* 44px touch target */
+  border: 1px solid var(--border-hairline); border-radius: var(--r-sm);
+  background: var(--surface-glass-2);
+  cursor: pointer;
+  transition: border-color var(--dur-2) var(--ease-out), box-shadow var(--dur-2) var(--ease-out);
 }
-.page.visible {
-  display: block;
+.nav-toggle:hover { border-color: var(--border-active); box-shadow: var(--glow-cyan); }
+.nav-toggle__bar {
+  position: absolute; left: 50%; top: 50%;
+  width: 18px; height: 2px; margin-left: -9px; border-radius: 2px;
+  background: var(--text-1);
+  transition: transform var(--dur-3) var(--ease-spring), opacity var(--dur-1) linear;
 }
+.nav-toggle__bar:nth-child(1) { transform: translateY(-7px); }
+.nav-toggle__bar:nth-child(2) { transform: translateY(-1px); }
+.nav-toggle__bar:nth-child(3) { transform: translateY(5px); }
+.nav-toggle[aria-expanded="true"] .nav-toggle__bar:nth-child(1) { transform: translateY(-1px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] .nav-toggle__bar:nth-child(2) { opacity: 0; transform: translateY(-1px) scaleX(.2); }
+.nav-toggle[aria-expanded="true"] .nav-toggle__bar:nth-child(3) { transform: translateY(-1px) rotate(-45deg); }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+/* ============================================================
+   5  LAYOUT + GLASS PANELS
+   ============================================================ */
+body.brain-theme:not(.project-detail) { padding-top: calc(var(--header-h) + var(--sp-5)); }
 
-h2 {
-  margin-top: 1rem;
-  color: inherit;
-  font-weight: 400;
-}
-
-/* === About === */
-.profile-photo {
-  display: block;
-  margin: 2rem auto;
-  width: 200px;
-  height: 200px;
-  border-radius: 10px;
-  object-fit: cover;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-
-p {
-  line-height: 1.6;
-  font-size: 1.05rem;
-  max-width: 700px;
-  margin: 1rem auto;
-  color: inherit;
-}
-
-/* === Left Brain === */
-.projects {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.5rem;
-  margin-top: 2rem;
-}
-.project {
-  text-decoration: none;
-  color: inherit;
-  border: 1px solid #eee;
-  border-radius: 8px;
-  overflow: hidden;
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-.project:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-.project img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-}
-.caption {
-  padding: 0.8rem;
-  font-weight: 400;
+main {
+  position: relative; z-index: 3;
+  max-width: var(--wrap);
+  margin: 0 auto var(--sp-9);
+  padding-inline: clamp(var(--sp-4), 4vw, var(--sp-6));
   text-align: center;
-  color: inherit;
 }
 
-/* === Right Brain === */
-.creative-content {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 1.5rem;
-  line-height: 1.6;
-  text-align: left;
+.brain-hero-spacer { height: clamp(340px, 62vh, 640px); }
+
+.page { display: none; }
+.page.visible { display: block; animation: surface-in var(--dur-4) var(--ease-water) both; }
+
+.page, .project-shell {
+  position: relative; isolation: isolate;
+  background: var(--surface-glass);
+  border: 1px solid var(--border-hairline);
+  border-radius: clamp(var(--r-lg), 2.2vw, var(--r-xl));
+  padding: clamp(var(--sp-6), 4vw, var(--sp-8)) clamp(var(--sp-5), 4vw, var(--sp-8));
+  box-shadow: var(--shadow-3), var(--shadow-inset);
+  overflow: clip;
 }
+@supports (backdrop-filter: blur(1px)) {
+  .page, .project-shell {
+    background: rgba(8,18,40,.44);
+    backdrop-filter: blur(var(--blur-lg)) saturate(1.35) brightness(1.04);
+  }
+}
+
+/* refracted rim, lit from above-left as if from the surface */
+.page::before, .project-shell::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  border-radius: inherit; padding: 1px;
+  background: linear-gradient(150deg,
+      rgba(190,240,255,.30) 0%, rgba(190,240,255,.04) 26%,
+      transparent 55%, var(--hemi-soft) 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* caustic light drifting inside the panel */
+.page::after, .project-shell::after {
+  content: ""; position: absolute; inset: -30%; z-index: -1;
+  background:
+    radial-gradient(38% 26% at 22% 18%, rgba(120,240,230,.16), transparent 62%),
+    radial-gradient(30% 22% at 78% 34%, rgba(140,120,255,.13), transparent 66%),
+    radial-gradient(46% 30% at 50% 96%, rgba(40,120,190,.14), transparent 70%);
+  filter: blur(28px); opacity: .75;
+  animation: caustic-drift var(--amb-caustic) var(--ease-inout) infinite;
+  pointer-events: none;
+}
+
+.page p, .project-shell p { margin-inline: auto; }
+
 .float-right {
-  width: 250px;
-  height: 250px;
-  border-radius: 10px;
+  width: 250px; height: 250px;
+  border-radius: var(--r-lg);
   object-fit: cover;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  border: 1px solid var(--border-soft);
+  box-shadow: var(--shadow-2);
   flex-shrink: 0;
 }
 
-/* === Right Brain Videos === */
+.profile-photo {
+  display: block; margin: var(--sp-6) auto;
+  width: 200px; height: 200px;
+  border-radius: var(--r-lg); object-fit: cover;
+  border: 1px solid var(--border-soft);
+  box-shadow: var(--shadow-2);
+}
+
+.center-img { display: block; margin-inline: auto; max-width: 100%; }
+
+/* ============================================================
+   6  PROJECT TILES
+   ============================================================ */
+.projects {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 268px), 1fr));
+  gap: clamp(var(--sp-4), 2vw, var(--sp-5));
+  margin-top: var(--sp-7);
+}
+
+.project {
+  position: relative; isolation: isolate;
+  display: flex; flex-direction: column;
+  color: inherit; text-decoration: none;
+  background: var(--surface-glass-2);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--r-lg);
+  overflow: clip;
+  box-shadow: var(--shadow-1), var(--shadow-inset);
+  transition: transform var(--dur-3) var(--ease-water),
+              border-color var(--dur-2) var(--ease-out),
+              background-color var(--dur-2) var(--ease-out);
+  animation: submerge-bob var(--amb-bob) var(--ease-inout) infinite;
+  animation-delay: calc(var(--i, 0) * -0.83s);
+}
+.projects > :nth-child(6n+1) { --i: 0 } .projects > :nth-child(6n+2) { --i: 1 }
+.projects > :nth-child(6n+3) { --i: 2 } .projects > :nth-child(6n+4) { --i: 3 }
+.projects > :nth-child(6n+5) { --i: 4 } .projects > :nth-child(6n+6) { --i: 5 }
+
+.project img {
+  width: 100%; aspect-ratio: 4 / 3; object-fit: cover;
+  transition: transform var(--dur-4) var(--ease-water), filter var(--dur-3) var(--ease-out);
+}
+
+/* glow is pre-painted and only its opacity animates — no box-shadow recalc */
+.project::before {
+  content: ""; position: absolute; inset: -1px; z-index: -1;
+  border-radius: inherit; box-shadow: var(--glow-cyan);
+  opacity: 0; transition: opacity var(--dur-3) var(--ease-out);
+  pointer-events: none;
+}
+#right-brain .project::before { box-shadow: var(--glow-violet); }
+
+/* light refracting through moving water */
+.project::after {
+  content: ""; position: absolute; inset: -40% -60%; z-index: 2;
+  background: linear-gradient(104deg,
+      transparent 38%, rgba(180,250,255,.07) 45%,
+      rgba(230,255,255,.24) 50%, rgba(180,250,255,.07) 55%, transparent 62%);
+  transform: translate3d(-160%, 0, 0) skewX(-18deg);
+  opacity: 0; pointer-events: none; mix-blend-mode: screen;
+}
+
+.project:hover, .project:focus-visible {
+  transform: translate3d(0, -7px, 0);
+  border-color: var(--border-active);
+  background: var(--surface-glass-3);
+  animation-play-state: paused;
+}
+.project:hover::before, .project:focus-visible::before { opacity: 1; }
+.project:hover::after,  .project:focus-visible::after {
+  opacity: 1; animation: refract-sweep var(--dur-sheen) var(--ease-out) forwards;
+}
+.project:hover img, .project:focus-visible img {
+  transform: scale(1.055); filter: saturate(1.14) brightness(1.05);
+}
+.project:active { transform: translate3d(0, -3px, 0); transition-duration: var(--dur-1); }
+
+.caption {
+  padding: var(--sp-4) var(--sp-4) var(--sp-5);
+  font-size: .95rem; font-weight: 440; line-height: 1.4;
+  color: var(--text-1); text-align: left; margin-top: auto;
+  text-wrap: balance;
+}
+
+/* --- Not-yet-published tiles -------------------------------------------
+   Dim the IMAGE, never the whole tile. A blanket opacity of .45 drops the
+   caption to 2.98:1, which fails WCAG AA; this keeps it at 8.91:1. */
+.project--soon { cursor: default; animation: none; border-color: rgba(126,214,235,.09); background: rgba(8,16,34,.55); }
+.project--soon img { opacity: .34; filter: grayscale(.72) brightness(.82); }
+.project--soon:hover { transform: none; border-color: rgba(126,214,235,.09); background: rgba(8,16,34,.55); }
+.project--soon:hover img { transform: none; filter: grayscale(.72) brightness(.82); }
+.project--soon::before, .project--soon::after { display: none; }
+a.project--soon { pointer-events: none; }
+
+.badge {
+  display: inline-flex; align-items: center;
+  margin-left: var(--sp-2);
+  padding: .18em .6em .22em;
+  border-radius: var(--r-pill);
+  border: 1px solid rgba(126,214,235,.30);
+  background: var(--biolume-wash); color: var(--biolume-bright);
+  font-size: .68rem; font-weight: 520; letter-spacing: .07em;
+  text-transform: uppercase; white-space: nowrap; vertical-align: middle;
+}
+.badge::before {
+  content: ""; width: 5px; height: 5px; margin-right: .45em;
+  border-radius: 50%; background: currentColor;
+  box-shadow: 0 0 7px currentColor;
+  animation: biolume-pulse 3.4s var(--ease-inout) infinite;
+}
+
+/* ============================================================
+   7  RIGHT BRAIN / VIDEO GRID
+   ============================================================ */
+.creative-content {
+  display: flex; flex-wrap: wrap;
+  align-items: flex-start; justify-content: center;
+  gap: var(--sp-5); text-align: left;
+}
+.creative-content p { text-align: left; }
+
 .video-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
-  margin-top: 2rem;
-  justify-items: center;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  gap: clamp(var(--sp-4), 2vw, var(--sp-5));
+  margin-top: var(--sp-7);
 }
 .video-grid iframe {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  border: none;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  width: 100%; aspect-ratio: 16 / 9; border: 0;
+  border-radius: var(--r-md);
+  background: var(--abyss-800);
+  box-shadow: var(--shadow-2);
+  outline: 1px solid var(--border-hairline); outline-offset: -1px;
+  transition: box-shadow var(--dur-3) var(--ease-out), outline-color var(--dur-2) var(--ease-out);
 }
+.video-grid iframe:hover { box-shadow: var(--shadow-2), var(--glow-violet); outline-color: var(--border-active); }
 
-/* === Contact === */
-#contact {
-  text-align: center;
-  line-height: 1.8;
-}
-#contact a {
-  color: #ffe07a;
-  text-decoration: none;
-}
-#contact a:hover {
-  text-decoration: underline;
-}
+/* ============================================================
+   8  CONTACT + FOOTER
+   ============================================================ */
+#contact { line-height: 2; }
+#contact p { max-width: none; }
+#contact a { text-decoration: none; border-bottom: 1px solid var(--border-glow); padding-bottom: 1px; }
+#contact a:hover { border-bottom-color: currentColor; text-shadow: 0 0 18px var(--border-glow); }
 
-/* === Footer === */
 footer {
-  text-align: center;
-  padding: 2rem;
-  font-size: 0.9rem;
-  color: inherit;
-  border-top: 1px solid rgba(67, 104, 186, 0.45);
-  background: transparent;
+  position: relative; z-index: 3;
+  margin-top: var(--sp-10);
+  padding: var(--sp-8) var(--sp-6) var(--sp-9);
+  text-align: center; font-size: .9rem; color: var(--text-3);
+  border-top: 1px solid var(--border-hairline);
+  background: linear-gradient(to bottom, transparent, rgba(1,3,10,.72));
 }
+footer::before {
+  content: ""; position: absolute; inset: -1px 0 auto; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--biolume-wash) 22%,
+              var(--border-glow) 50%, var(--biolume-wash) 78%, transparent);
+  opacity: .7;
+}
+footer p { margin: 0; max-width: none; color: inherit; }
 
-/* === Brain Theme Overrides === */
-body.brain-theme {
-  background: radial-gradient(circle at 50% -20%, #1a2b5a 0%, #081028 48%, #020712 100%);
-  background-color: #020712;
-  color: #ffffff;
-  min-height: 100vh;
-}
-
-body.brain-theme:not(.project-detail) {
-  padding-top: clamp(72px, 11vh, 112px);
-}
-
-body.brain-theme header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 10;
-  background: rgba(5, 12, 32, 0.82);
-  border-bottom: 1px solid rgba(38, 66, 124, 0.45);
-  box-shadow: 0 20px 55px rgba(3, 10, 29, 0.55);
-  backdrop-filter: blur(16px);
-}
-
-body.brain-theme.project-detail header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 10;
-}
-
-body.brain-theme .logo {
-  color: #ffffff;
-  font-weight: 400;
-}
-
-body.brain-theme nav a {
-  color: #ffffff;
-  font-weight: 300;
-}
-
-body.brain-theme nav a:hover,
-body.brain-theme nav a.active {
-  color: #ffe07a;
-}
-
-body.brain-theme main {
-  color: inherit;
-  position: relative;
-  z-index: 1;
-}
-
-body.brain-theme .page {
-  background: rgba(5, 13, 35, 0.78);
-  border: 1px solid rgba(67, 104, 186, 0.55);
-  border-radius: 24px;
-  padding: 2.5rem 2rem;
-  box-shadow: 0 35px 90px rgba(2, 6, 20, 0.7);
-  backdrop-filter: blur(12px);
-}
-
-body.brain-theme h2 {
-  color: #ffffff;
-}
-
-body.brain-theme p {
-  color: #ffffff;
-}
-
-body.brain-theme .profile-photo {
-  box-shadow: 0 25px 60px rgba(9, 20, 54, 0.65);
-  border: 2px solid rgba(92, 134, 220, 0.6);
-}
-
-body.brain-theme .project {
-  border: 1px solid rgba(70, 103, 175, 0.65);
-  background: rgba(9, 19, 44, 0.75);
-  color: inherit;
-}
-
-body.brain-theme .project:hover {
-  box-shadow: 0 22px 48px rgba(6, 14, 35, 0.65);
-}
-
-body.brain-theme .caption {
-  color: #ffffff;
-}
-
-body.brain-theme .creative-content {
-  color: inherit;
-}
-
-body.brain-theme .video-grid iframe {
-  box-shadow: 0 24px 60px rgba(6, 12, 32, 0.7);
-}
-
-body.brain-theme #contact a {
-  color: #ffe07a;
-}
-
-body.brain-theme footer {
-  background: rgba(4, 11, 29, 0.88);
-  border-top: 1px solid rgba(38, 66, 124, 0.45);
-  color: #ffffff;
-  position: relative;
-  z-index: 1;
-}
-
-/* === Project Detail Layout === */
-body.project-detail header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 1rem 2rem;
-}
+/* ============================================================
+   9  PROJECT DETAIL PAGES
+   The .detail-card / .code-card rules below were duplicated verbatim in the
+   <head> of 9 project pages. Hoisted here so theming is a single-file change.
+   ============================================================ */
+body.project-detail header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--sp-4) var(--sp-6); }
 
 .project-page {
-  padding: 7.5rem 2rem 4rem;
-  position: relative;
-  z-index: 1;
+  padding: calc(var(--header-h) + var(--sp-7)) clamp(var(--sp-4), 4vw, var(--sp-6)) var(--sp-9);
+  position: relative; z-index: 3;
+  max-width: var(--wrap-wide); margin-inline: auto;
 }
 
-.project-shell {
-  background: rgba(5, 13, 35, 0.78);
-  border: 1px solid rgba(67, 104, 186, 0.55);
-  border-radius: 24px;
-  box-shadow: 0 35px 90px rgba(2, 6, 20, 0.7);
-  backdrop-filter: blur(12px);
-  padding: 3rem clamp(1.5rem, 3vw, 3rem);
-}
-
-.project-shell h2 {
-  margin-top: 0;
-  font-weight: 500;
-}
+.project-shell h2 { margin-top: 0; }
 
 .project-tagline {
-  font-size: 1.1rem;
-  color: rgba(217, 228, 255, 0.85);
-  margin-bottom: 2.5rem;
+  font-size: clamp(1.05rem, 1rem + .4vw, 1.25rem);
+  color: var(--text-2); font-weight: 340;
+  max-width: 56ch; margin: 0 auto var(--sp-7);
 }
 
 .project-section {
-  display: flex;
-  align-items: center;
-  gap: clamp(1.5rem, 3vw, 3rem);
-  margin-bottom: 3rem;
-  flex-wrap: wrap;
+  display: flex; align-items: center;
+  gap: clamp(var(--sp-5), 3vw, var(--sp-8));
+  margin-bottom: var(--sp-8); flex-wrap: wrap;
 }
+.project-section.reverse { flex-direction: row-reverse; }
 
-.project-section.reverse {
-  flex-direction: row-reverse;
-}
-
-.project-media {
-  flex: 1 1 clamp(260px, 40%, 380px);
-  min-width: 240px;
-}
-
+.project-media { flex: 1 1 clamp(260px, 40%, 380px); min-width: 240px; }
 .project-media img {
-  width: 100%;
-  border-radius: 18px;
-  box-shadow: 0 24px 60px rgba(6, 12, 32, 0.65);
-  border: 1px solid rgba(82, 124, 210, 0.45);
+  width: 100%; border-radius: var(--r-lg);
+  box-shadow: var(--shadow-2);
+  border: 1px solid var(--border-soft);
   object-fit: cover;
 }
 
-.project-copy {
-  flex: 1 1 320px;
-  text-align: left;
+.project-copy { flex: 1 1 320px; text-align: left; }
+.project-copy h3 { margin-bottom: var(--sp-3); }
+.project-copy ul { margin: var(--sp-5) 0 0; padding-left: 1.2rem; color: var(--text-2); line-height: 1.7; }
+
+/* opt-in full-width copy; only project1 + rpicam_servo had this rule live */
+.project-section.reverse.is-stacked .project-copy { flex: 1 1 100%; width: 100%; }
+
+.project-video { text-align: left; }
+.project-video h3 { margin-bottom: var(--sp-4); }
+
+.video-frame, .pdf-frame {
+  position: relative; width: 100%;
+  border-radius: var(--r-lg); overflow: hidden;
+  box-shadow: var(--shadow-2);
+  border: 1px solid var(--border-soft);
+}
+.video-frame { padding-top: 56.25%; }
+.pdf-frame   { padding-top: 129%; }
+.video-frame iframe, .pdf-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+.project-detail .project-copy .detail-intro { color: var(--text-2); margin-bottom: var(--sp-5); }
+
+.project-detail .project-copy .detail-grid {
+  display: flex; flex-direction: column; align-items: center;
+  gap: clamp(var(--sp-4), 2.5vw, 1.75rem);
+  margin-bottom: clamp(1.75rem, 3vw, var(--sp-7));
+  width: min(100%, 90vw); margin-inline: auto;
 }
 
-.project-copy h3 {
-  font-weight: 500;
-  margin-bottom: 0.75rem;
-  color: #f2f6ff;
+.project-detail .project-copy .detail-card {
+  background: rgba(10, 22, 58, 0.55);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-2);
+  padding: clamp(1.1rem, 2.4vw, 1.6rem);
+  min-width: 0; width: min(100%, 90vw); margin-inline: auto;
+}
+.project-detail .project-copy .detail-card h4 { margin-top: 0; margin-bottom: .85rem; }
+.project-detail .project-copy .detail-card ul {
+  margin: 0; padding-left: 1.1rem; line-height: 1.65;
+  color: var(--text-2); word-break: break-word; overflow-wrap: anywhere;
+}
+.project-detail .project-copy .detail-card ul li + li { margin-top: .35rem; }
+
+.project-detail .project-copy .code-card { margin-top: clamp(var(--sp-5), 3vw, var(--sp-7)); }
+.project-detail .project-copy .code-card p { margin-bottom: var(--sp-4); color: var(--text-2); }
+.project-detail .project-copy .code-card pre {
+  background: var(--surface-sunken);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--r-md);
+  padding: 1.1rem clamp(1.1rem, 2.5vw, 1.75rem);
+  margin: 0; overflow-x: auto; max-width: 100%;
+  box-shadow: inset 0 0 25px rgba(6, 12, 32, .55);
+}
+.project-detail .project-copy .code-card code {
+  display: block; font-family: var(--font-mono);
+  font-size: .92rem; line-height: 1.6; color: #f4f8ff;
+  white-space: pre-wrap; word-break: break-word; overflow-wrap: anywhere;
 }
 
-.project-copy ul {
-  margin: 1.5rem 0 0;
-  padding-left: 1.2rem;
-  color: rgba(217, 228, 255, 0.92);
-  line-height: 1.6;
+.project-detail .follow-progress { justify-content: center; }
+.project-detail .progress-button {
+  display: inline-block;
+  padding: .9rem 1.8rem; border-radius: var(--r-pill);
+  background: linear-gradient(135deg, var(--biolume-bright), var(--biolume));
+  color: var(--text-on-accent); font-weight: 600; text-decoration: none;
+  box-shadow: 0 12px 35px rgba(23,168,152,.35);
+  transition: transform var(--dur-2) var(--ease-out), box-shadow var(--dur-2) var(--ease-out);
+}
+.project-detail .progress-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 44px rgba(23,168,152,.48);
 }
 
-.project-video {
-  text-align: left;
+/* ============================================================
+   10  PAGE-SPECIFIC COMPONENTS
+   ============================================================ */
+/* photography.html */
+.photo-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: clamp(var(--sp-4), 2vw, var(--sp-5));
+  margin-top: var(--sp-6);
+}
+.photo-gallery-grid figure { margin: 0; }
+.photo-gallery-grid img {
+  width: 100%; border-radius: var(--r-md);
+  border: 1px solid var(--border-hairline);
+  box-shadow: var(--shadow-2);
+}
+.photo-gallery-grid figcaption {
+  margin-top: var(--sp-2); font-size: .88rem; color: var(--text-3); text-align: left;
 }
 
-.project-video h3 {
-  font-weight: 500;
-  margin-bottom: 1rem;
+/* bowvision.html / fingering-generator.html embeds */
+.embed-wrapper, .app-preview {
+  position: relative; width: 100%;
+  border-radius: var(--r-lg); overflow: hidden;
+  border: 1px solid var(--border-soft);
+  box-shadow: var(--shadow-2);
+  background: var(--abyss-800);
+  min-height: 60vh;
+}
+.embed-wrapper iframe, .app-preview iframe { width: 100%; height: 100%; min-height: 60vh; border: 0; display: block; }
+.embed-fallback, .app-fallback { padding: var(--sp-6); text-align: center; color: var(--text-2); }
+.app-fallback a { color: var(--biolume-bright); }
+.button {
+  display: inline-block; padding: .9rem 1.8rem;
+  border-radius: var(--r-pill);
+  background: linear-gradient(135deg, var(--biolume-bright), var(--biolume));
+  color: var(--text-on-accent); font-weight: 600; text-decoration: none;
 }
 
-.video-frame {
-  position: relative;
-  width: 100%;
-  padding-top: 56.25%;
-  border-radius: 18px;
-  overflow: hidden;
-  box-shadow: 0 24px 60px rgba(6, 12, 32, 0.65);
-  border: 1px solid rgba(82, 124, 210, 0.45);
+/* ============================================================
+   11  KEYFRAMES
+   Every frame-by-frame property is transform or opacity.
+   ============================================================ */
+@keyframes star-drift    { to { transform: translate3d(-420px, -420px, 0); } }
+@keyframes marine-snow   { to { transform: translate3d(-58px, -340px, 0); } }
+
+@keyframes nebula-breathe {
+  0%, 100% { transform: translate3d(0, 0, 0)        scale(1.04); opacity: .60; }
+  50%      { transform: translate3d(1.8%, -1.4%, 0) scale(1.13); opacity: .84; }
+}
+@keyframes godray-sweep {
+  0%, 100% { transform: translate3d(-7%, 0, 0) skewX(-11deg); opacity: .34; }
+  50%      { transform: translate3d( 7%, 0, 0) skewX( -6deg); opacity: .62; }
+}
+@keyframes caustic-drift {
+  0%   { transform: translate3d(-4%, -3%, 0) scale(1.10) rotate(0deg);   opacity: .60; }
+  33%  { transform: translate3d( 3%,  2%, 0) scale(1.20) rotate(1.1deg); opacity: .86; }
+  66%  { transform: translate3d( 1%, -4%, 0) scale(1.14) rotate(-.7deg); opacity: .70; }
+  100% { transform: translate3d(-4%, -3%, 0) scale(1.10) rotate(0deg);   opacity: .60; }
+}
+@keyframes submerge-bob {
+  0%, 100% { transform: translate3d(0, 0, 0)     rotate(0deg); }
+  50%      { transform: translate3d(0, -5px, 0)  rotate(-.24deg); }
+}
+@keyframes refract-sweep {
+  from { transform: translate3d(-160%, 0, 0) skewX(-18deg); }
+  to   { transform: translate3d( 160%, 0, 0) skewX(-18deg); }
+}
+@keyframes biolume-pulse {
+  0%, 100% { opacity: .45; transform: scale(.82); }
+  50%      { opacity: 1;   transform: scale(1.12); }
+}
+@keyframes surface-in {
+  from { opacity: 0; transform: translate3d(0, 22px, 0) scale(.985); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0)    scale(1); }
 }
 
-.video-frame iframe {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
-}
-.pdf-frame {
-  position: relative;
-  width: 100%;
-  padding-top: 129%;
-  border-radius: 18px;
-  overflow: hidden;
-  box-shadow: 0 24px 60px rgba(6, 12, 32, 0.65);
-  border: 1px solid rgba(82, 124, 210, 0.45);
+/* ============================================================
+   12  RESPONSIVE
+   ============================================================ */
+@media (max-width: 1024px) {
+  .projects { grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); }
 }
 
-.pdf-frame iframe {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
+/* Priority one: the nav needs ~568px inline and used to wrap, growing the
+   fixed header to 2-3 lines and occluding the top of the page. */
+@media (max-width: 860px) {
+  :root { --header-h: 4rem; }
+  .nav-toggle { display: grid; }
+  .nav-left { gap: var(--sp-3); }
+
+  nav, .site-nav {
+    position: absolute; inset: 100% 0 auto;
+    flex-direction: column; align-items: stretch; gap: 0;
+    padding: var(--sp-2) clamp(var(--sp-4), 4vw, var(--sp-7)) var(--sp-4);
+    background: var(--surface-scrim);
+    border-bottom: 1px solid var(--border-hairline);
+    box-shadow: var(--shadow-3);
+    display: grid; grid-template-rows: 0fr;
+    opacity: 0; visibility: hidden;
+    transform: translate3d(0, -8px, 0);
+    transition: grid-template-rows var(--dur-3) var(--ease-water),
+                opacity var(--dur-2) var(--ease-out),
+                transform var(--dur-3) var(--ease-water),
+                visibility 0s linear var(--dur-3);
+  }
+  /* Near-opaque: the sheet sits over photos, and a translucent one made the
+     links unreadable against a bright image behind them. */
+  @supports (backdrop-filter: blur(1px)) {
+    nav, .site-nav { background: rgba(2,6,16,.94); backdrop-filter: blur(var(--blur-lg)) saturate(1.3); }
+  }
+  nav > *, .site-nav > * { min-height: 0; overflow: hidden; }
+
+  nav.is-open, .site-nav.is-open {
+    grid-template-rows: 1fr;
+    opacity: 1; visibility: visible;
+    transform: translate3d(0, 0, 0);
+    transition-delay: 0s;
+  }
+
+  nav a { padding: var(--sp-4) var(--sp-2); font-size: 1.05rem; border-bottom: 1px solid var(--border-hairline); }
+  nav a::after { display: none; }
+  nav a.active { color: var(--biolume-bright); }
+
+  body.nav-open { overflow: hidden; }
 }
+
 @media (max-width: 768px) {
-  .project-page {
-    padding-top: 6.5rem;
+  .project-section, .project-section.reverse { flex-direction: column; align-items: flex-start; }
+  .project-copy { text-align: left; }
+}
+
+@media (max-width: 640px) {
+  .creative-content .float-right { width: 100%; max-width: 340px; margin-inline: auto; height: auto; aspect-ratio: 1; }
+  .project-detail .project-copy .detail-card { padding: clamp(var(--sp-4), 4vw, 1.35rem); }
+  .project-detail .project-copy .code-card pre { padding: clamp(.85rem, 4vw, 1.25rem); }
+  .project-detail .project-copy .code-card code { font-size: .88rem; }
+}
+
+@media (max-width: 480px) {
+  :root { --header-h: 3.75rem; }
+  .logo { font-size: 1.05rem; }
+  .brain-hero-spacer { height: clamp(260px, 48vh, 380px); }
+  .video-grid { grid-template-columns: 1fr; }
+  body::before { opacity: .3; }
+  /* Layered blur over a repainting canvas is the biggest jank source on
+     low-end phones. Trade it for a more opaque surface. */
+  .page, .project-shell { backdrop-filter: none; background: rgba(8,18,40,.88); }
+}
+
+/* Sticky :hover on touch devices reads as broken; keep only :active feedback. */
+@media (hover: none) {
+  .project:hover { transform: none; background: var(--surface-glass-2); }
+  .project:hover img { transform: none; filter: none; }
+  .project::after { display: none; }
+}
+
+/* ============================================================
+   13  REDUCED MOTION / HIGH CONTRAST
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    transition-duration: 1ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
   }
+  /* park the ambient layers on a good frame rather than a random one */
+  html::before { opacity: .45; transform: none; }
+  html::after  { opacity: .70; transform: scale(1.08); }
+  body::before { opacity: .40; transform: skewX(-9deg); }
+  body::after  { opacity: .32; transform: none; }
+  .page::after, .project-shell::after { animation: none; opacity: .68; }
+  .project { animation: none; }
+  .project:hover { transform: none; }
+  .project::after { display: none; }
+}
 
-  body.project-detail header {
-    justify-content: center;
+@media (prefers-contrast: more) {
+  :root {
+    --surface-glass: rgba(4,10,24,.94);
+    --surface-glass-2: rgba(6,14,32,.96);
+    --border-hairline: rgba(160,230,250,.42);
+    --text-2: #d6e3f7; --text-3: #a8bcd8;
   }
-
-  .project-section.reverse {
-    flex-direction: column;
-  }
-
-  .project-section {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .project-copy {
-    text-align: left;
-  }
-}
-
-/* === Brain Theme Overrides === */
-body.brain-theme {
-  background: radial-gradient(circle at 50% -20%, #1a2b5a 0%, #081028 48%, #020712 100%);
-  color: #e5ecff;
-  min-height: 100vh;
-}
-
-body.brain-theme header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 10;
-  background: rgba(5, 12, 32, 0.82);
-  border-bottom: 1px solid rgba(38, 66, 124, 0.45);
-  box-shadow: 0 20px 55px rgba(3, 10, 29, 0.55);
-  backdrop-filter: blur(16px);
-}
-
-body.brain-theme .logo {
-  color: #d7e5ff;
-}
-
-body.brain-theme nav a {
-  color: #c3d6ff;
-}
-
-body.brain-theme nav a:hover,
-body.brain-theme nav a.active {
-  color: #7fb6ff;
-}
-
-body.brain-theme main {
-  color: inherit;
-  position: relative;
-  z-index: 1;
-}
-
-body.brain-theme .page {
-  background: rgba(5, 13, 35, 0.78);
-  border: 1px solid rgba(67, 104, 186, 0.55);
-  border-radius: 24px;
-  padding: 2.5rem 2rem;
-  box-shadow: 0 35px 90px rgba(2, 6, 20, 0.7);
-  backdrop-filter: blur(12px);
-}
-
-body.brain-theme h2 {
-  color: #f2f6ff;
-}
-
-body.brain-theme p {
-  color: rgba(217, 228, 255, 0.92);
-}
-
-body.brain-theme .profile-photo {
-  box-shadow: 0 25px 60px rgba(9, 20, 54, 0.65);
-  border: 2px solid rgba(92, 134, 220, 0.6);
-}
-
-body.brain-theme .project {
-  border: 1px solid rgba(70, 103, 175, 0.65);
-  background: rgba(9, 19, 44, 0.75);
-  color: inherit;
-}
-
-body.brain-theme .project:hover {
-  box-shadow: 0 22px 48px rgba(6, 14, 35, 0.65);
-}
-
-body.brain-theme .caption {
-  color: rgba(216, 226, 255, 0.85);
-}
-
-body.brain-theme .creative-content {
-  color: inherit;
-}
-
-body.brain-theme .video-grid iframe {
-  box-shadow: 0 24px 60px rgba(6, 12, 32, 0.7);
-}
-
-body.brain-theme #contact a {
-  color: #7fb6ff;
-}
-
-body.brain-theme footer {
-  background: rgba(4, 11, 29, 0.88);
-  border-top: 1px solid rgba(38, 66, 124, 0.45);
-  color: rgba(203, 218, 255, 0.85);
-  position: relative;
-  z-index: 1;
-}
-
-.center-img {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 100%;
+  .page, .project-shell { backdrop-filter: none; }
+  html::before, html::after, body::before, body::after { opacity: .18; }
 }
