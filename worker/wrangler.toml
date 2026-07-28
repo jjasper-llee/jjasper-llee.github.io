@@ -1,0 +1,44 @@
+name = "casper"
+main = "casper-worker.js"
+compatibility_date = "2026-07-01"
+
+# There is no API key in this project. Workers AI is a binding, not a
+# credential, so nothing here can leak and nothing here can bill.
+
+[vars]
+ALLOWED_ORIGINS = "https://jjasper-llee.github.io,http://localhost:8099"
+MAX_TOKENS      = "220"    # ~165 words. Spoken aloud, that is already long.
+MAX_HISTORY     = "8"      # 4 exchanges; an injected "remember this" evaporates
+MAX_CHARS       = "600"    # per message
+MAX_BODY_BYTES  = "8192"
+DAILY_CAP       = "300"    # protects the free neuron budget, not a bill
+TZ_OFFSET_HOURS = "-4"     # reset at local midnight, not UTC
+
+# --- the free model ---------------------------------------------------------
+[ai]
+binding = "AI"
+
+# --- global daily counter ---------------------------------------------------
+[[durable_objects.bindings]]
+name       = "CAP"
+class_name = "CasperCap"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["CasperCap"]   # SQLite-backed => free-plan eligible
+
+# --- per-IP burst control ---------------------------------------------------
+# `period` only accepts 10 or 60, so this is burst control, not hourly control.
+# Limits are deliberately loose: MIT dorms and labs NAT hundreds of people
+# behind one address, and the daily cap is the real backstop.
+[[unsafe.bindings]]
+name         = "RL_BURST"
+type         = "ratelimit"
+namespace_id = "1001"
+simple       = { limit = 5, period = 10 }
+
+[[unsafe.bindings]]
+name         = "RL_MINUTE"
+type         = "ratelimit"
+namespace_id = "1002"
+simple       = { limit = 25, period = 60 }

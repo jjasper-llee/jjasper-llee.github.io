@@ -1139,3 +1139,126 @@ html:not(.has-orb) { --orb-stack: 0px; --orb-lane: 0px; }
   body { background: #fff; color: #000; }
   .page { display: block !important; }
 }
+
+/* ============================================================
+   15  CASPER  —  the assistant in the corner
+   Fixed, not draggable: a dragged widget needs cross-page persistence and
+   off-screen clamping, and buys nothing when the corner is empty everywhere.
+   ============================================================ */
+.casper {
+  position: fixed;
+  right: var(--orb-inset-i);
+  bottom: var(--orb-inset-b);
+  z-index: var(--z-orb);
+  display: flex; flex-direction: column; align-items: flex-end; gap: var(--sp-3);
+}
+
+.casper__orb {
+  width: var(--orb-size); height: var(--orb-size);
+  padding: 0; border-radius: 50%; cursor: pointer;
+  border: var(--grid-w) solid var(--rule-ui);
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-3);
+  transition: border-color var(--dur-2) var(--ease-out),
+              transform var(--dur-2) var(--ease-mech);
+}
+.casper__orb:hover { border-color: var(--accent); transform: translateY(-2px); }
+.casper__canvas { width: 100%; height: 100%; display: block; border-radius: 50%; }
+
+.casper__panel {
+  z-index: var(--z-orb-ui);
+  width: min(23rem, calc(100vw - var(--sp-6)));
+  max-height: min(30rem, 64vh);
+  display: flex; flex-direction: column;
+  background: var(--surface-panel);
+  border: var(--grid-w) solid var(--rule);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-3);
+  overflow: hidden;
+}
+@supports (backdrop-filter: blur(1px)) {
+  .casper__panel { background: rgba(12,15,18,.94); backdrop-filter: blur(var(--blur-md)); }
+}
+.casper__panel[hidden] { display: none; }
+
+.casper__head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  padding: var(--sp-3) var(--sp-4);
+  border-bottom: var(--grid-w) solid var(--rule-faint);
+}
+.casper__title {
+  font: var(--type-mono-sm); letter-spacing: var(--track-mono);
+  text-transform: uppercase; color: var(--text-1);
+}
+.casper__state {
+  font: var(--type-mono-xs); letter-spacing: var(--track-mono);
+  text-transform: uppercase; color: var(--accent);
+}
+
+.casper__log {
+  flex: 1 1 auto; min-height: 5rem; overflow-y: auto;
+  padding: var(--sp-3) var(--sp-4);
+  font-size: .9rem; line-height: 1.55;
+}
+.casper__line { margin: 0 0 var(--sp-3); max-width: none; }
+.casper__line--you {
+  color: var(--text-3); font: var(--type-mono-xs);
+  letter-spacing: .04em; text-transform: uppercase;
+}
+.casper__line--casper { color: var(--text-1); }
+
+.casper__chips { display: flex; flex-wrap: wrap; gap: var(--sp-2); padding: 0 var(--sp-4) var(--sp-3); }
+.casper__chip {
+  padding: .3em .7em; cursor: pointer;
+  border: var(--grid-w) solid var(--rule); border-radius: var(--r-xs);
+  background: transparent; color: var(--text-2);
+  font: var(--type-mono-xs); letter-spacing: .04em;
+  transition: border-color var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out);
+}
+.casper__chip:hover { border-color: var(--accent-line); color: var(--accent); }
+
+.casper__form { display: flex; gap: var(--sp-2); padding: 0 var(--sp-4) var(--sp-3); }
+.casper__form input {
+  flex: 1 1 auto; min-width: 0;
+  padding: .55em .7em;
+  border: var(--grid-w) solid var(--rule-ui); border-radius: var(--r-xs);
+  background: var(--surface-sunken); color: var(--text-1);
+  font-family: var(--font-sans); font-size: .9rem;
+}
+.casper__form input::placeholder { color: var(--text-3); }
+.casper__form button {
+  flex: none; width: 2.2rem; cursor: pointer;
+  border: var(--grid-w) solid var(--rule-ui); border-radius: var(--r-xs);
+  background: var(--accent-wash); color: var(--accent);
+}
+
+.casper__foot { display: flex; gap: var(--sp-2); padding: 0 var(--sp-4) var(--sp-2); }
+.casper__foot button {
+  padding: .35em .8em; cursor: pointer;
+  border: var(--grid-w) solid var(--rule-ui); border-radius: var(--r-xs);
+  background: transparent; color: var(--text-2);
+  font: var(--type-mono-xs); letter-spacing: var(--track-mono); text-transform: uppercase;
+}
+.casper__mic[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); background: var(--accent-wash); }
+.casper__foot button:disabled { opacity: .5; cursor: default; }
+
+/* Non-negotiable when a small model speaks about a real person. */
+.casper__note {
+  margin: 0; padding: var(--sp-2) var(--sp-4) var(--sp-3);
+  border-top: var(--grid-w) solid var(--rule-faint);
+  font: var(--type-mono-xs); letter-spacing: .03em;
+  color: var(--text-3); max-width: none;
+}
+
+/* Yield to the mobile nav sheet rather than floating over it. */
+body.nav-open .casper { opacity: 0; pointer-events: none; transform: translate3d(0, 12px, 0); }
+
+@media (max-width: 600px) {
+  .casper { left: var(--orb-inset-i); align-items: stretch; }
+  .casper__panel { width: 100%; max-height: 60vh; }
+  .casper__orb { align-self: flex-end; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .casper__orb:hover { transform: none; }
+}
