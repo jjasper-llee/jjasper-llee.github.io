@@ -1262,3 +1262,4 @@ body.nav-open .casper { opacity: 0; pointer-events: none; transform: translate3d
 @media (prefers-reduced-motion: reduce) {
   .casper__orb:hover { transform: none; }
 }
+.casper__voice[aria-pressed="true"] { border-color: var(--accent-line); color: var(--accent); }

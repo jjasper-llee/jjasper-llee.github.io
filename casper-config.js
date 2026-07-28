@@ -15,9 +15,23 @@ window.CASPER_CONFIG = {
 
   lang: 'en-US',
 
-  /* Local voices only, in preference order. A network voice can add 200-800ms
-     to every reply and fails offline, so casper.js prefers `localService`. */
-  preferredVoices: ['Samantha', 'Daniel', 'Alex', 'Google UK English Male'],
+  /* true  -> Deepgram Aura via the Worker. One consistent, natural voice on
+              every browser and OS, and it reads with real pacing.
+     false -> the browser's own voice: instant and free, but quality depends
+              entirely on what the visitor has installed.
+     Either way there is a toggle in the panel, and Aura failing falls back
+     to the browser voice automatically. */
+  naturalVoice: true,
+
+  rate: 1.0,
+  pitch: 1.0,
+
+  /* Only a tie-breaker. casper.js ranks by QUALITY MARKERS first -- Apple's
+     "(Premium)"/"(Enhanced)" and Microsoft's "Natural" voices are neural and
+     far better than the defaults, so plain "Samantha" must not win just
+     because it is famous. Tell visitors on macOS they can install more under
+     System Settings > Accessibility > Spoken Content > System Voice. */
+  preferredVoices: ['Zoe', 'Ava', 'Samantha', 'Daniel', 'Alex'],
 
   /* The six questions people actually ask. These are answered EXACTLY, from
      here, before the model is ever consulted -- so the most common questions

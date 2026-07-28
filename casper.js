@@ -260,6 +260,7 @@ window.CasperOrb = (function () {
         '</form>' +
         '<div class="casper__foot">' +
           (CAP.rec ? '<button type="button" class="casper__mic" id="casper-mic" aria-pressed="false">Speak</button>' : '') +
+          '<button type="button" class="casper__voice" id="casper-voice">Voice</button>' +
           '<button type="button" class="casper__clear" id="casper-clear">Clear</button>' +
         '</div>' +
         '<p class="casper__note">Casper is a small model and can be wrong — check the pages.</p>' +
@@ -297,6 +298,17 @@ window.CasperOrb = (function () {
       history.length = 0; log.textContent = ''; renderChips(); setState('idle');
     });
     if (micBtn) micBtn.addEventListener('click', toggleMic);
+
+    var vBtn = root.querySelector('#casper-voice');
+    function paintVoice() {
+      vBtn.textContent = useAura && !auraDead ? 'Voice: natural' : 'Voice: browser';
+      vBtn.setAttribute('aria-pressed', String(useAura && !auraDead));
+    }
+    vBtn.addEventListener('click', function () {
+      useAura = !useAura; auraDead = false; stopSpeaking(); paintVoice();
+    });
+    if (!CAP.worker) vBtn.hidden = true;     // nothing to switch to
+    paintVoice();
 
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && open) { if (state !== 'idle') bargeIn(); else toggle(false); }
@@ -350,28 +362,48 @@ window.CasperOrb = (function () {
 
   /* ---- speech out ------------------------------------------------------- */
   var synth = window.speechSynthesis, voice = null, queue = [], speaking = false, unlocked = false;
+  var audioEl = null, useAura = CAP.worker && CFG.naturalVoice !== false, auraDead = false;
+
+  /* Rank by QUALITY MARKERS rather than a hardcoded name list. Apple ships
+     "Zoe (Premium)" / "Ava (Enhanced)", Microsoft ships "... Natural" -- these
+     are neural voices and they are dramatically better than the defaults,
+     which is why "Samantha" (the old non-neural one) must not win just because
+     it is famous. Siri's own voices are not exposed to the Web Speech API at
+     all, so this is the ceiling for local synthesis. */
+  function scoreVoice(v) {
+    var n = (v.name || '') + ' ' + (v.voiceURI || '');
+    var s = 0;
+    if (/premium/i.test(n))  s += 60;
+    if (/enhanced/i.test(n)) s += 50;
+    if (/neural|natural/i.test(n)) s += 55;
+    if (/siri/i.test(n)) s += 40;
+    if (v.localService) s += 12;          // network voices add 200-800ms
+    if (/compact|com\.apple\.speech\.synthesis/i.test(n)) s -= 40;   // legacy
+    if (/^en[-_]?(US|GB)/i.test(v.lang || '')) s += 8;
+    var want = CFG.preferredVoices || [];
+    for (var i = 0; i < want.length; i++) if (v.name === want[i]) s += (want.length - i) * 3;
+    return s;
+  }
 
   function pickVoice() {
     if (!CAP.tts) return;
     var vs = synth.getVoices();
     if (!vs.length) return;                 // voiceschanged will call us again
-    var want = CFG.preferredVoices || [];
-    // Prefer a LOCAL voice: a network voice can add 200-800ms to every reply.
-    var local = vs.filter(function (v) { return v.localService && /^en/i.test(v.lang); });
-    var pool = local.length ? local : vs.filter(function (v) { return /^en/i.test(v.lang); });
-    for (var i = 0; i < want.length; i++) {
-      var hit = pool.filter(function (v) { return v.name === want[i]; })[0];
-      if (hit) { voice = hit; return; }
-    }
-    voice = pool[0] || vs[0] || null;
+    var pool = vs.filter(function (v) { return /^en/i.test(v.lang || ''); });
+    if (!pool.length) pool = vs;
+    pool.sort(function (a, b) { return scoreVoice(b) - scoreVoice(a); });
+    voice = pool[0] || null;
   }
   if (CAP.tts) { pickVoice(); synth.addEventListener('voiceschanged', pickVoice); }
 
   /* iOS refuses to speak unless the first speak() came from a user gesture. */
   function unlock() {
-    if (unlocked || !CAP.tts) return;
-    var u = new SpeechSynthesisUtterance(' ');
-    u.volume = 0; synth.speak(u); unlocked = true;
+    if (unlocked) return;
+    if (CAP.tts) { var u = new SpeechSynthesisUtterance(' '); u.volume = 0; synth.speak(u); }
+    // Same rule applies to <audio>: prime it inside the gesture too.
+    if (!audioEl) { audioEl = new Audio(); audioEl.preload = 'auto'; }
+    try { audioEl.play().catch(function () {}); audioEl.pause(); } catch (e) {}
+    unlocked = true;
   }
 
   /* Chrome truncates utterances past ~15s, so chunk at sentence boundaries. */
@@ -390,23 +422,73 @@ window.CasperOrb = (function () {
   }
 
   function speak(text) {
-    if (!CAP.tts) { setState('idle'); return; }
+    if (!CAP.tts && !useAura) { setState('idle'); return; }
     queue = queue.concat(chunk(text));
     if (!speaking) next();
   }
+
   function next() {
     if (!queue.length) { speaking = false; setState('idle'); return; }
     speaking = true; setState('speaking');
-    var u = new SpeechSynthesisUtterance(queue.shift());
+    var line = queue.shift();
+    if (useAura && !auraDead) speakAura(line);
+    else speakLocal(line);
+  }
+
+  /* --- Deepgram Aura, via the Worker ------------------------------------
+     Consistent on every browser and OS, and it applies natural pacing from
+     the text's own context. Requested per sentence as the answer streams, so
+     speech still starts before the full reply exists. Any failure falls
+     straight back to the local voice -- audio must never be a dead end. */
+  function speakAura(text) {
+    var base = CFG.workerUrl.replace(/\/+$/, '');
+    fetch(base + '/tts', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ text: text }),
+      credentials: 'omit'
+    }).then(function (r) {
+      if (!r.ok) throw new Error('tts_' + r.status);
+      return r.blob();
+    }).then(function (blob) {
+      if (!audioEl) audioEl = new Audio();
+      var url = URL.createObjectURL(blob);
+      audioEl.src = url;
+      // No amplitude data from <audio> without an AnalyserNode, and wiring one
+      // up here would need a second gesture on iOS. A steady kick at roughly
+      // speaking cadence is indistinguishable at 88px.
+      var beat = setInterval(function () { CasperOrb.kick(); }, 190);
+      var done = function () {
+        clearInterval(beat); URL.revokeObjectURL(url);
+        audioEl.onended = audioEl.onerror = null;
+        next();
+      };
+      audioEl.onended = done;
+      audioEl.onerror = function () { clearInterval(beat); URL.revokeObjectURL(url); speakLocal(text); };
+      var pr = audioEl.play();
+      if (pr && pr.catch) pr.catch(function () { clearInterval(beat); speakLocal(text); });
+    }).catch(function () {
+      auraDead = true;                       // stop asking for the rest of the session
+      speakLocal(text);
+    });
+  }
+
+  function speakLocal(text) {
+    if (!CAP.tts) { next(); return; }
+    var u = new SpeechSynthesisUtterance(text);
     if (voice) u.voice = voice;
-    u.lang = CFG.lang || 'en-US'; u.rate = 1.02;
+    u.lang = CFG.lang || 'en-US';
+    u.rate = CFG.rate || 1.0;
+    u.pitch = CFG.pitch || 1.0;
     u.onboundary = function (e) { if (e.name === 'word') CasperOrb.kick(); };
-    u.onend = next; u.onerror = next;     // never strand the queue
+    u.onend = next; u.onerror = next;        // never strand the queue
     synth.speak(u);
   }
+
   function stopSpeaking() {
     queue.length = 0; speaking = false;
     if (CAP.tts) { try { synth.cancel(); } catch (e) {} }
+    if (audioEl) { try { audioEl.pause(); audioEl.onended = null; } catch (e) {} }
   }
   /* Chrome keeps speaking across a navigation. On a 17-page site that is not
      theoretical. */

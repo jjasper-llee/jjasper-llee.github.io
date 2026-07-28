@@ -92,6 +92,14 @@ export default {
     if (request.method !== 'POST') return json({ error: 'method_not_allowed' }, 405, cors);
     if (!ok) return json({ error: 'forbidden' }, 403, corsHeaders(''));
 
+    // /tts -- speak a sentence with Deepgram Aura. This is what makes Casper
+    // sound like a person rather than a 2005 screen reader: Aura applies
+    // natural pacing and expressiveness from the text's own context, and it
+    // sounds identical on every browser and OS, which local voices never do.
+    if (new URL(request.url).pathname.replace(/\/+$/, '').endsWith('/tts')) {
+      return tts(request, env, cors);
+    }
+
     const raw = await readCapped(request, Number(env.MAX_BODY_BYTES || 8192));
     if (raw === null) return json({ error: 'payload_too_large' }, 413, cors);
 
@@ -127,6 +135,61 @@ export default {
     return relay(upstream, cors);
   }
 };
+
+/* ---------------------------------------------------------------------------
+   TTS
+   Returns audio/mpeg for one short chunk of text. The client requests these
+   sentence by sentence as the answer streams, so speech still starts before
+   the full reply exists.
+
+   Rate-limited like the chat route and hard-capped at 400 characters, because
+   audio synthesis is the most expensive thing this Worker can be asked to do.
+   Failure is never fatal: a non-200 tells the client to fall back to the
+   browser's own voice, which is instant and free.
+   -------------------------------------------------------------------------*/
+const TTS_MODEL = '@cf/deepgram/aura-1';
+
+async function tts(request, env, cors) {
+  if (env.TTS_ENABLED === '0') return json({ error: 'tts_disabled' }, 503, cors);
+
+  let body;
+  try { body = JSON.parse(await request.text()); } catch (e) { return json({ error: 'bad_json' }, 400, cors); }
+  const text = String((body && body.text) || '').replace(/\s+/g, ' ').trim().slice(0, 400);
+  if (!text) return json({ error: 'empty' }, 400, cors);
+
+  const ip = request.headers.get('CF-Connecting-IP') || '0.0.0.0';
+  try {
+    if (env.RL_MINUTE) {
+      const r = await env.RL_MINUTE.limit({ key: await hashKey('tts:' + ip) });
+      if (!r.success) return json({ error: 'rate' }, 429, cors);
+    }
+  } catch (e) { /* fail open */ }
+
+  try {
+    const audio = await env.AI.run(TTS_MODEL, {
+      text,
+      speaker: env.TTS_VOICE || 'angus'
+    });
+    // The binding returns either a ReadableStream or {audio: base64}.
+    if (audio && typeof audio.getReader === 'function') {
+      return new Response(audio, { status: 200, headers: audioHeaders(cors) });
+    }
+    if (audio && audio.audio) {
+      const bin = Uint8Array.from(atob(audio.audio), c => c.charCodeAt(0));
+      return new Response(bin, { status: 200, headers: audioHeaders(cors) });
+    }
+    return json({ error: 'no_audio' }, 502, cors);
+  } catch (e) {
+    return json({ error: 'tts_failed' }, 502, cors);
+  }
+}
+
+function audioHeaders(cors) {
+  return Object.assign({}, cors, {
+    'content-type': 'audio/mpeg',
+    'cache-control': 'public, max-age=86400'   // repeated lines cost nothing twice
+  });
+}
 
 /* ---------------------------------------------------------------------------
    Durable Object: the global daily counter.
