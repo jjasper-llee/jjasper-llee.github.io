@@ -7,7 +7,7 @@
   <title>Scale — Jasper Lee</title>
   <meta name="description" content="An interactive ladder from the observable universe down to a quark, spanning 45 orders of magnitude." />
   <link rel="preload" href="fonts/plex-mono-500.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="style.css?v=20260801" />
+  <link rel="stylesheet" href="style.css?v=20260802" />
   <style>
     /* Page-local: this is the only page with a full-bleed WebGL canvas. */
     body.scale-page { overflow: hidden; }
@@ -140,9 +140,12 @@
       <strong id="readout" data-exp="">1.58 m</strong>
       <h1 id="stage-name">Human Scale</h1>
       <p id="stage-blurb"></p>
+      <button type="button" id="provenance" class="scale-prov" data-kind="model"
+              aria-describedby="prov-note">Model</button>
+      <p class="scale-prov-note" id="prov-note"></p>
     </div>
 
-    <p class="scale-hint">Scroll, drag, or use&nbsp;↑↓ to change scale</p>
+    <p class="scale-hint">Drag to orbit &middot; scroll to change scale &middot; click a planet</p>
 
     <div class="scale-ui">
       <div class="scale-slider">
@@ -150,6 +153,7 @@
         <input id="scale" type="range" aria-label="Scale, in powers of ten metres" />
         <span>Universe</span>
       </div>
+      <div class="body-chips" id="body-chips" role="group" aria-label="Bodies at this scale" hidden></div>
       <div class="scale-jumps">
         <button type="button" data-goto="universe">Universe</button>
         <button type="button" data-goto="galaxy">Galaxy</button>
@@ -162,7 +166,20 @@
         <button type="button" data-goto="nucleus">Nucleus</button>
         <button type="button" data-goto="quark">Quark</button>
       </div>
+      <p class="scale-credit">
+        Planet and star maps by <a href="https://www.solarsystemscope.com/textures/" target="_blank" rel="noopener">Solar System Scope</a>,
+        CC&nbsp;BY&nbsp;4.0, built from NASA imagery. Orbit radii are log-compressed; each body's panel says by how much.
+      </p>
     </div>
+
+    <aside class="body-panel" id="body-panel" hidden role="region" aria-labelledby="body-name">
+      <div class="body-panel__head">
+        <h2 id="body-name" class="body-panel__title"></h2>
+        <button type="button" class="body-panel__close" id="body-close" aria-label="Close">&#10005;</button>
+      </div>
+      <dl class="body-panel__facts" id="body-facts"></dl>
+      <p class="body-panel__note" id="body-note"></p>
+    </aside>
 
     <div class="noscene" id="status">
       <div>
@@ -199,7 +216,7 @@
   <script type="module">
     // Vendored locally rather than loaded from a CDN: this page should not
     // break because someone else's host changed.
-    if (!window.__noWebGL) import('./universe.js?v=20260801');
+    if (!window.__noWebGL) import('./universe.js?v=20260802');
   </script>
 
   <script src="site.js?v=20260801" defer></script>

@@ -5,137 +5,7 @@
   <script>document.documentElement.classList.add('js');</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>BowVision Web App | Jasper Lee</title>
-  <link rel="stylesheet" href="style.css?v=20260801" />
-  <style>
-    .project-detail .project-copy .detail-card {
-      background: rgba(10, 22, 58, 0.55);
-      border: 1px solid rgba(80, 124, 210, 0.4);
-      border-radius: 16px;
-      box-shadow: 0 22px 55px rgba(1,5,16,.55);
-      padding: clamp(1.1rem, 2.4vw, 1.6rem);
-      margin-top: clamp(1.4rem, 3vw, 2.2rem);
-      color: var(--text-2);
-    }
-
-    .project-detail .project-copy .detail-card ul {
-      margin: 0;
-      padding-left: 1.1rem;
-      line-height: 1.65;
-    }
-
-    .project-detail .project-copy .detail-card li + li {
-      margin-top: 0.4rem;
-    }
-
-    .app-preview {
-      position: relative;
-      background: rgba(6, 14, 38, 0.7);
-      border: 1px solid var(--border-soft);
-      border-radius: 20px;
-      box-shadow: inset 0 0 32px rgba(4, 10, 28, 0.65);
-      overflow: hidden;
-      min-height: clamp(360px, 60vh, 520px);
-    }
-
-    .app-preview iframe {
-      display: block;
-      width: 100%;
-      height: clamp(360px, 60vh, 520px);
-      border: 0;
-      border-radius: 20px;
-      background: #020712;
-    }
-
-    .app-fallback {
-      position: absolute;
-      inset: 1.2rem;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: clamp(1.25rem, 3vw, 2rem);
-      border-radius: 16px;
-      background: rgba(3, 9, 26, 0.92);
-      border: 1px solid rgba(94, 138, 230, 0.45);
-      box-shadow: 0 28px 70px rgba(2, 6, 18, 0.75);
-      color: rgba(217, 228, 255, 0.95);
-    }
-
-    .app-fallback.visible {
-      display: flex;
-    }
-
-    .app-fallback a {
-      color: var(--biolume-bright);
-      text-decoration: none;
-    }
-
-    .app-fallback a:hover {
-      text-decoration: underline;
-    }
-
-    .app-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.85rem;
-      margin-top: clamp(1.5rem, 3vw, 2.25rem);
-    }
-
-    .app-actions .button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      padding: 0.75rem 1.35rem;
-      border-radius: 999px;
-      border: 1px solid rgba(118, 158, 255, 0.6);
-      background: rgba(18, 46, 122, 0.85);
-      color: #ffffff;
-      font-weight: 500;
-      letter-spacing: 0.01em;
-      text-decoration: none;
-      transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
-    }
-
-    .app-actions .button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 18px 40px rgba(6, 14, 42, 0.45);
-      background: rgba(27, 62, 158, 0.95);
-    }
-
-    .app-actions .button.secondary {
-      background: rgba(8, 22, 58, 0.7);
-    }
-
-    .app-actions .button.secondary:hover {
-      background: rgba(14, 32, 82, 0.82);
-    }
-
-    .project-hero-visual {
-      width: 100%;
-      max-width: 420px;
-      border-radius: 18px;
-      overflow: hidden;
-      border: 1px solid var(--border-soft);
-      box-shadow: 0 30px 80px rgba(5, 10, 28, 0.65);
-    }
-
-    .project-hero-visual img {
-      display: block;
-      width: 100%;
-      height: auto;
-    }
-
-    @media (max-width: 680px) {
-      .app-preview {
-        min-height: clamp(320px, 70vw, 420px);
-      }
-
-      .app-preview iframe {
-        height: clamp(320px, 70vw, 420px);
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css?v=20260802" />
 </head>
 <body class="brain-theme project-detail">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -159,59 +29,70 @@
     </div>
   </header>
 
-  <main id="main-content" class="project-page">
+    <main id="main-content" class="project-page">
     <section class="project-shell ticks">
-      <h2>BowVision Web App</h2>
+      <h2 data-drawing="JL-13" data-rev="B">BowVision</h2>
       <p class="project-tagline">
-        Launch the BowVision prototype directly from this site to explore the archery vision tooling that lives in its
-        dedicated repository.
+        A bow-hold detector, trained on annotated cello footage and running
+        <em>in your browser</em> — no upload, no server round trip. Point a camera at
+        a bow hold, or drop in a photo.
       </p>
 
-      <div class="project-section reverse">
-        <div class="project-copy">
-          <h3>Interactive demo</h3>
-          <p>
-            The live preview below loads the GitHub Pages build of BowVision in an embedded frame. It works best on a
-            desktop browser and may take a few seconds to initialise.
-          </p>
-          <div class="app-preview">
-            <iframe
-              id="bowvision-demo"
-              src="https://jjasper-llee.github.io/BowVision/"
-              title="BowVision live demo"
-              loading="lazy"
-              allowfullscreen
-            ></iframe>
-            <div class="app-fallback" id="bowvision-fallback" role="alert" aria-live="polite">
-              <p>
-                If the live preview does not appear, <a href="https://jjasper-llee.github.io/BowVision/" target="_blank"
-                rel="noopener">open BowVision in a new tab</a>.
-                Some browsers block third-party embeds, so opening the demo directly usually resolves the issue.
-              </p>
-            </div>
-          </div>
-          <div class="app-actions">
-            <a class="button" href="https://jjasper-llee.github.io/BowVision/" target="_blank" rel="noopener">
-              Open BowVision in a new tab
-            </a>
-            <a class="button secondary" href="https://github.com/jjasper-llee/BowVision" target="_blank" rel="noopener">
-              View the source on GitHub
-            </a>
-          </div>
-          <div class="detail-card">
-            <h4>Getting the best experience</h4>
-            <ul>
-              <li>Use a modern desktop browser such as Chrome, Edge, or Firefox for the embedded preview.</li>
-              <li>If the frame is blank, open the app in a new tab using the buttons above to bypass embed restrictions.</li>
-              <li>For local development, clone the BowVision repository and follow the setup instructions in its README.</li>
-            </ul>
+      <div class="bv">
+        <div class="bv__stage" id="bv-stage" data-mode="idle">
+          <video id="bv-video" playsinline muted hidden></video>
+          <canvas id="bv-canvas" aria-label="Detection results"></canvas>
+          <div class="bv__drop" id="bv-drop">
+            <p class="bv__dropmsg">Drop an image here</p>
           </div>
         </div>
-        <div class="project-media project-hero-visual">
-          <img
-            src="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20800%20480%27%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%27g%27%20x1%3D%270%25%27%20y1%3D%270%25%27%20x2%3D%27100%25%27%20y2%3D%27100%25%27%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%270%25%27%20stop-color%3D%27%2310204d%27/%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%27100%25%27%20stop-color%3D%27%231d5bff%27/%3E%0A%20%20%20%20%3C/linearGradient%3E%0A%20%20%3C/defs%3E%0A%20%20%3Crect%20width%3D%27800%27%20height%3D%27480%27%20fill%3D%27url%28%23g%29%27/%3E%0A%20%20%3Cg%20fill%3D%27none%27%20stroke%3D%27rgba%28255%2C255%2C255%2C0.35%29%27%20stroke-width%3D%2712%27%3E%0A%20%20%20%20%3Ccircle%20cx%3D%27400%27%20cy%3D%27240%27%20r%3D%27110%27/%3E%0A%20%20%20%20%3Cpath%20d%3D%27M200%20240h400%27/%3E%0A%20%20%3C/g%3E%0A%20%20%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-family%3D%27Helvetica%2C%20Arial%2C%20sans-serif%27%20font-weight%3D%27600%27%20font-size%3D%2772%27%20text-anchor%3D%27middle%27%3EBowVision%3C/text%3E%0A%20%20%3Ctext%20x%3D%2750%25%27%20y%3D%2762%25%27%20fill%3D%27%23cfe0ff%27%20font-family%3D%27Helvetica%2C%20Arial%2C%20sans-serif%27%20font-size%3D%2736%27%20text-anchor%3D%27middle%27%3EWeb%20App%20Preview%3C/text%3E%0A%3C/svg%3E"
-            alt="BowVision preview graphic"
-          />
+
+        <div class="bv__bar">
+          <div class="bv__modes" id="bv-modes">
+            <button type="button" class="button" id="bv-startCam">Start camera</button>
+            <button type="button" class="button secondary" id="bv-stopCam" hidden>Stop</button>
+            <label class="bv__upload">
+              <input type="file" id="bv-file" accept="image/*" />
+              <span>Upload image</span>
+            </label>
+          </div>
+
+          <label class="bv__conf">
+            <span>Confidence</span>
+            <input type="range" id="bv-conf" min="0.05" max="0.9" step="0.05" />
+            <output id="bv-confVal">40%</output>
+          </label>
+        </div>
+
+        <div class="bv__readout">
+          <span id="bv-status" class="bv__status"></span>
+          <span id="bv-count" class="bv__metric"></span>
+          <span id="bv-fps" class="bv__metric"></span>
+        </div>
+
+        <p class="bv__note" id="bv-note" hidden>
+          <strong>Not connected yet.</strong> The model is private on Roboflow, so this
+          page needs a <em>publishable</em> key — inference-only and rate-limited, which
+          is why it is safe to ship publicly. Add it to
+          <code>bowvision-config.js</code> along with the model version and the
+          detector goes live. Nothing else needs to change.
+        </p>
+      </div>
+
+      <div class="project-section">
+        <div class="project-copy">
+          <h3>How it works</h3>
+          <p>
+            The model is a Roboflow-trained object detector. It runs client-side
+            through <code>inferencejs</code>, so frames from your camera never leave
+            the machine — the weights come to you rather than your video going to a
+            server. The bundle is only fetched when you start detection.
+          </p>
+          <ul>
+            <li>Bounding boxes are drawn in the source's intrinsic pixel space, then scaled by CSS — which is why they stay aligned at any display size.</li>
+            <li>The confidence slider re-runs inference on a still immediately, so you can watch precision and recall trade off in real time.</li>
+            <li>Camera access is never requested until you press the button, and the stream is stopped the moment you leave the page.</li>
+          </ul>
         </div>
       </div>
     </section>
@@ -220,6 +101,8 @@
   <footer>
     <p>© 2025 Jasper Lee</p>
   </footer>
+  <script src="bowvision-config.js?v=20260802" defer></script>
+  <script src="bowvision.js?v=20260802" defer></script>
   <script src="site.js?v=20260801" defer></script>
   <script src="casper-config.js?v=20260801" defer></script>
   <script src="casper.js?v=20260801" defer></script>

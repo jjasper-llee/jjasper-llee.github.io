@@ -26,7 +26,9 @@ command -v ffmpeg >/dev/null || { echo "ffmpeg not found (brew install ffmpeg)";
 mkdir -p media
 
 CELLO="$HOME/Movies/iMovie Library.imovielibrary/My Movie/Original Media/IMG_7205.mov"
-LATHE="$HOME/MyWebsite/lathe.mov"
+# Arc welding, from the middle of a 104s clip. Better machinery b-roll than
+# the lathe: live arc, gloved hands, and no face visible under the helmet.
+SHOP="$HOME/Downloads/IMG_7374.MOV"
 
 DUR=12          # loop length in seconds
 XF=1            # cross-wrap length folded onto the head
@@ -115,10 +117,11 @@ echo "== ambient loops =="
 encode "$CELLO" "ambient-cello" "crop=620:380:230:330" 6 \
   "eq=contrast=1.06:saturation=0.25:gamma=0.94:brightness=-0.04"
 
-# Machinery. Source is portrait (rotation -90); this band catches the spinning
-# bar stock, the drill and the flying swarf. Already dark, so barely graded.
-encode "$LATHE" "ambient-shop" "crop=1080:620:0:560" 0 \
-  "eq=contrast=1.10:saturation=0.30:gamma=0.98"
+# Machinery. Source is portrait (rotation -90 metadata); this band catches the
+# arc, the gloves and the fixture table. The arc is blown out by design, so the
+# grade only pulls the room down around it.
+encode "$SHOP" "ambient-shop" "crop=1080:620:0:520" 46 \
+  "eq=contrast=1.12:saturation=0.26:gamma=0.94"
 
 echo
 echo "total committed:"
