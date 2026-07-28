@@ -1,354 +1,384 @@
 /* ============================================================================
-   ABYSS  —  jjasper-llee.github.io
-   A deep-space / deep-ocean theme: nebula and starfield behind, bioluminescent
-   glow and underwater motion in front.
+   INSTRUMENT  —  jjasper-llee.github.io
+   Precision instrumentation and applied physics, warmed by a cellist.
+
+   Palette reasoning: the neutrals sit at hue ~205 but only 6-10% saturation.
+   Anodised aluminium, cast-iron machine ways and Delrin knobs have no hue --
+   they are neutral greys with a slight cool cast from the light on them. That
+   desaturation is what separates "instrument enclosure" from "ocean", and it
+   is what lets the two accents carry all the colour without going neon.
+
+   Cyan (~192deg) is engineering. Amber (~38deg) is music. They are near
+   complements, so the two halves of the site are unmistakable at a glance --
+   and amber is the right material: rosin, varnish, brass pegs, amber CRT.
+   One accent is active at a time, switched by body[data-hemi].
 
    Structure
-     1  Design tokens
-     2  Base + reset
-     3  Backdrop layers (starfield, nebula, godrays, marine snow)
-     4  Header + mobile nav
-     5  Layout + glass panels
-     6  Project tiles
-     7  Right brain / video grid
-     8  Contact + footer
-     9  Project detail pages
-    10  Page-specific components (gallery, embeds)
-    11  Keyframes
-    12  Responsive
-    13  Reduced motion / high contrast
-
-   Note: this file previously contained the "Brain Theme Overrides" block twice
-   with conflicting values (the second silently won), and #brain-canvas twice.
-   Both duplications are gone, and the ~116-line <style> block that was
-   copy-pasted into 9 project pages now lives in section 9.
+     1  Tokens          8  Video grid / YouTube facades
+     2  Fonts           9  Contact + title-block footer
+     3  Base           10  Project detail pages
+     4  Backdrop       11  Page-specific components
+     5  Header + nav   12  Keyframes
+     6  Hero           13  Responsive
+     7  Panels + tiles 14  Reduced motion / contrast / print
    ========================================================================= */
 
 /* ============================================================
-   1  DESIGN TOKENS
+   1  TOKENS
    ============================================================ */
 :root {
   color-scheme: dark;
 
-  /* Depth ramp — the water column */
-  --abyss-1000: #01030a;
-  --abyss-900:  #03060f;
-  --abyss-800:  #050b1c;
-  --abyss-700:  #071228;
-  --abyss-600:  #0b1b38;
-  --abyss-500:  #10264c;
+  /* ---- Graphite ramp. ink-1000 is the canvas; all rgba composites over it. */
+  --ink-1000: #06080A;
+  --ink-950:  #0A0D10;
+  --ink-900:  #0E1216;
+  --ink-850:  #12171B;
+  --ink-800:  #171D22;
+  --ink-700:  #232C33;   /* deepest surface that may carry --text-3 */
+  --ink-600:  #333E47;
+  --ink-500:  #43505A;
+  --ink-400:  #5C6B76;
+  --ink-300:  #7E8D98;
 
-  /* Glass surfaces, composited over the backdrop */
-  --surface-glass:   rgba(8, 18, 40, 0.62);
-  --surface-glass-2: rgba(11, 25, 54, 0.72);
-  --surface-glass-3: rgba(15, 33, 68, 0.85);
-  --surface-header:  rgba(5, 12, 28, 0.72);
-  --surface-sunken:  rgba(3, 9, 22, 0.72);
-  --surface-scrim:   rgba(2, 6, 16, 0.96);
+  /* ---- Surfaces. rgba so the blueprint grid reads through. -------------- */
+  --surface-panel:  rgba(18, 23, 27, .82);   /* flattens to #101418 */
+  --surface-tile:   rgba(14, 18, 22, .90);   /* flattens to #0D1115 */
+  --surface-raised: rgba(23, 29, 34, .92);   /* flattens to #161B20 */
+  --surface-header: rgba(10, 13, 16, .84);
+  --surface-sunken: rgba( 3,  5,  7, .80);
+  --surface-scrim:  rgba( 5,  7,  9, .965);
 
-  /* Borders */
-  --border-hairline: rgba(126, 214, 235, 0.14);
-  --border-soft:     rgba(126, 214, 235, 0.22);
-  --border-active:   rgba(126, 214, 235, 0.38);
-  --border-glow:     rgba(79, 227, 208, 0.45);
-  --border-inner:    rgba(190, 235, 255, 0.08);
+  /* ---- Rules. Drafted lines, not glows.
+     Hairlines are decorative (1.2-1.9:1) and are never the sole indicator of
+     a control. --rule-ui is the >=3:1 tier for anything WCAG 1.4.11 covers. */
+  --rule-faint:  rgba(159, 180, 196, .10);
+  --rule:        rgba(159, 180, 196, .16);
+  --rule-bright: rgba(159, 180, 196, .30);
+  --rule-ui:     #5C6B76;                    /* 3.36:1 on panel */
+  --rule-inner:  rgba(210, 228, 240, .055);
 
-  /* Text tiers — all verified >= WCAG AA on every surface below */
-  --text-1: #eef4ff;
-  --text-2: #b9cbe8;
-  --text-3: #8296b8;   /* 4.83:1 worst case — never below 16px, never a link */
-  --text-on-accent: #03060f;
+  /* ---- Text. Ratios vs the worst surface each tier is allowed on:
+       --text-1  14.80:1 on --surface-raised   AAA
+       --text-2   8.73:1 on --surface-raised   AAA
+       --text-3   4.79:1 on --ink-700          AA  <- lowest in the design
+     --text-3 is metadata only: never a link, never under 0.8rem. */
+  --text-1: #E9EEF1;
+  --text-2: #AEBAC2;
+  --text-3: #8A98A2;
+  --text-on-accent: #06080A;
 
-  /* Bioluminescence */
-  --biolume:        #4fe3d0;
-  --biolume-bright: #7ff5e6;
-  --biolume-wash:   rgba(79, 227, 208, 0.14);
+  /* ---- Blueprint cyan — engineering, and the default ------------------- */
+  --cyan-500: #2FA8C7;
+  --cyan-400: #46BEDC;   /*  8.49:1 on panel */
+  --cyan-300: #6FD3EB;   /* 10.72:1 on panel */
+  --cyan-200: #A5E5F5;   /* 13.30:1 on panel */
+  --cyan-wash: rgba(111, 211, 235, .10);
+  --cyan-line: rgba(111, 211, 235, .34);
 
-  /* Aurora */
-  --aurora:        #a37bff;
-  --aurora-bright: #c4a6ff;
+  /* ---- Rosin amber — music -------------------------------------------- */
+  --amber-500: #C87F2C;
+  --amber-400: #DE9A3E;  /*  7.74:1 on panel */
+  --amber-300: #EFB45E;  /*  9.99:1 on panel */
+  --amber-200: #F7D296;  /* 12.85:1 on panel */
+  --amber-wash: rgba(239, 180, 94, .10);
+  --amber-line: rgba(239, 180, 94, .32);
 
-  /* Hemisphere pair — left = analytical cyan, right = creative violet */
-  --hemi-left:       #3fd8f5;
-  --hemi-left-soft:  rgba(63, 216, 245, 0.16);
-  --hemi-left-glow:  rgba(63, 216, 245, 0.34);
-  --hemi-right:      #c273ff;
-  --hemi-right-soft: rgba(194, 115, 255, 0.16);
-  --hemi-right-glow: rgba(194, 115, 255, 0.34);
+  /* ---- Contextual accent ---------------------------------------------- */
+  --accent:        var(--cyan-300);
+  --accent-bright: var(--cyan-200);
+  --accent-deep:   var(--cyan-500);
+  --accent-wash:   var(--cyan-wash);
+  --accent-line:   var(--cyan-line);
 
-  /* Default accent; overridden per section below */
-  --hemi:      var(--biolume);
-  --hemi-soft: var(--biolume-wash);
-  --hemi-glow: rgba(79, 227, 208, 0.34);
+  /* ---- Blueprint grid. Minor unit == the spacing unit, so type, padding
+     and the drafting grid are literally the same module. ------------------ */
+  --grid-u:      8px;
+  --grid-major:  64px;
+  --grid-w:      1px;
+  --grid-minor:  rgba(126, 150, 168, .075);
+  --grid-majorc: rgba(126, 150, 168, .150);
+  --grid-datum:  rgba(111, 211, 235, .30);
 
-  /* Nebula stops */
-  --neb-core:   rgba(58, 96, 196, 0.42);
-  --neb-teal:   rgba(22, 122, 138, 0.30);
-  --neb-violet: rgba(104, 62, 176, 0.26);
-  --neb-void:   rgba(1, 3, 10, 0);
+  /* ---- Elevation. Machined parts cast tight, dark shadows -- the previous
+     theme's 88px blurs are what made panels read as glass. ---------------- */
+  --shadow-1: 0 1px 0 0 var(--rule-inner), 0 1px 2px rgba(0,0,0,.55);
+  --shadow-2: 0 1px 0 0 var(--rule-inner), 0 2px 4px rgba(0,0,0,.45),
+              0 8px 20px rgba(0,0,0,.40);
+  --shadow-3: 0 1px 0 0 var(--rule-inner), 0 4px 10px rgba(0,0,0,.45),
+              0 20px 48px rgba(0,0,0,.52);
+  --ring-accent: 0 0 0 1px var(--accent-line), 0 0 0 4px var(--accent-wash);
 
-  /* Elevation */
-  --shadow-1: 0 1px 2px rgba(0,0,0,.40), 0 6px 18px rgba(2,8,22,.38);
-  --shadow-2: 0 2px 4px rgba(0,0,0,.35), 0 18px 46px rgba(2,8,22,.52);
-  --shadow-3: 0 4px 8px rgba(0,0,0,.30), 0 36px 88px rgba(1,5,16,.66);
-  --shadow-inset: inset 0 1px 0 0 var(--border-inner);
-  --glow-cyan:   0 0 0 1px var(--border-glow),
-                 0 14px 44px rgba(23,168,152,.26),
-                 0 0 72px rgba(79,227,208,.16);
-  --glow-violet: 0 0 0 1px rgba(163,123,255,.42),
-                 0 14px 44px rgba(104,62,176,.28),
-                 0 0 72px rgba(163,123,255,.16);
+  /* ---- Radii. Instrument bezels, not pills. ---------------------------- */
+  --r-xs: 2px; --r-sm: 3px; --r-md: 5px; --r-lg: 8px; --r-xl: 12px;
 
-  /* Radii / blur */
-  --r-xs: 6px;  --r-sm: 10px; --r-md: 14px;
-  --r-lg: 20px; --r-xl: 28px; --r-pill: 999px;
-  --blur-sm: 8px; --blur-md: 16px; --blur-lg: 28px;
+  --blur-md: 12px;
 
-  /* Spacing */
+  /* ---- Spacing --------------------------------------------------------- */
   --sp-1: .25rem; --sp-2: .5rem;  --sp-3: .75rem; --sp-4: 1rem;
   --sp-5: 1.5rem; --sp-6: 2rem;   --sp-7: 2.5rem; --sp-8: 3rem;
   --sp-9: 4rem;   --sp-10: 5rem;
 
-  /* Layout */
+  /* ---- Layout ---------------------------------------------------------- */
   --measure: 68ch;
   --wrap: 1080px;
   --wrap-wide: 1280px;
-  --header-h: 4.5rem;
+  --header-h: 4.25rem;
 
-  /* Motion */
-  --dur-1: 120ms; --dur-2: 220ms; --dur-3: 380ms; --dur-4: 640ms;
-  --dur-sheen: 900ms;
-  --amb-bob: 7s; --amb-caustic: 26s; --amb-godray: 19s;
-  --amb-drift: 58s; --amb-nebula: 44s;
+  /* ---- Voice orb reservation (Phase 2 mounts into this) ---------------- */
+  --orb-size: 120px;
+  --orb-inset-i: clamp(16px, 2.4vw, 28px);
+  --orb-inset-b: clamp(16px, 2.4vw, 28px);
+  --orb-lane:  calc(var(--orb-size) + var(--orb-inset-i) * 2);
+  --orb-stack: calc(var(--orb-size) + var(--orb-inset-b) * 2);
+
+  /* ---- z-index ladder. One place, documented, no ad-hoc values. -------- */
+  --z-grid:       0;
+  --z-hero-video: 1;
+  --z-hero-scrim: 2;
+  --z-content:   10;
+  --z-grain:     90;
+  --z-header:   100;
+  --z-nav:      105;
+  --z-orb:      120;
+  --z-orb-ui:   125;
+  --z-skip:     200;   /* above the orb: a keyboard user must reach skip first */
+
+  /* ---- Ambient video dials --------------------------------------------- */
+  --video-gain: .30;   /* brightness() ceiling on the already-graded clip */
+  --video-sat:  .35;
+  --video-warm: .16;   /* a little sepia, so it doesn't read as CCTV */
+
+  /* ---- Motion ---------------------------------------------------------- */
+  --dur-1: 110ms; --dur-2: 190ms; --dur-3: 320ms; --dur-4: 520ms;
+  --amb-trace: 22s;
 
   --ease-out:   cubic-bezier(.22,.61,.36,1);
-  --ease-water: cubic-bezier(.33,.90,.25,1);
-  --ease-spring:cubic-bezier(.34,1.36,.64,1);
+  --ease-mech:  cubic-bezier(.35,0,.15,1);   /* servo: fast in, hard stop */
   --ease-inout: cubic-bezier(.65,0,.35,1);
+  --ease-snap:  cubic-bezier(.2,1.2,.4,1);
 
-  /* Type */
-  --font-sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI',
-               Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --font-mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Monaco,
-               Consolas, 'Liberation Mono', monospace;
+  /* ---- Type ------------------------------------------------------------ */
+  --font-sans: "IBM Plex Sans", "Plex Fallback", ui-sans-serif, -apple-system,
+               BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", SFMono-Regular,
+               Menlo, Consolas, "Liberation Mono", monospace;
+  --type-mono-xs: 500 .70rem/1.2 var(--font-mono);
+  --type-mono-sm: 500 .78rem/1.4 var(--font-mono);
+  --track-mono: .13em;
 }
 
-/* One rule wires the accent pair to context, so no component hardcodes it. */
-body[data-hemi="left"],  #left-brain  {
-  --hemi: var(--hemi-left);  --hemi-soft: var(--hemi-left-soft);  --hemi-glow: var(--hemi-left-glow);
+/* Hairlines double on 2x displays and the grid goes heavy. */
+@media (min-resolution: 2dppx) { :root { --grid-w: .5px; } }
+
+/* One rule retints every accent by context. No component hardcodes a hue. */
+body[data-hemi="left"],  #left-brain {
+  --accent: var(--cyan-300);  --accent-bright: var(--cyan-200);
+  --accent-deep: var(--cyan-500); --accent-wash: var(--cyan-wash);
+  --accent-line: var(--cyan-line);
 }
 body[data-hemi="right"], #right-brain {
-  --hemi: var(--hemi-right); --hemi-soft: var(--hemi-right-soft); --hemi-glow: var(--hemi-right-glow);
+  --accent: var(--amber-300); --accent-bright: var(--amber-200);
+  --accent-deep: var(--amber-500); --accent-wash: var(--amber-wash);
+  --accent-line: var(--amber-line);
 }
 
 /* ============================================================
-   2  BASE + RESET
+   2  FONTS  —  IBM Plex, self-hosted, Latin-1 subset (OFL, see
+   fonts/LICENSE-IBM-Plex.txt). Sans and mono are genuine siblings,
+   which is what makes the mono legends read as part of the same
+   instrument rather than a pasted-on terminal face.
+   ============================================================ */
+@font-face { font-family:"IBM Plex Sans"; src:url("fonts/plex-sans-400.woff2") format("woff2");
+             font-weight:400; font-style:normal; font-display:swap; }
+@font-face { font-family:"IBM Plex Sans"; src:url("fonts/plex-sans-500.woff2") format("woff2");
+             font-weight:500; font-style:normal; font-display:swap; }
+@font-face { font-family:"IBM Plex Sans"; src:url("fonts/plex-sans-600.woff2") format("woff2");
+             font-weight:600; font-style:normal; font-display:swap; }
+@font-face { font-family:"IBM Plex Mono"; src:url("fonts/plex-mono-400.woff2") format("woff2");
+             font-weight:400; font-style:normal; font-display:swap; }
+@font-face { font-family:"IBM Plex Mono"; src:url("fonts/plex-mono-500.woff2") format("woff2");
+             font-weight:500; font-style:normal; font-display:swap; }
+
+/* Metric-matched fallback so the swap does not reflow. */
+@font-face {
+  font-family: "Plex Fallback";
+  src: local("Arial"), local("Helvetica Neue"), local("Liberation Sans");
+  ascent-override: 102.5%; descent-override: 27.5%;
+  line-gap-override: 0%; size-adjust: 104%;
+}
+
+/* ============================================================
+   3  BASE
    ============================================================ */
 *, *::before, *::after { box-sizing: border-box; }
 
 html {
-  background: var(--abyss-900);
+  background: var(--ink-1000);
   scroll-padding-top: calc(var(--header-h) + var(--sp-4));
   -webkit-text-size-adjust: 100%;
 }
-@media (prefers-reduced-motion: no-preference) {
-  html { scroll-behavior: smooth; }
-}
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 
 body {
   margin: 0;
-  /* `clip` rather than `hidden`: hidden makes html a scroll container, which
-     breaks position:sticky descendants and causes scroll-anchoring jitter. */
+  /* `clip`, not `hidden`: hidden makes html a scroll container, which breaks
+     position:sticky descendants and causes scroll-anchoring jitter. */
   overflow-x: clip;
   background: transparent;
   color: var(--text-1);
   font-family: var(--font-sans);
-  font-weight: 380;
-  font-size: clamp(1rem, .96rem + .18vw, 1.075rem);
+  font-weight: 400;
+  font-size: clamp(1rem, .96rem + .16vw, 1.06rem);
   line-height: 1.65;
-  min-height: 100vh;
-  min-height: 100svh;
+  min-height: 100vh; min-height: 100svh;
+  font-variant-numeric: tabular-nums;   /* the design is full of numbers */
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3, h4 { margin-block: 0 var(--sp-3); text-wrap: balance; }
-h1 { font-size: clamp(2rem, 1.55rem + 2.25vw, 3.2rem); font-weight: 560; line-height: 1.06; letter-spacing: -.028em; }
-h2 { font-size: clamp(1.55rem, 1.3rem + 1.15vw, 2.3rem);  font-weight: 520; line-height: 1.14; letter-spacing: -.02em;  color: var(--text-1); }
-h3 { font-size: clamp(1.18rem, 1.08rem + .45vw, 1.45rem); font-weight: 520; line-height: 1.25; letter-spacing: -.012em; color: var(--text-1); }
-h4 { font-size: 1.02rem; font-weight: 540; color: var(--text-1); }
+h1, h2, h3, h4 { margin-block: 0 var(--sp-3); font-weight: 500; text-wrap: balance; }
+h1 { font-size: clamp(2rem, 1.5rem + 2.2vw, 3rem); line-height: 1.05; letter-spacing: -.024em; }
+h2 { font-size: clamp(1.5rem, 1.2rem + 1.3vw, 2.2rem); line-height: 1.14; letter-spacing: -.018em; }
+h3 { font-size: clamp(1.14rem, 1.05rem + .4vw, 1.38rem); line-height: 1.28; letter-spacing: -.012em; }
+h4 { font-size: 1rem; letter-spacing: -.005em; }
 
-p { margin: 0 0 var(--sp-4); max-width: var(--measure); line-height: 1.7; color: var(--text-2); text-wrap: pretty; }
+p { margin: 0 0 var(--sp-4); max-width: var(--measure); line-height: 1.7;
+    color: var(--text-2); text-wrap: pretty; }
 img, iframe, canvas, video { display: block; max-width: 100%; }
-img { height: auto; background: var(--abyss-800); }
+img { height: auto; background: var(--ink-900); }
 
-a {
-  color: var(--biolume-bright);
-  text-decoration-color: var(--border-glow);
-  text-underline-offset: .18em;
-  text-decoration-thickness: 1px;
-  transition: color var(--dur-1) var(--ease-out), text-decoration-color var(--dur-1) var(--ease-out);
-}
-a:hover { color: #a9fbef; text-decoration-color: currentColor; }
+a { color: var(--accent); text-decoration-color: var(--accent-line);
+    text-underline-offset: .18em; text-decoration-thickness: 1px;
+    transition: color var(--dur-1) var(--ease-out),
+                text-decoration-color var(--dur-1) var(--ease-out); }
+a:hover { color: var(--accent-bright); text-decoration-color: currentColor; }
 
-:focus-visible { outline: 2px solid var(--biolume-bright); outline-offset: 3px; border-radius: var(--r-xs); }
+:focus-visible { outline: 2px solid var(--accent-bright); outline-offset: 3px;
+                 border-radius: var(--r-xs); }
 :focus:not(:focus-visible) { outline: none; }
+::selection { background: var(--accent-wash); color: var(--accent-bright); }
 
-::selection { background: var(--biolume-wash); color: var(--biolume-bright); }
+.mono { font: var(--type-mono-sm); letter-spacing: var(--track-mono); text-transform: uppercase; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
 
 .skip-link {
-  position: absolute; left: var(--sp-4); top: var(--sp-4); z-index: 200;
+  position: absolute; left: var(--sp-4); top: var(--sp-4); z-index: var(--z-skip);
   padding: var(--sp-3) var(--sp-4); border-radius: var(--r-sm);
-  background: var(--biolume-bright); color: var(--text-on-accent);
-  font-weight: 560; text-decoration: none;
+  background: var(--accent-bright); color: var(--text-on-accent);
+  font: var(--type-mono-sm); letter-spacing: var(--track-mono);
+  text-transform: uppercase; text-decoration: none;
   transform: translateY(-180%);
-  transition: transform var(--dur-2) var(--ease-spring);
+  transition: transform var(--dur-2) var(--ease-snap);
 }
 .skip-link:focus-visible { transform: translateY(0); }
 
-/* The SPA hides sections with display:none. Without JS that blanks the whole
-   site, so un-hide everything until JS confirms it is running. */
+/* The SPA hides sections with display:none; without JS that blanks the site. */
 html:not(.js) .page { display: block !important; }
 
 /* ============================================================
-   3  BACKDROP LAYERS
-   Painted with four fixed pseudo-elements — no extra markup.
-   Order: stars(-3) -> nebula(-2) -> godrays(-1) -> canvas(1)
-          -> marine snow(2) -> content(3)
+   4  BACKDROP  —  blueprint grid + film grain
    ============================================================ */
-html::before, html::after, body::before, body::after {
-  content: ""; position: fixed; pointer-events: none;
-}
-
-/* Starfield, slow diagonal parallax. Tile size == translate distance, so the
-   loop is seamless. */
-html::before {
-  inset: -50vh -50vw; z-index: -3;
-  background-image:
-    radial-gradient(1.6px 1.6px at 18% 22%, rgba(232,246,255,.95), transparent 55%),
-    radial-gradient(1.1px 1.1px at 71% 41%, rgba(190,225,255,.75), transparent 55%),
-    radial-gradient(1.4px 1.4px at 43% 78%, rgba(255,255,255,.85), transparent 55%),
-    radial-gradient(1px   1px   at 88% 12%, rgba(160,230,240,.70), transparent 55%),
-    radial-gradient(1.9px 1.9px at 9%  63%, rgba(200,240,255,.90), transparent 55%),
-    radial-gradient(1px   1px   at 61% 91%, rgba(255,255,255,.60), transparent 55%);
-  background-size: 420px 420px;
-  opacity: .55;
-  animation: star-drift 190s linear infinite;
-}
-
-/* Nebula clouds, breathing */
-html::after {
-  inset: -30%; z-index: -2;
-  background:
-    radial-gradient(52% 40% at 24% 12%, var(--neb-core),   var(--neb-void) 68%),
-    radial-gradient(46% 38% at 82% 30%, var(--neb-violet), var(--neb-void) 70%),
-    radial-gradient(64% 46% at 50% 88%, var(--neb-teal),   var(--neb-void) 74%),
-    radial-gradient(38% 30% at 8%  72%, rgba(12,64,120,.28), var(--neb-void) 70%);
-  filter: blur(52px);
-  opacity: .72;
-  animation: nebula-breathe var(--amb-nebula) var(--ease-inout) infinite;
-}
-
-/* Godrays — surface light spearing down through the column */
+/* Page-wide grid, quiet, masked so it fades out down the page. */
 body::before {
-  inset: -20vh -30vw; z-index: -1;
-  background: repeating-linear-gradient(101deg,
-      transparent 0px,
-      rgba(150,225,255,.055) 42px,
-      rgba(190,245,255,.085) 78px,
-      rgba(150,225,255,.045) 108px,
-      transparent 188px);
-  -webkit-mask-image: radial-gradient(72% 92% at 50% -12%, #000 8%, transparent 76%);
-          mask-image: radial-gradient(72% 92% at 50% -12%, #000 8%, transparent 76%);
-  filter: blur(3px);
-  mix-blend-mode: screen;
-  opacity: .5;
-  animation: godray-sweep var(--amb-godray) var(--ease-inout) infinite;
-}
-
-/* Marine snow — drifting motes, above the brain canvas for depth */
-body::after {
-  inset: -120px; z-index: 2;
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
   background-image:
-    radial-gradient(1.8px 1.8px at 26% 18%, rgba(200,245,255,.30), transparent 60%),
-    radial-gradient(1.2px 1.2px at 74% 52%, rgba(160,230,255,.24), transparent 60%),
-    radial-gradient(2.4px 2.4px at 48% 84%, rgba(220,255,255,.20), transparent 60%),
-    radial-gradient(1.4px 1.4px at 12% 66%, rgba(180,240,255,.26), transparent 60%);
-  background-size: 340px 340px;
-  opacity: .5;
-  mix-blend-mode: screen;
-  animation: marine-snow var(--amb-drift) linear infinite;
+    linear-gradient(90deg,  var(--grid-majorc) 0 var(--grid-w), transparent var(--grid-w)),
+    linear-gradient(180deg, var(--grid-majorc) 0 var(--grid-w), transparent var(--grid-w));
+  background-size: var(--grid-major) var(--grid-major);
+  opacity: .55;
+  -webkit-mask-image: radial-gradient(150% 100% at 50% 0%, #000 0%, transparent 78%);
+          mask-image: radial-gradient(150% 100% at 50% 0%, #000 0%, transparent 78%);
 }
 
-#brain-canvas {
-  position: fixed; inset: 0;
-  width: 100%; height: 100%;
-  pointer-events: none;
-  z-index: 1;
+/* Film grain. Also dithers the near-black scrim gradients, where 8-bit
+   banding would otherwise be visible. One tiled raster, not a full-viewport
+   turbulence filter. */
+html::after {
+  content: ""; position: fixed; inset: 0; z-index: var(--z-grain);
+  pointer-events: none; opacity: .055;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
 }
+@media (prefers-reduced-transparency: reduce) { html::after { display: none; } }
 
 /* ============================================================
-   4  HEADER + MOBILE NAV
+   5  HEADER + NAV
    ============================================================ */
 header {
-  position: fixed; inset: 0 0 auto; z-index: 100;
+  position: fixed; inset: 0 0 auto; z-index: var(--z-header);
   padding: var(--sp-3) clamp(var(--sp-4), 4vw, var(--sp-7));
   background: var(--surface-header);
-  border-bottom: 1px solid var(--border-hairline);
-  box-shadow: 0 1px 0 0 var(--border-inner), var(--shadow-2);
+  border-bottom: var(--grid-w) solid var(--rule);
+  box-shadow: 0 1px 0 0 var(--rule-inner), 0 6px 22px rgba(0,0,0,.42);
 }
 @supports (backdrop-filter: blur(1px)) {
-  header { background: rgba(5,12,28,.55); backdrop-filter: blur(var(--blur-md)) saturate(1.4); }
+  header { background: rgba(10,13,16,.62); backdrop-filter: blur(var(--blur-md)) saturate(1.15); }
+}
+/* the accent datum under the header -- the only "glow" in the design */
+header::after {
+  content: ""; position: absolute; inset: auto 0 -1px; height: var(--grid-w);
+  background: linear-gradient(90deg, transparent 0%, var(--accent-line) 18%,
+              var(--accent) 50%, var(--accent-line) 82%, transparent 100%);
+  opacity: .55;
 }
 
-.nav-left { display: flex; align-items: center; gap: var(--sp-5); min-height: 3rem; }
+.nav-left { display: flex; align-items: center; gap: var(--sp-5); min-height: 2.75rem; }
 
 .logo {
-  margin: 0;                       /* h1 default margin used to inflate the header */
-  margin-inline-end: auto;
-  font-size: 1.15rem; font-weight: 560; letter-spacing: -.015em;
+  margin: 0; margin-inline-end: auto;
+  display: inline-flex; align-items: baseline; gap: .8ch;
+  font-size: 1.04rem; font-weight: 500; letter-spacing: -.012em;
   color: var(--text-1); text-decoration: none; white-space: nowrap;
   transition: color var(--dur-1) var(--ease-out);
 }
-.logo:hover { color: var(--biolume-bright); }
+.logo:hover { color: var(--accent-bright); }
+.logo::after {
+  content: "REV 2026.07";
+  font: var(--type-mono-xs); letter-spacing: var(--track-mono); color: var(--text-3);
+}
+@media (max-width: 620px) { .logo::after { display: none; } }
 
 nav, .site-nav { display: flex; align-items: center; gap: clamp(var(--sp-4), 2.2vw, var(--sp-6)); }
 
 nav a {
-  position: relative;
-  color: var(--text-2); text-decoration: none;
-  font-size: .95rem; font-weight: 420;
+  position: relative; display: inline-flex; align-items: center;
+  font: var(--type-mono-sm); letter-spacing: var(--track-mono);
+  text-transform: uppercase; color: var(--text-2); text-decoration: none;
   padding: var(--sp-2) 0; white-space: nowrap;
   transition: color var(--dur-2) var(--ease-out);
 }
-/* bioluminescent underline that swims in */
-nav a::after {
-  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--hemi), transparent);
-  box-shadow: 0 0 10px var(--hemi-glow);
-  transform: scaleX(0);
-  transition: transform var(--dur-3) var(--ease-water);
+/* Indicator LED. Unlike the previous swimming underline this also works in
+   the mobile sheet, so there is no separate mobile treatment. */
+nav a::before {
+  content: ""; flex: none; width: 5px; height: 5px; margin-right: .85ch;
+  border-radius: 1px; background: var(--rule-ui);
+  transition: background-color var(--dur-2) var(--ease-out),
+              box-shadow var(--dur-2) var(--ease-out);
 }
-nav a:hover, nav a.active { color: var(--text-1); }
-nav a:hover::after, nav a.active::after { transform: scaleX(1); }
+nav a:hover { color: var(--text-1); }
+nav a:hover::before { background: var(--accent-deep); }
+nav a.active { color: var(--text-1); }
+nav a.active::before { background: var(--accent); box-shadow: 0 0 0 3px var(--accent-wash); }
 
-/* Bars are absolutely positioned rather than grid rows, so the open-state X
-   lands exactly on centre regardless of how the box resolves its row heights. */
 .nav-toggle {
-  display: none;
-  position: relative;
-  width: 2.75rem; height: 2.75rem; padding: 0;   /* 44px touch target */
-  border: 1px solid var(--border-hairline); border-radius: var(--r-sm);
-  background: var(--surface-glass-2);
-  cursor: pointer;
-  transition: border-color var(--dur-2) var(--ease-out), box-shadow var(--dur-2) var(--ease-out);
+  display: none; position: relative;
+  width: 2.75rem; height: 2.75rem; padding: 0;    /* 44px touch target */
+  border: var(--grid-w) solid var(--rule-ui); border-radius: var(--r-sm);
+  background: var(--surface-raised); cursor: pointer;
+  transition: border-color var(--dur-2) var(--ease-out);
 }
-.nav-toggle:hover { border-color: var(--border-active); box-shadow: var(--glow-cyan); }
+.nav-toggle:hover { border-color: var(--accent); }
+/* Bars are absolutely positioned so the open-state X lands exactly on centre
+   regardless of how the box resolves its rows. */
 .nav-toggle__bar {
   position: absolute; left: 50%; top: 50%;
-  width: 18px; height: 2px; margin-left: -9px; border-radius: 2px;
+  width: 18px; height: 2px; margin-left: -9px; border-radius: 1px;
   background: var(--text-1);
-  transition: transform var(--dur-3) var(--ease-spring), opacity var(--dur-1) linear;
+  transition: transform var(--dur-3) var(--ease-snap), opacity var(--dur-1) linear;
 }
 .nav-toggle__bar:nth-child(1) { transform: translateY(-7px); }
 .nav-toggle__bar:nth-child(2) { transform: translateY(-1px); }
@@ -358,313 +388,534 @@ nav a:hover::after, nav a.active::after { transform: scaleX(1); }
 .nav-toggle[aria-expanded="true"] .nav-toggle__bar:nth-child(3) { transform: translateY(-1px) rotate(-45deg); }
 
 /* ============================================================
-   5  LAYOUT + GLASS PANELS
+   6  HERO
+   The hero is designed to look finished with ZERO video bytes. The grid,
+   vignette, trace and name treatment ARE the hero; video slides in beneath
+   only if every gate in ambient.js passes.
    ============================================================ */
-body.brain-theme:not(.project-detail) { padding-top: calc(var(--header-h) + var(--sp-5)); }
-
-main {
-  position: relative; z-index: 3;
-  max-width: var(--wrap);
-  margin: 0 auto var(--sp-9);
-  padding-inline: clamp(var(--sp-4), 4vw, var(--sp-6));
-  text-align: center;
+.hero {
+  position: relative; isolation: isolate;
+  min-height: clamp(420px, 74svh, 720px);
+  display: grid; place-items: center;
+  padding: calc(var(--header-h) + var(--sp-8)) var(--sp-5) var(--sp-9);
+  overflow: clip;
+  background: var(--ink-1000);
 }
 
-.brain-hero-spacer { height: clamp(340px, 62vh, 640px); }
+/* Always painted: machined-surface sheen. The video, if it ever loads, sits
+   UNDER this. */
+.hero::before {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    conic-gradient(from 210deg at 50% 120%,
+      rgba(111,211,235,.045)   0deg, rgba(6,8,10,0)  70deg,
+      rgba(239,180,94,.030)  150deg, rgba(6,8,10,0) 220deg,
+      rgba(111,211,235,.035) 300deg, rgba(6,8,10,0) 360deg),
+    radial-gradient(90% 60% at 50% 8%, rgba(126,150,168,.07), transparent 70%);
+}
+
+.hero__video {
+  position: absolute; inset: 0; z-index: var(--z-hero-video);
+  width: 100%; height: 100%; object-fit: cover; pointer-events: none;
+  /* A luminance ceiling, not opacity. Flat opacity collapses highlights and
+     shadows into the same grey haze and reads as a rendering bug; capping
+     brightness keeps blacks true and motion legible. */
+  filter: saturate(var(--video-sat)) sepia(var(--video-warm))
+          contrast(1.06) brightness(var(--video-gain));
+  opacity: 0;                                   /* poster -> video handoff only */
+  transition: opacity var(--dur-4) var(--ease-out);
+  background: var(--ink-1000);
+}
+.hero__video.is-live { opacity: 1; }
+
+.hero__scrim {
+  position: absolute; inset: 0; z-index: var(--z-hero-scrim); pointer-events: none;
+  background:
+    linear-gradient(180deg,
+      rgba(6,8,10,.78)   0%, rgba(6,8,10,.52) 22%,
+      rgba(6,8,10,.74)  46%, rgba(6,8,10,.74) 62%,
+      rgba(6,8,10,.58)  80%, rgba(6,8,10,.98) 100%),
+    radial-gradient(130% 96% at 50% 44%,
+      rgba(6,8,10,0) 0%, rgba(6,8,10,.30) 58%, rgba(6,8,10,.82) 100%);
+}
+
+/* Blueprint grid, hero-strength. The radial mask is the single biggest tell
+   between "drafted" and "graph-paper wallpaper". */
+.hero__grid {
+  position: absolute; inset: 0; z-index: 3; pointer-events: none;
+  background-image:
+    linear-gradient(90deg,  var(--grid-datum)  0 var(--grid-w), transparent var(--grid-w)),
+    linear-gradient(180deg, var(--grid-datum)  0 var(--grid-w), transparent var(--grid-w)),
+    linear-gradient(90deg,  var(--grid-majorc) 0 var(--grid-w), transparent var(--grid-w)),
+    linear-gradient(180deg, var(--grid-majorc) 0 var(--grid-w), transparent var(--grid-w)),
+    linear-gradient(90deg,  var(--grid-minor)  0 var(--grid-w), transparent var(--grid-w)),
+    linear-gradient(180deg, var(--grid-minor)  0 var(--grid-w), transparent var(--grid-w));
+  background-size:
+    100% 100%, 100% 100%,
+    var(--grid-major) var(--grid-major), var(--grid-major) var(--grid-major),
+    var(--grid-u) var(--grid-u), var(--grid-u) var(--grid-u);
+  background-position: 33.33% 0, 0 68%, 0 0, 0 0, 0 0, 0 0;
+  background-repeat: no-repeat, no-repeat, repeat, repeat, repeat, repeat;
+  -webkit-mask-image: radial-gradient(120% 84% at 50% 42%, #000 0%, rgba(0,0,0,.55) 52%, transparent 88%);
+          mask-image: radial-gradient(120% 84% at 50% 42%, #000 0%, rgba(0,0,0,.55) 52%, transparent 88%);
+}
+
+.hero__inner {
+  position: relative; z-index: var(--z-content);
+  text-align: center; max-width: 56rem;
+}
+
+.hero__eyebrow {
+  margin: 0 0 var(--sp-4); max-width: none;
+  font: var(--type-mono-sm); letter-spacing: .28em;
+  text-transform: uppercase; color: var(--accent);
+}
+
+.hero__name {
+  position: relative; margin: 0;
+  font-size: clamp(2.6rem, 1.4rem + 5.6vw, 6rem);
+  font-weight: 600; letter-spacing: -.022em; line-height: .96;
+  color: var(--text-1);
+}
+/* Construction-layer ghost: the same string, stroke only, offset. Reads as
+   the CAD wireframe under the solid. */
+.hero__name::before {
+  content: attr(data-ghost);
+  position: absolute; inset: 0; z-index: -1;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--accent-deep);
+  opacity: .40; transform: translate3d(3px, -3px, 0);
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero__name::before { animation: ghost-offset var(--dur-4) var(--ease-mech) 420ms both; }
+}
+
+/* The oscilloscope datum. A waveform IS sound -- this is the cello tie-in. */
+.hero__datum {
+  position: relative; width: min(100%, 46rem);
+  margin: var(--sp-5) auto var(--sp-6); height: 44px;
+  background:
+    linear-gradient(var(--rule) 0 0)          0 50% / 100% var(--grid-w) no-repeat,
+    linear-gradient(var(--rule-bright) 0 0)   0 28% / var(--grid-w) 44% no-repeat,
+    linear-gradient(var(--rule-bright) 0 0) 100% 28% / var(--grid-w) 44% no-repeat;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+.wave { position: absolute; inset: 0; width: 200%; height: 100%; will-change: transform; }
+.wave__trace {
+  fill: none; stroke: var(--accent); stroke-width: 1.6;
+  stroke-linejoin: round; stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+/* Glow via a second wide dim stroke, not drop-shadow -- same trick the old
+   brain canvas used, and ~40x cheaper than a filter. */
+.wave__glow {
+  fill: none; stroke: var(--accent); stroke-width: 9;
+  stroke-linejoin: round; opacity: .13; vector-effect: non-scaling-stroke;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .wave { animation: trace-scroll var(--amb-trace) linear infinite; }
+}
+
+.hero__spec {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+  gap: .6ch 1.4ch; margin: 0; max-width: none;
+  font: var(--type-mono-sm); letter-spacing: var(--track-mono);
+  text-transform: uppercase; color: var(--text-2);
+}
+.hero__rev {
+  padding: .22em .7em .28em;
+  border: var(--grid-w) solid var(--accent-line); border-radius: var(--r-xs);
+  color: var(--accent); background: var(--accent-wash);
+}
+
+/* Section dividers reuse the same trace, and retint per section for free. */
+.rule-wave { position: relative; height: 24px; margin: var(--sp-8) 0; overflow: hidden;
+             -webkit-mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
+                     mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent); }
+
+/* ============================================================
+   7  PANELS + TILES
+   ============================================================ */
+body:not(.project-detail) main { padding-top: var(--sp-6); }
+
+main {
+  position: relative; z-index: var(--z-content);
+  max-width: var(--wrap); margin: 0 auto var(--sp-9);
+  padding-inline: clamp(var(--sp-4), 4vw, var(--sp-6));
+  /* Drafting is left-aligned. The old centred body copy fought the grid. */
+  text-align: left;
+}
 
 .page { display: none; }
-.page.visible { display: block; animation: surface-in var(--dur-4) var(--ease-water) both; }
+.page.visible { display: block; animation: rise-in var(--dur-4) var(--ease-out) both; }
 
 .page, .project-shell {
   position: relative; isolation: isolate;
-  background: var(--surface-glass);
-  border: 1px solid var(--border-hairline);
-  border-radius: clamp(var(--r-lg), 2.2vw, var(--r-xl));
+  background: var(--surface-panel);
+  border: var(--grid-w) solid var(--rule);
+  border-radius: var(--r-lg);
   padding: clamp(var(--sp-6), 4vw, var(--sp-8)) clamp(var(--sp-5), 4vw, var(--sp-8));
-  box-shadow: var(--shadow-3), var(--shadow-inset);
+  box-shadow: var(--shadow-3);
   overflow: clip;
 }
-@supports (backdrop-filter: blur(1px)) {
-  .page, .project-shell {
-    background: rgba(8,18,40,.44);
-    backdrop-filter: blur(var(--blur-lg)) saturate(1.35) brightness(1.04);
-  }
-}
-
-/* refracted rim, lit from above-left as if from the surface */
+/* The double frame of a real drawing. */
 .page::before, .project-shell::before {
-  content: ""; position: absolute; inset: 0; z-index: -1;
-  border-radius: inherit; padding: 1px;
-  background: linear-gradient(150deg,
-      rgba(190,240,255,.30) 0%, rgba(190,240,255,.04) 26%,
-      transparent 55%, var(--hemi-soft) 100%);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor; mask-composite: exclude;
-  pointer-events: none;
+  content: ""; position: absolute; inset: 7px; pointer-events: none;
+  border: var(--grid-w) solid var(--rule-faint);
+  border-radius: calc(var(--r-lg) - 4px);
 }
 
-/* caustic light drifting inside the panel */
-.page::after, .project-shell::after {
-  content: ""; position: absolute; inset: -30%; z-index: -1;
+/* Corner ticks. Eight background layers on one pseudo-element, no markup.
+   Kept at inset:0 because .page carries overflow:clip. */
+.ticks::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  --tick: 11px; --tw: var(--grid-w); --tc: var(--rule-bright);
   background:
-    radial-gradient(38% 26% at 22% 18%, rgba(120,240,230,.16), transparent 62%),
-    radial-gradient(30% 22% at 78% 34%, rgba(140,120,255,.13), transparent 66%),
-    radial-gradient(46% 30% at 50% 96%, rgba(40,120,190,.14), transparent 70%);
-  filter: blur(28px); opacity: .75;
-  animation: caustic-drift var(--amb-caustic) var(--ease-inout) infinite;
-  pointer-events: none;
+    linear-gradient(var(--tc) 0 0) 0    0    / var(--tick) var(--tw),
+    linear-gradient(var(--tc) 0 0) 0    0    / var(--tw)   var(--tick),
+    linear-gradient(var(--tc) 0 0) 100% 0    / var(--tick) var(--tw),
+    linear-gradient(var(--tc) 0 0) 100% 0    / var(--tw)   var(--tick),
+    linear-gradient(var(--tc) 0 0) 0    100% / var(--tick) var(--tw),
+    linear-gradient(var(--tc) 0 0) 0    100% / var(--tw)   var(--tick),
+    linear-gradient(var(--tc) 0 0) 100% 100% / var(--tick) var(--tw),
+    linear-gradient(var(--tc) 0 0) 100% 100% / var(--tw)   var(--tick);
+  background-repeat: no-repeat;
+  transition: opacity var(--dur-2) var(--ease-out);
+}
+.ticks:hover::after, .ticks:focus-visible::after { --tc: var(--accent); }
+
+/* Section headers: index number, title, dimension rule. */
+.page > h2, .section-head {
+  display: flex; align-items: baseline; gap: var(--sp-4);
+  margin: 0 0 var(--sp-6);
+}
+.page > h2::before {
+  content: attr(data-idx) " /" / "";
+  flex: none; font: var(--type-mono-sm); letter-spacing: var(--track-mono);
+  color: var(--accent);
+}
+.page > h2::after {
+  content: ""; flex: 1 1 auto; align-self: center; height: 9px; min-width: 2rem;
+  background:
+    linear-gradient(var(--rule) 0 0)          0 50% / 100% var(--grid-w) no-repeat,
+    linear-gradient(var(--rule-bright) 0 0) 100% 0   / var(--grid-w) 100% no-repeat;
 }
 
-.page p, .project-shell p { margin-inline: auto; }
+.lede { font-size: clamp(1.02rem, .98rem + .32vw, 1.18rem); color: var(--text-2); max-width: 62ch; }
+.credits { margin-top: var(--sp-5); font: var(--type-mono-xs);
+           letter-spacing: var(--track-mono); text-transform: uppercase; color: var(--text-3);
+           max-width: none; line-height: 1.9; }
 
+/* Actually floats. It sat as a block above the copy before, which left a
+   large dead area to its right on wide screens. */
 .float-right {
-  width: 250px; height: 250px;
-  border-radius: var(--r-lg);
-  object-fit: cover;
-  border: 1px solid var(--border-soft);
-  box-shadow: var(--shadow-2);
-  flex-shrink: 0;
+  float: right;
+  width: clamp(200px, 26vw, 300px);
+  aspect-ratio: 1; height: auto; object-fit: cover;
+  margin: 0 0 var(--sp-5) var(--sp-6);
+  border: var(--grid-w) solid var(--rule); border-radius: var(--r-md);
+  box-shadow: var(--shadow-2); flex-shrink: 0;
 }
-
-.profile-photo {
-  display: block; margin: var(--sp-6) auto;
-  width: 200px; height: 200px;
-  border-radius: var(--r-lg); object-fit: cover;
-  border: 1px solid var(--border-soft);
-  box-shadow: var(--shadow-2);
-}
-
+/* Inside the flex row it must not float, or it escapes the flow. */
+.creative-content .float-right { float: none; margin: 0; }
+/* The copy beside a float should use the full column, not stop at --measure. */
+.page > p, .page > .credits { max-width: none; }
+.page > p { max-width: 74ch; }
+.projects { clear: both; }
 .center-img { display: block; margin-inline: auto; max-width: 100%; }
 
-/* ============================================================
-   6  PROJECT TILES
-   ============================================================ */
+/* ---- Project tiles as spec-sheet cards -------------------------------- */
 .projects {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 268px), 1fr));
-  gap: clamp(var(--sp-4), 2vw, var(--sp-5));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 264px), 1fr));
+  gap: var(--grid-u);                  /* packed, like an instrument bank */
   margin-top: var(--sp-7);
+  counter-reset: pn;
 }
 
 .project {
   position: relative; isolation: isolate;
+  counter-increment: pn;
   display: flex; flex-direction: column;
   color: inherit; text-decoration: none;
-  background: var(--surface-glass-2);
-  border: 1px solid var(--border-hairline);
-  border-radius: var(--r-lg);
+  background: var(--surface-tile);
+  border: var(--grid-w) solid var(--rule);
+  border-radius: var(--r-md);
   overflow: clip;
-  box-shadow: var(--shadow-1), var(--shadow-inset);
-  transition: transform var(--dur-3) var(--ease-water),
-              border-color var(--dur-2) var(--ease-out),
-              background-color var(--dur-2) var(--ease-out);
-  animation: submerge-bob var(--amb-bob) var(--ease-inout) infinite;
-  animation-delay: calc(var(--i, 0) * -0.83s);
+  box-shadow: var(--shadow-1);
+  transition: border-color var(--dur-2) var(--ease-out),
+              background-color var(--dur-2) var(--ease-out),
+              transform var(--dur-2) var(--ease-mech);
 }
-.projects > :nth-child(6n+1) { --i: 0 } .projects > :nth-child(6n+2) { --i: 1 }
-.projects > :nth-child(6n+3) { --i: 2 } .projects > :nth-child(6n+4) { --i: 3 }
-.projects > :nth-child(6n+5) { --i: 4 } .projects > :nth-child(6n+6) { --i: 5 }
-
-.project img {
-  width: 100%; aspect-ratio: 4 / 3; object-fit: cover;
-  transition: transform var(--dur-4) var(--ease-water), filter var(--dur-3) var(--ease-out);
-}
-
-/* glow is pre-painted and only its opacity animates — no box-shadow recalc */
+/* top rule draws in on hover -- transform only, no layout */
 .project::before {
-  content: ""; position: absolute; inset: -1px; z-index: -1;
-  border-radius: inherit; box-shadow: var(--glow-cyan);
-  opacity: 0; transition: opacity var(--dur-3) var(--ease-out);
-  pointer-events: none;
+  content: ""; position: absolute; inset: 0 0 auto; height: 2px; z-index: 3;
+  background: var(--accent);
+  transform: scaleX(0); transform-origin: 0 50%;
+  transition: transform var(--dur-3) var(--ease-mech);
 }
-#right-brain .project::before { box-shadow: var(--glow-violet); }
 
-/* light refracting through moving water */
-.project::after {
-  content: ""; position: absolute; inset: -40% -60%; z-index: 2;
-  background: linear-gradient(104deg,
-      transparent 38%, rgba(180,250,255,.07) 45%,
-      rgba(230,255,255,.24) 50%, rgba(180,250,255,.07) 55%, transparent 62%);
-  transform: translate3d(-160%, 0, 0) skewX(-18deg);
-  opacity: 0; pointer-events: none; mix-blend-mode: screen;
+.project__media { position: relative; isolation: isolate; }
+.project img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; background: var(--ink-900); }
+
+/* Duotone at rest. Fourteen photos shot in fourteen conditions are the biggest
+   source of visual incoherence in the grid; grading them to one accent makes
+   it read as a single technical catalogue. Only opacity animates. */
+.project__media::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(158deg, var(--accent-deep), var(--ink-1000) 82%);
+  mix-blend-mode: color; opacity: .74;
+  transition: opacity var(--dur-3) var(--ease-out);
+}
+
+.caption {
+  padding: var(--sp-4) var(--sp-4) var(--sp-5); margin-top: auto;
+  text-align: left; font-size: .95rem; font-weight: 500; line-height: 1.35;
+  color: var(--text-1); text-wrap: balance;
+  border-top: var(--grid-w) solid var(--rule-faint);
+}
+/* Part number. The " / ''" alt-text syntax keeps it decorative to screen
+   readers rather than announcing "JL-07" before every project title. */
+.caption::before {
+  content: "JL-" counter(pn, decimal-leading-zero) / "";
+  display: block; margin-bottom: var(--sp-1);
+  font: var(--type-mono-xs); letter-spacing: var(--track-mono);
+  color: var(--accent); opacity: .85;
+}
+.caption[data-spec]::after {
+  content: attr(data-spec) / "";
+  display: block; margin-top: var(--sp-2); padding-top: var(--sp-2);
+  border-top: var(--grid-w) solid var(--rule-faint);
+  font: var(--type-mono-xs); letter-spacing: .06em;
+  text-transform: uppercase; color: var(--text-3);
 }
 
 .project:hover, .project:focus-visible {
-  transform: translate3d(0, -7px, 0);
-  border-color: var(--border-active);
-  background: var(--surface-glass-3);
-  animation-play-state: paused;
+  border-color: var(--accent-line);
+  background: var(--surface-raised);
+  transform: translate3d(0, -2px, 0);
 }
-.project:hover::before, .project:focus-visible::before { opacity: 1; }
-.project:hover::after,  .project:focus-visible::after {
-  opacity: 1; animation: refract-sweep var(--dur-sheen) var(--ease-out) forwards;
-}
-.project:hover img, .project:focus-visible img {
-  transform: scale(1.055); filter: saturate(1.14) brightness(1.05);
-}
-.project:active { transform: translate3d(0, -3px, 0); transition-duration: var(--dur-1); }
+.project:hover::before, .project:focus-visible::before { transform: scaleX(1); }
+.project:hover .project__media::after,
+.project:focus-visible .project__media::after { opacity: .10; }
 
-.caption {
-  padding: var(--sp-4) var(--sp-4) var(--sp-5);
-  font-size: .95rem; font-weight: 440; line-height: 1.4;
-  color: var(--text-1); text-align: left; margin-top: auto;
-  text-wrap: balance;
+/* Not yet published: hatched like a section view. Keeps the original rule --
+   dim the IMAGE, never the tile, or the caption drops to 2.98:1 and fails AA. */
+.project--soon { cursor: default; border-color: var(--rule-faint); }
+.project--soon .project__media::after {
+  opacity: 1; mix-blend-mode: normal;
+  /* Hatched like a section view, but the photo must still read underneath --
+     a fully opaque hatch just looked like an empty tile. */
+  background:
+    repeating-linear-gradient(45deg, rgba(159,180,196,.16) 0 1px, transparent 1px 9px),
+    linear-gradient(158deg, rgba(35,44,51,.55), rgba(6,8,10,.80) 88%);
 }
-
-/* --- Not-yet-published tiles -------------------------------------------
-   Dim the IMAGE, never the whole tile. A blanket opacity of .45 drops the
-   caption to 2.98:1, which fails WCAG AA; this keeps it at 8.91:1. */
-.project--soon { cursor: default; animation: none; border-color: rgba(126,214,235,.09); background: rgba(8,16,34,.55); }
-.project--soon img { opacity: .34; filter: grayscale(.72) brightness(.82); }
-.project--soon:hover { transform: none; border-color: rgba(126,214,235,.09); background: rgba(8,16,34,.55); }
-.project--soon:hover img { transform: none; filter: grayscale(.72) brightness(.82); }
-.project--soon::before, .project--soon::after { display: none; }
+.project--soon img { opacity: .55; filter: grayscale(.9) contrast(.95); }
+.project--soon:hover { transform: none; border-color: var(--rule-faint); background: var(--surface-tile); }
+.project--soon::before { display: none; }
 a.project--soon { pointer-events: none; }
 
+.tile-placeholder {
+  width: 100%; aspect-ratio: 4 / 3;
+  background:
+    repeating-linear-gradient(45deg, rgba(138,152,162,.10) 0 1px, transparent 1px 9px),
+    var(--ink-850);
+  border-bottom: var(--grid-w) solid var(--rule-faint);
+}
+
 .badge {
-  display: inline-flex; align-items: center;
-  margin-left: var(--sp-2);
-  padding: .18em .6em .22em;
-  border-radius: var(--r-pill);
-  border: 1px solid rgba(126,214,235,.30);
-  background: var(--biolume-wash); color: var(--biolume-bright);
-  font-size: .68rem; font-weight: 520; letter-spacing: .07em;
-  text-transform: uppercase; white-space: nowrap; vertical-align: middle;
+  display: inline-flex; align-items: center; margin-left: var(--sp-2);
+  padding: .2em .55em .24em;
+  border: var(--grid-w) solid var(--rule-ui); border-radius: var(--r-xs);
+  background: transparent; color: var(--text-3);
+  font: var(--type-mono-xs); letter-spacing: var(--track-mono);
+  text-transform: uppercase; vertical-align: middle; white-space: nowrap;
 }
 .badge::before {
-  content: ""; width: 5px; height: 5px; margin-right: .45em;
-  border-radius: 50%; background: currentColor;
-  box-shadow: 0 0 7px currentColor;
-  animation: biolume-pulse 3.4s var(--ease-inout) infinite;
+  content: ""; width: 5px; height: 5px; margin-right: .55em;
+  border-radius: 1px; background: var(--rule-ui);
 }
 
 /* ============================================================
-   7  RIGHT BRAIN / VIDEO GRID
+   8  VIDEO GRID  —  click-to-load YouTube facades
+   The 18 iframes this replaces escaped lazy-loading (display:none gives no
+   layout box), so opening Right Brain instantiated all of them at once.
    ============================================================ */
-.creative-content {
-  display: flex; flex-wrap: wrap;
-  align-items: flex-start; justify-content: center;
-  gap: var(--sp-5); text-align: left;
-}
-.creative-content p { text-align: left; }
+.creative-content { display: flex; flex-wrap: wrap; align-items: flex-start; gap: var(--sp-6); }
+/* Without a flex basis the paragraph's own max-width forced an immediate
+   wrap, so the portrait stacked above the copy instead of sitting beside it. */
+.creative-content > p { flex: 1 1 22rem; min-width: 0; max-width: 62ch; margin: 0; }
+.creative-content .float-right { flex: 0 0 auto; width: clamp(200px, 24vw, 280px); }
 
 .video-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
-  gap: clamp(var(--sp-4), 2vw, var(--sp-5));
-  margin-top: var(--sp-7);
+  gap: var(--grid-u); margin-top: var(--sp-7);
 }
-.video-grid iframe {
+
+.ytf {
+  position: relative; isolation: isolate;
+  display: block; width: 100%; padding: 0;
+  aspect-ratio: 16 / 9;
+  border: var(--grid-w) solid var(--rule); border-radius: var(--r-md);
+  background: var(--ink-900); overflow: clip; cursor: pointer;
+  /* keep the off-screen ones out of the raster budget; the auto/auto form
+     remembers the real size so there is no scrollbar jump */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 320px auto 180px;
+  transition: border-color var(--dur-2) var(--ease-out);
+}
+.ytf img {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: grayscale(.45) contrast(1.04);
+  transition: filter var(--dur-3) var(--ease-out);
+}
+.ytf:hover, .ytf:focus-visible { border-color: var(--accent-line); }
+.ytf:hover img, .ytf:focus-visible img { filter: none; }
+.ytf__play {
+  position: absolute; inset: 50% auto auto 50%;
+  width: 54px; height: 54px; transform: translate3d(-50%,-50%,0);
+  border: var(--grid-w) solid var(--accent-line); border-radius: 50%;
+  background: rgba(6,8,10,.72);
+  transition: transform var(--dur-2) var(--ease-snap), border-color var(--dur-2) var(--ease-out);
+}
+.ytf__play::after {
+  content: ""; position: absolute; inset: 50% auto auto 54%;
+  transform: translate3d(-50%,-50%,0);
+  border: 9px solid transparent; border-left-color: var(--accent);
+}
+.ytf:hover .ytf__play { transform: translate3d(-50%,-50%,0) scale(1.08); border-color: var(--accent); }
+.ytf__label {
+  position: absolute; inset: auto 0 0; padding: var(--sp-3) var(--sp-4);
+  background: linear-gradient(transparent, rgba(6,8,10,.94) 55%);
+  font: var(--type-mono-xs); letter-spacing: var(--track-mono);
+  text-transform: uppercase; color: var(--text-1); text-align: left;
+}
+.ytf__frame {
   width: 100%; aspect-ratio: 16 / 9; border: 0;
-  border-radius: var(--r-md);
-  background: var(--abyss-800);
-  box-shadow: var(--shadow-2);
-  outline: 1px solid var(--border-hairline); outline-offset: -1px;
-  transition: box-shadow var(--dur-3) var(--ease-out), outline-color var(--dur-2) var(--ease-out);
+  border-radius: var(--r-md); background: var(--ink-900);
 }
-.video-grid iframe:hover { box-shadow: var(--shadow-2), var(--glow-violet); outline-color: var(--border-active); }
 
 /* ============================================================
-   8  CONTACT + FOOTER
+   9  CONTACT + TITLE-BLOCK FOOTER
    ============================================================ */
-#contact { line-height: 2; }
-#contact p { max-width: none; }
-#contact a { text-decoration: none; border-bottom: 1px solid var(--border-glow); padding-bottom: 1px; }
-#contact a:hover { border-bottom-color: currentColor; text-shadow: 0 0 18px var(--border-glow); }
+#contact ul { list-style: none; margin: 0; padding: 0; }
+#contact li { margin-bottom: var(--sp-3); }
+#contact .label {
+  display: inline-block; min-width: 7ch; margin-right: var(--sp-3);
+  font: var(--type-mono-xs); letter-spacing: var(--track-mono);
+  text-transform: uppercase; color: var(--text-3);
+}
+#contact a { text-decoration: none; border-bottom: var(--grid-w) solid var(--accent-line); }
+#contact a:hover { border-bottom-color: currentColor; }
 
-footer {
-  position: relative; z-index: 3;
-  margin-top: var(--sp-10);
-  padding: var(--sp-8) var(--sp-6) var(--sp-9);
-  text-align: center; font-size: .9rem; color: var(--text-3);
-  border-top: 1px solid var(--border-hairline);
-  background: linear-gradient(to bottom, transparent, rgba(1,3,10,.72));
+.titleblock {
+  position: relative; z-index: var(--z-content);
+  max-width: var(--wrap); margin: var(--sp-10) auto 0;
+  padding: 0 clamp(var(--sp-4), 4vw, var(--sp-6));
+  padding-bottom: max(var(--sp-8), var(--orb-stack));   /* clears the voice orb */
 }
-footer::before {
-  content: ""; position: absolute; inset: -1px 0 auto; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--biolume-wash) 22%,
-              var(--border-glow) 50%, var(--biolume-wash) 78%, transparent);
-  opacity: .7;
+.titleblock__grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: var(--grid-w); margin: 0;
+  background: var(--rule);              /* the gap becomes the hairline grid */
+  border: var(--grid-w) solid var(--rule); border-radius: var(--r-sm);
+  overflow: clip;
 }
-footer p { margin: 0; max-width: none; color: inherit; }
+.titleblock__grid > div { background: var(--surface-panel); padding: var(--sp-3) var(--sp-4); }
+.titleblock dt {
+  font: var(--type-mono-xs); letter-spacing: var(--track-mono);
+  text-transform: uppercase; color: var(--text-3);
+}
+.titleblock dd {
+  margin: .35rem 0 0; font: var(--type-mono-sm);
+  letter-spacing: .06em; color: var(--text-1);
+}
+.titleblock__sig {
+  margin: var(--sp-4) 0 0; max-width: none;
+  font: var(--type-mono-xs); letter-spacing: var(--track-mono); color: var(--text-3);
+}
 
 /* ============================================================
-   9  PROJECT DETAIL PAGES
-   The .detail-card / .code-card rules below were duplicated verbatim in the
-   <head> of 9 project pages. Hoisted here so theming is a single-file change.
+   10  PROJECT DETAIL PAGES
    ============================================================ */
-/* project-detail pages wrap the nav in the same .nav-left as the homepage, so
-   let it span the header and the shared `.logo { margin-inline-end: auto }`
-   right-aligns the nav identically on every page */
 body.project-detail header { display: flex; align-items: center; flex-wrap: wrap; gap: var(--sp-4) var(--sp-6); }
 body.project-detail .nav-left { flex: 1 1 100%; }
 
 .project-page {
   padding: calc(var(--header-h) + var(--sp-7)) clamp(var(--sp-4), 4vw, var(--sp-6)) var(--sp-9);
-  position: relative; z-index: 3;
+  position: relative; z-index: var(--z-content);
   max-width: var(--wrap-wide); margin-inline: auto;
 }
-
-.project-shell h2 { margin-top: 0; }
+.project-shell { counter-reset: fig; }
+.project-shell > h2 { margin-top: 0; }
+.project-shell[data-drawing] > h2::before {
+  content: attr(data-drawing) "  \00b7  REV " attr(data-rev) / "";
+  display: block; margin-bottom: var(--sp-2);
+  font: var(--type-mono-xs); letter-spacing: var(--track-mono); color: var(--accent);
+}
 
 .project-tagline {
-  font-size: clamp(1.05rem, 1rem + .4vw, 1.25rem);
-  color: var(--text-2); font-weight: 340;
-  max-width: 56ch; margin: 0 auto var(--sp-7);
+  max-width: 62ch; margin: 0 0 var(--sp-7);
+  font-size: clamp(1.02rem, .98rem + .32vw, 1.18rem);
+  font-weight: 400; color: var(--text-2);
 }
 
 .project-section {
-  display: flex; align-items: center;
+  display: flex; align-items: flex-start;
   gap: clamp(var(--sp-5), 3vw, var(--sp-8));
-  margin-bottom: var(--sp-8); flex-wrap: wrap;
+  padding-bottom: var(--sp-8); margin-bottom: var(--sp-8);
+  border-bottom: var(--grid-w) solid var(--rule-faint);
+  flex-wrap: wrap;
 }
+.project-section:last-child { border-bottom: 0; }
 .project-section.reverse { flex-direction: row-reverse; }
+.project-section.reverse.is-stacked .project-copy { flex: 1 1 100%; width: 100%; }
 
-.project-media { flex: 1 1 clamp(260px, 40%, 380px); min-width: 240px; }
+.project-media { position: relative; flex: 1 1 clamp(260px, 40%, 400px); min-width: 240px; counter-increment: fig; }
 .project-media img {
-  width: 100%; border-radius: var(--r-lg);
-  box-shadow: var(--shadow-2);
-  border: 1px solid var(--border-soft);
-  object-fit: cover;
+  width: 100%; border: var(--grid-w) solid var(--rule);
+  border-radius: var(--r-md); box-shadow: var(--shadow-2);
+}
+.project-media::after {
+  content: "FIG. " counter(fig, decimal-leading-zero) / "";
+  display: block; margin-top: var(--sp-2);
+  font: var(--type-mono-xs); letter-spacing: var(--track-mono); color: var(--text-3);
 }
 
 .project-copy { flex: 1 1 320px; text-align: left; }
 .project-copy h3 { margin-bottom: var(--sp-3); }
 .project-copy ul { margin: var(--sp-5) 0 0; padding-left: 1.2rem; color: var(--text-2); line-height: 1.7; }
 
-/* opt-in full-width copy; only project1 + rpicam_servo had this rule live */
-.project-section.reverse.is-stacked .project-copy { flex: 1 1 100%; width: 100%; }
-
 .project-video { text-align: left; }
-.project-video h3 { margin-bottom: var(--sp-4); }
-
 .video-frame, .pdf-frame {
   position: relative; width: 100%;
-  border-radius: var(--r-lg); overflow: hidden;
-  box-shadow: var(--shadow-2);
-  border: 1px solid var(--border-soft);
+  border: var(--grid-w) solid var(--rule); border-radius: var(--r-md);
+  overflow: hidden; box-shadow: var(--shadow-2);
 }
 .video-frame { padding-top: 56.25%; }
 .pdf-frame   { padding-top: 129%; }
 .video-frame iframe, .pdf-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 
 .project-detail .project-copy .detail-intro { color: var(--text-2); margin-bottom: var(--sp-5); }
-
 .project-detail .project-copy .detail-grid {
-  display: flex; flex-direction: column; align-items: center;
+  display: flex; flex-direction: column; align-items: stretch;
   gap: clamp(var(--sp-4), 2.5vw, 1.75rem);
   margin-bottom: clamp(1.75rem, 3vw, var(--sp-7));
-  width: min(100%, 90vw); margin-inline: auto;
+  width: 100%;
 }
-
 .project-detail .project-copy .detail-card {
-  background: rgba(10, 22, 58, 0.55);
-  border: 1px solid var(--border-hairline);
-  border-radius: var(--r-md);
-  box-shadow: var(--shadow-2);
-  padding: clamp(1.1rem, 2.4vw, 1.6rem);
-  min-width: 0; width: min(100%, 90vw); margin-inline: auto;
+  position: relative;
+  background: var(--surface-raised);
+  border: var(--grid-w) solid var(--rule);
+  border-left: 2px solid var(--accent-line);        /* the "note" leader */
+  border-radius: var(--r-sm);
+  padding: clamp(1rem, 2.4vw, 1.5rem);
+  box-shadow: var(--shadow-1);
+  min-width: 0; width: 100%;
 }
 .project-detail .project-copy .detail-card h4 { margin-top: 0; margin-bottom: .85rem; }
 .project-detail .project-copy .detail-card ul {
@@ -676,122 +927,95 @@ body.project-detail .nav-left { flex: 1 1 100%; }
 .project-detail .project-copy .code-card { margin-top: clamp(var(--sp-5), 3vw, var(--sp-7)); }
 .project-detail .project-copy .code-card p { margin-bottom: var(--sp-4); color: var(--text-2); }
 .project-detail .project-copy .code-card pre {
+  position: relative; margin: 0;
   background: var(--surface-sunken);
-  border: 1px solid var(--border-hairline);
-  border-radius: var(--r-md);
-  padding: 1.1rem clamp(1.1rem, 2.5vw, 1.75rem);
-  margin: 0; overflow-x: auto; max-width: 100%;
-  box-shadow: inset 0 0 25px rgba(6, 12, 32, .55);
+  border: var(--grid-w) solid var(--rule); border-radius: var(--r-sm);
+  padding: var(--sp-5); overflow-x: auto; max-width: 100%;
+  box-shadow: inset 0 0 0 var(--grid-w) rgba(0,0,0,.5);
 }
 .project-detail .project-copy .code-card code {
   display: block; font-family: var(--font-mono);
-  font-size: .92rem; line-height: 1.6; color: #f4f8ff;
-  white-space: pre-wrap; word-break: break-word; overflow-wrap: anywhere;
+  font-size: .90rem; line-height: 1.62; color: #DCE6EC;
+  white-space: pre-wrap; word-break: break-word; overflow-wrap: anywhere; tab-size: 2;
 }
 
 .project-detail .follow-progress { justify-content: center; }
 .project-detail .progress-button {
-  display: inline-block;
-  padding: .9rem 1.8rem; border-radius: var(--r-pill);
-  background: linear-gradient(135deg, var(--biolume-bright), var(--biolume));
-  color: var(--text-on-accent); font-weight: 600; text-decoration: none;
-  box-shadow: 0 12px 35px rgba(23,168,152,.35);
-  transition: transform var(--dur-2) var(--ease-out), box-shadow var(--dur-2) var(--ease-out);
+  display: inline-block; padding: .85rem 1.7rem;
+  border: var(--grid-w) solid var(--accent); border-radius: var(--r-sm);
+  background: var(--accent-wash); color: var(--accent-bright);
+  font: var(--type-mono-sm); letter-spacing: var(--track-mono);
+  text-transform: uppercase; text-decoration: none;
+  transition: background-color var(--dur-2) var(--ease-out),
+              transform var(--dur-2) var(--ease-mech);
 }
 .project-detail .progress-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 16px 44px rgba(23,168,152,.48);
+  background: var(--accent); color: var(--text-on-accent); transform: translateY(-2px);
 }
 
 /* ============================================================
-   10  PAGE-SPECIFIC COMPONENTS
+   11  PAGE-SPECIFIC COMPONENTS
    ============================================================ */
-/* photography.html */
 .photo-gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
-  gap: clamp(var(--sp-4), 2vw, var(--sp-5));
-  margin-top: var(--sp-6);
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: var(--grid-u); margin-top: var(--sp-6);
 }
 .photo-gallery-grid figure { margin: 0; }
 .photo-gallery-grid img {
-  width: 100%; border-radius: var(--r-md);
-  border: 1px solid var(--border-hairline);
-  box-shadow: var(--shadow-2);
+  width: 100%; border: var(--grid-w) solid var(--rule);
+  border-radius: var(--r-md); box-shadow: var(--shadow-2);
 }
 .photo-gallery-grid figcaption {
-  margin-top: var(--sp-2); font-size: .88rem; color: var(--text-3); text-align: left;
+  margin-top: var(--sp-2); font: var(--type-mono-xs);
+  letter-spacing: var(--track-mono); text-transform: uppercase; color: var(--text-3);
 }
 
-/* bowvision.html / fingering-generator.html embeds */
 .embed-wrapper, .app-preview {
-  position: relative; width: 100%;
-  border-radius: var(--r-lg); overflow: hidden;
-  border: 1px solid var(--border-soft);
-  box-shadow: var(--shadow-2);
-  background: var(--abyss-800);
-  min-height: 60vh;
+  position: relative; width: 100%; min-height: 60vh;
+  border: var(--grid-w) solid var(--rule); border-radius: var(--r-md);
+  overflow: hidden; box-shadow: var(--shadow-2); background: var(--ink-900);
 }
-.embed-wrapper iframe, .app-preview iframe { width: 100%; height: 100%; min-height: 60vh; border: 0; display: block; }
-.embed-fallback, .app-fallback { padding: var(--sp-6); text-align: center; color: var(--text-2); }
-.app-fallback a { color: var(--biolume-bright); }
+.embed-wrapper iframe, .app-preview iframe {
+  width: 100%; height: 100%; min-height: 60vh; border: 0; display: block;
+}
+.embed-fallback, .app-fallback {
+  padding: var(--sp-5); color: var(--text-2);
+  border: var(--grid-w) solid var(--rule); border-radius: var(--r-sm);
+  background: var(--surface-raised); margin-top: var(--sp-5);
+}
 .button {
-  display: inline-block; padding: .9rem 1.8rem;
-  border-radius: var(--r-pill);
-  background: linear-gradient(135deg, var(--biolume-bright), var(--biolume));
-  color: var(--text-on-accent); font-weight: 600; text-decoration: none;
+  display: inline-block; padding: .85rem 1.7rem;
+  border: var(--grid-w) solid var(--accent); border-radius: var(--r-sm);
+  background: var(--accent-wash); color: var(--accent-bright);
+  font: var(--type-mono-sm); letter-spacing: var(--track-mono);
+  text-transform: uppercase; text-decoration: none;
 }
 
 /* ============================================================
-   11  KEYFRAMES
-   Every frame-by-frame property is transform or opacity.
+   12  KEYFRAMES  —  transform/opacity only
    ============================================================ */
-@keyframes star-drift    { to { transform: translate3d(-420px, -420px, 0); } }
-@keyframes marine-snow   { to { transform: translate3d(-58px, -340px, 0); } }
-
-@keyframes nebula-breathe {
-  0%, 100% { transform: translate3d(0, 0, 0)        scale(1.04); opacity: .60; }
-  50%      { transform: translate3d(1.8%, -1.4%, 0) scale(1.13); opacity: .84; }
+@keyframes trace-scroll { to { transform: translate3d(-50%, 0, 0); } }
+@keyframes ghost-offset {
+  from { transform: translate3d(0,0,0); opacity: 0; }
+  to   { transform: translate3d(3px,-3px,0); opacity: .40; }
 }
-@keyframes godray-sweep {
-  0%, 100% { transform: translate3d(-7%, 0, 0) skewX(-11deg); opacity: .34; }
-  50%      { transform: translate3d( 7%, 0, 0) skewX( -6deg); opacity: .62; }
-}
-@keyframes caustic-drift {
-  0%   { transform: translate3d(-4%, -3%, 0) scale(1.10) rotate(0deg);   opacity: .60; }
-  33%  { transform: translate3d( 3%,  2%, 0) scale(1.20) rotate(1.1deg); opacity: .86; }
-  66%  { transform: translate3d( 1%, -4%, 0) scale(1.14) rotate(-.7deg); opacity: .70; }
-  100% { transform: translate3d(-4%, -3%, 0) scale(1.10) rotate(0deg);   opacity: .60; }
-}
-@keyframes submerge-bob {
-  0%, 100% { transform: translate3d(0, 0, 0)     rotate(0deg); }
-  50%      { transform: translate3d(0, -5px, 0)  rotate(-.24deg); }
-}
-@keyframes refract-sweep {
-  from { transform: translate3d(-160%, 0, 0) skewX(-18deg); }
-  to   { transform: translate3d( 160%, 0, 0) skewX(-18deg); }
-}
-@keyframes biolume-pulse {
-  0%, 100% { opacity: .45; transform: scale(.82); }
-  50%      { opacity: 1;   transform: scale(1.12); }
-}
-@keyframes surface-in {
-  from { opacity: 0; transform: translate3d(0, 22px, 0) scale(.985); }
-  to   { opacity: 1; transform: translate3d(0, 0, 0)    scale(1); }
+@keyframes rise-in {
+  from { opacity: 0; transform: translate3d(0, 14px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
 }
 
 /* ============================================================
-   12  RESPONSIVE
+   13  RESPONSIVE
    ============================================================ */
 @media (max-width: 1024px) {
   .projects { grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); }
 }
 
-/* Priority one: the nav needs ~568px inline and used to wrap, growing the
-   fixed header to 2-3 lines and occluding the top of the page. */
+/* The nav needs ~568px inline. Below this it used to wrap and grow the fixed
+   header to 2-3 lines, occluding the top of the page. */
 @media (max-width: 860px) {
   :root { --header-h: 4rem; }
-  .nav-toggle { display: grid; }
+  .nav-toggle { display: block; }
   .nav-left { gap: var(--sp-3); }
 
   nav, .site-nav {
@@ -799,69 +1023,70 @@ body.project-detail .nav-left { flex: 1 1 100%; }
     flex-direction: column; align-items: stretch; gap: 0;
     padding: var(--sp-2) clamp(var(--sp-4), 4vw, var(--sp-7)) var(--sp-4);
     background: var(--surface-scrim);
-    border-bottom: 1px solid var(--border-hairline);
+    border-bottom: var(--grid-w) solid var(--rule);
     box-shadow: var(--shadow-3);
     display: grid; grid-template-rows: 0fr;
     opacity: 0; visibility: hidden;
     transform: translate3d(0, -8px, 0);
-    transition: grid-template-rows var(--dur-3) var(--ease-water),
+    transition: grid-template-rows var(--dur-3) var(--ease-mech),
                 opacity var(--dur-2) var(--ease-out),
-                transform var(--dur-3) var(--ease-water),
+                transform var(--dur-3) var(--ease-mech),
                 visibility 0s linear var(--dur-3);
   }
-  /* Near-opaque: the sheet sits over photos, and a translucent one made the
-     links unreadable against a bright image behind them. */
   @supports (backdrop-filter: blur(1px)) {
-    nav, .site-nav { background: rgba(2,6,16,.94); backdrop-filter: blur(var(--blur-lg)) saturate(1.3); }
+    nav, .site-nav { background: rgba(5,7,9,.94); backdrop-filter: blur(var(--blur-md)); }
   }
   nav > *, .site-nav > * { min-height: 0; overflow: hidden; }
 
   nav.is-open, .site-nav.is-open {
-    grid-template-rows: 1fr;
-    opacity: 1; visibility: visible;
-    transform: translate3d(0, 0, 0);
-    transition-delay: 0s;
+    grid-template-rows: 1fr; opacity: 1; visibility: visible;
+    transform: translate3d(0, 0, 0); transition-delay: 0s;
   }
-
-  nav a { padding: var(--sp-4) var(--sp-2); font-size: 1.05rem; border-bottom: 1px solid var(--border-hairline); }
-  nav a::after { display: none; }
-  nav a.active { color: var(--biolume-bright); }
-
+  nav a { padding: var(--sp-4) var(--sp-2); font-size: .9rem;
+          border-bottom: var(--grid-w) solid var(--rule-faint); }
   body.nav-open { overflow: hidden; }
 }
 
 @media (max-width: 768px) {
   .project-section, .project-section.reverse { flex-direction: column; align-items: flex-start; }
-  .project-copy { text-align: left; }
 }
 
 @media (max-width: 640px) {
-  .creative-content .float-right { width: 100%; max-width: 340px; margin-inline: auto; height: auto; aspect-ratio: 1; }
-  .project-detail .project-copy .detail-card { padding: clamp(var(--sp-4), 4vw, 1.35rem); }
-  .project-detail .project-copy .code-card pre { padding: clamp(.85rem, 4vw, 1.25rem); }
-  .project-detail .project-copy .code-card code { font-size: .88rem; }
+  /* A 200px float on a 390px screen left ~130px for the copy, which wrapped
+     to two words per line. Below this width it stops floating. */
+  .float-right {
+    float: none; display: block;
+    width: 100%; max-width: 320px; margin: 0 0 var(--sp-5);
+  }
+  .creative-content .float-right { width: 100%; max-width: 340px; height: auto; aspect-ratio: 1; }
+  .project-detail .project-copy .code-card pre { padding: var(--sp-4); }
+  .project-detail .project-copy .code-card code { font-size: .86rem; }
+  .page > h2 { flex-wrap: wrap; }
 }
+
+@media (max-width: 600px) { :root { --orb-size: 88px; } }
 
 @media (max-width: 480px) {
   :root { --header-h: 3.75rem; }
-  .logo { font-size: 1.05rem; }
-  .brain-hero-spacer { height: clamp(260px, 48vh, 380px); }
   .video-grid { grid-template-columns: 1fr; }
-  body::before { opacity: .3; }
-  /* Layered blur over a repainting canvas is the biggest jank source on
-     low-end phones. Trade it for a more opaque surface. */
-  .page, .project-shell { backdrop-filter: none; background: rgba(8,18,40,.88); }
+  .hero__datum { height: 34px; }
 }
 
-/* Sticky :hover on touch devices reads as broken; keep only :active feedback. */
+/* Sticky :hover on touch reads as broken. */
 @media (hover: none) {
-  .project:hover { transform: none; background: var(--surface-glass-2); }
-  .project:hover img { transform: none; filter: none; }
-  .project::after { display: none; }
+  .project:hover { transform: none; background: var(--surface-tile); }
+  .project:hover .project__media::after { opacity: .74; }
+  .ytf:hover img { filter: grayscale(.45) contrast(1.04); }
+}
+
+/* Only reserve orb space when the widget is actually mounted. */
+html:not(.has-orb) { --orb-stack: 0px; --orb-lane: 0px; }
+@supports (padding: env(safe-area-inset-bottom)) {
+  :root { --orb-inset-b: max(16px, env(safe-area-inset-bottom)); }
 }
 
 /* ============================================================
-   13  REDUCED MOTION / HIGH CONTRAST
+   14  REDUCED MOTION / CONTRAST / PRINT
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -872,40 +1097,45 @@ body.project-detail .nav-left { flex: 1 1 100%; }
     transition-delay: 0ms !important;
     scroll-behavior: auto !important;
   }
-  /* park the ambient layers on a good frame rather than a random one */
-  html::before { opacity: .45; transform: none; }
-  html::after  { opacity: .70; transform: scale(1.08); }
-  body::before { opacity: .40; transform: skewX(-9deg); }
-  body::after  { opacity: .32; transform: none; }
-  .page::after, .project-shell::after { animation: none; opacity: .68; }
-  .project { animation: none; }
+  /* park the trace mid-period rather than on a random frame */
+  .wave { animation: none; transform: translate3d(-18%, 0, 0); }
+  .hero__name::before { animation: none; transform: translate3d(3px,-3px,0); opacity: .40; }
+  /* the file is never fetched either -- enforced in ambient.js, not just here */
+  .hero__video { display: none; }
   .project:hover { transform: none; }
-  .project::after { display: none; }
 }
 
 @media (prefers-contrast: more) {
   :root {
-    --surface-glass: rgba(4,10,24,.94);
-    --surface-glass-2: rgba(6,14,32,.96);
-    --border-hairline: rgba(160,230,250,.42);
-    --text-2: #d6e3f7; --text-3: #a8bcd8;
+    --surface-panel:  rgba(12, 15, 18, .97);
+    --surface-tile:   rgba(10, 13, 16, .98);
+    --surface-raised: rgba(20, 25, 29, .99);
+    --rule:        rgba(190, 210, 224, .40);
+    --rule-bright: rgba(210, 228, 240, .62);
+    --rule-faint:  rgba(190, 210, 224, .26);
+    --text-2: #D3DCE2;
+    --text-3: #B0BCC4;
+    --grid-minor: transparent;
+    --grid-majorc: rgba(126,150,168,.13);
+    --video-gain: .22;
   }
-  .page, .project-shell { backdrop-filter: none; }
-  html::before, html::after, body::before, body::after { opacity: .18; }
+  header { backdrop-filter: none; background: var(--ink-950); }
+  html::after { display: none; }
+  .hero__video { display: none; }
+  .project__media::after { opacity: .35; }
 }
 
-/* Tile whose artwork does not exist yet. Better than a broken <img>. */
-.tile-placeholder {
-  width: 100%; aspect-ratio: 4 / 3;
-  background:
-    radial-gradient(60% 50% at 30% 25%, rgba(79,227,208,.10), transparent 70%),
-    radial-gradient(50% 45% at 75% 70%, rgba(163,123,255,.10), transparent 72%),
-    var(--abyss-700);
-  border-bottom: 1px solid var(--border-hairline);
+@media (prefers-reduced-transparency: reduce) {
+  :root {
+    --surface-panel: #101418; --surface-tile: #0D1115;
+    --surface-raised: #161B20; --surface-header: #090C0F;
+  }
+  header { backdrop-filter: none; }
 }
 
-.credits {
-  margin-top: var(--sp-5);
-  font-size: .9rem; color: var(--text-3);
-  letter-spacing: .01em;
+@media print {
+  html::after, body::before, .hero__video, .hero__scrim, .hero__grid,
+  header, .nav-toggle { display: none !important; }
+  body { background: #fff; color: #000; }
+  .page { display: block !important; }
 }

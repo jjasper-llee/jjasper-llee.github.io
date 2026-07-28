@@ -4,12 +4,14 @@
   <meta charset="UTF-8" />
   <script>document.documentElement.classList.add('js');</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jasper Lee</title>
-  <link rel="stylesheet" href="style.css?v=20260728" />
+  <title>Jasper Lee — Engineer &amp; Cellist</title>
+  <meta name="description" content="Jasper Lee — MIT Mechanical Engineering and Physics. Drones, bionics, RF, machining, nano/bio research, and cello." />
+  <link rel="preload" href="fonts/plex-sans-400.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="fonts/plex-mono-500.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="style.css?v=20260801" />
 </head>
 <body class="brain-theme">
   <a class="skip-link" href="#main-content">Skip to content</a>
-  <canvas id="brain-canvas" aria-hidden="true"></canvas>
   <header>
     <div class="nav-left">
       <a class="logo" href="index.html">Jasper Lee</a>
@@ -27,13 +29,44 @@
     </div>
   </header>
 
-  <div class="brain-hero-spacer" aria-hidden="true"></div>
+  <section class="hero" id="hero" data-ambient="cello">
+    <!-- No src and no autoplay attribute: ambient.js injects the source only
+         after its gates pass, so reduced-motion / Save-Data visitors fetch
+         zero video bytes. preload="none" alone is only advisory. -->
+    <video class="hero__video" id="ambient-video"
+           poster="media/ambient-cello.poster.jpg"
+           muted loop playsinline preload="none"
+           disablepictureinpicture disableremoteplayback
+           aria-hidden="true" tabindex="-1" width="1280" height="785"></video>
+
+    <div class="hero__scrim" aria-hidden="true"></div>
+    <div class="hero__grid" aria-hidden="true"></div>
+
+    <div class="hero__inner">
+      <p class="hero__eyebrow">MIT &middot; MechE + Physics &middot; Cello</p>
+      <h1 class="hero__name" data-ghost="Jasper Lee">Jasper Lee</h1>
+
+      <div class="hero__datum" aria-hidden="true">
+        <svg class="wave" viewBox="0 0 1200 120" preserveAspectRatio="none"
+             focusable="false" role="presentation">
+          <path class="wave__glow"  d="M0 113.9 L10 114.0 L20 99.3 L30 87.1 L40 86.2 L50 90.5 L60 91.4 L70 90.2 L80 93.1 L90 99.3 L100 100.6 L110 93.3 L120 84.2 L130 82.1 L140 86.8 L150 90.9 L160 91.0 L170 90.4 L180 94.2 L190 101.5 L200 106.6 L210 104.4 L220 93.6 L230 77.3 L240 61.2 L250 51.1 L260 49.1 L270 52.4 L280 57.2 L290 62.6 L300 69.0 L310 74.1 L320 74.7 L330 72.8 L340 75.0 L350 82.4 L360 84.9 L370 71.5 L380 46.5 L390 28.0 L400 28.4 L410 39.9 L420 44.1 L430 34.4 L440 21.0 L450 15.4 L460 16.2 L470 15.1 L480 9.7 L490 6.0 L500 7.9 L510 12.2 L520 15.4 L530 18.9 L540 24.6 L550 30.5 L560 35.0 L570 43.7 L580 64.3 L590 93.2 L600 113.9 L610 114.0 L620 99.3 L630 87.1 L640 86.2 L650 90.5 L660 91.4 L670 90.2 L680 93.1 L690 99.3 L700 100.6 L710 93.3 L720 84.2 L730 82.1 L740 86.8 L750 90.9 L760 91.0 L770 90.4 L780 94.2 L790 101.5 L800 106.6 L810 104.4 L820 93.6 L830 77.3 L840 61.2 L850 51.1 L860 49.1 L870 52.4 L880 57.2 L890 62.6 L900 69.0 L910 74.1 L920 74.7 L930 72.8 L940 75.0 L950 82.4 L960 84.9 L970 71.5 L980 46.5 L990 28.0 L1000 28.4 L1010 39.9 L1020 44.1 L1030 34.4 L1040 21.0 L1050 15.4 L1060 16.2 L1070 15.1 L1080 9.7 L1090 6.0 L1100 7.9 L1110 12.2 L1120 15.4 L1130 18.9 L1140 24.6 L1150 30.5 L1160 35.0 L1170 43.7 L1180 64.3 L1190 93.2 L1200 113.9"/>
+          <path class="wave__trace" d="M0 113.9 L10 114.0 L20 99.3 L30 87.1 L40 86.2 L50 90.5 L60 91.4 L70 90.2 L80 93.1 L90 99.3 L100 100.6 L110 93.3 L120 84.2 L130 82.1 L140 86.8 L150 90.9 L160 91.0 L170 90.4 L180 94.2 L190 101.5 L200 106.6 L210 104.4 L220 93.6 L230 77.3 L240 61.2 L250 51.1 L260 49.1 L270 52.4 L280 57.2 L290 62.6 L300 69.0 L310 74.1 L320 74.7 L330 72.8 L340 75.0 L350 82.4 L360 84.9 L370 71.5 L380 46.5 L390 28.0 L400 28.4 L410 39.9 L420 44.1 L430 34.4 L440 21.0 L450 15.4 L460 16.2 L470 15.1 L480 9.7 L490 6.0 L500 7.9 L510 12.2 L520 15.4 L530 18.9 L540 24.6 L550 30.5 L560 35.0 L570 43.7 L580 64.3 L590 93.2 L600 113.9 L610 114.0 L620 99.3 L630 87.1 L640 86.2 L650 90.5 L660 91.4 L670 90.2 L680 93.1 L690 99.3 L700 100.6 L710 93.3 L720 84.2 L730 82.1 L740 86.8 L750 90.9 L760 91.0 L770 90.4 L780 94.2 L790 101.5 L800 106.6 L810 104.4 L820 93.6 L830 77.3 L840 61.2 L850 51.1 L860 49.1 L870 52.4 L880 57.2 L890 62.6 L900 69.0 L910 74.1 L920 74.7 L930 72.8 L940 75.0 L950 82.4 L960 84.9 L970 71.5 L980 46.5 L990 28.0 L1000 28.4 L1010 39.9 L1020 44.1 L1030 34.4 L1040 21.0 L1050 15.4 L1060 16.2 L1070 15.1 L1080 9.7 L1090 6.0 L1100 7.9 L1110 12.2 L1120 15.4 L1130 18.9 L1140 24.6 L1150 30.5 L1160 35.0 L1170 43.7 L1180 64.3 L1190 93.2 L1200 113.9"/>
+        </svg>
+      </div>
+
+      <p class="hero__spec">
+        Drones &middot; Bionics &middot; RF &middot; CNC &middot; Nano/Bio
+        <span class="hero__rev">REV 2026.07</span>
+      </p>
+    </div>
+  </section>
+
 
   <main id="main-content">
     <!-- === ABOUT === -->
-    <section id="about" class="page">
+    <section id="about" class="page visible">
       <img src="profile-pic.jpg" alt="Jasper Lee" class="float-right" loading="lazy" decoding="async" width="734" height="760" />
-      <h2>About Me</h2>
+      <h2 data-idx="01">About Me</h2>
       <p>
         I’ve organized my work into two sections with respective biographies: 
         the “Left Brain” tab, which features my STEM-related projects, and 
@@ -47,34 +80,34 @@
         developing ideas that transform into tangible products accessible to everyone.
         
       </p>
-      </div>
+
       <div class="projects">
         <a href="photography.html" class="project">
-          <img src="IMG_0775.jpg" alt="" loading="lazy" decoding="async" width="1350" height="1800" />
-          <div class="caption">Photography</div>
+          <div class="project__media"><img src="IMG_0775.jpg" alt="" loading="lazy" decoding="async" width="1350" height="1800" /></div>
+          <div class="caption" data-spec="Marseille · Hawaii">Photography</div>
         </a>
         <div class="project project--soon" aria-disabled="true">
-          <img src="origami.jpg" alt="" loading="lazy" decoding="async" width="1800" height="1584" />
+          <div class="project__media"><img src="origami.jpg" alt="" loading="lazy" decoding="async" width="1800" height="1584" /></div>
           <div class="caption">Origami<span class="badge">Coming soon</span></div>
         </div>
         <div class="project project--soon" aria-disabled="true">
-          <img src="tennis.jpg" alt="" loading="lazy" decoding="async" width="1646" height="1800" />
+          <div class="project__media"><img src="tennis.jpg" alt="" loading="lazy" decoding="async" width="1646" height="1800" /></div>
           <div class="caption">Tennis<span class="badge">Coming soon</span></div>
         </div>
         <div class="project project--soon" aria-disabled="true">
-          <img src="scuba2.jpg" alt="" loading="lazy" decoding="async" width="972" height="1298" />
+          <div class="project__media"><img src="scuba2.jpg" alt="" loading="lazy" decoding="async" width="972" height="1298" /></div>
           <div class="caption">Scuba Diving<span class="badge">Coming soon</span></div>
         </div>
         <div class="project project--soon" aria-disabled="true">
-          <img src="shrimp.jpg" alt="" loading="lazy" decoding="async" width="1800" height="1350" />
+          <div class="project__media"><img src="shrimp.jpg" alt="" loading="lazy" decoding="async" width="1800" height="1350" /></div>
           <div class="caption">Aquariums<span class="badge">Coming soon</span></div>
         </div>
         <div class="project project--soon" aria-disabled="true">
-          <img src="IMG_4809.jpg" alt="" loading="lazy" decoding="async" width="1350" height="1800" />
+          <div class="project__media"><img src="IMG_4809.jpg" alt="" loading="lazy" decoding="async" width="1350" height="1800" /></div>
           <div class="caption">Insects<span class="badge">Coming soon</span></div>
         </div>
         <div class="project project--soon" aria-disabled="true">
-          <img src="ski.jpg" alt="" loading="lazy" decoding="async" width="1768" height="1256" />
+          <div class="project__media"><img src="ski.jpg" alt="" loading="lazy" decoding="async" width="1768" height="1256" /></div>
           <div class="caption">Winter Sports<span class="badge">Coming soon</span></div>
         </div>
         <div class="project project--soon" aria-disabled="true">
@@ -86,11 +119,11 @@
     </section>
 
     <!-- === LEFT BRAIN === -->
-    <section id="left-brain" class="page visible">
-      <h2>Left Brain</h2>
+    <section id="left-brain" class="page">
+      <h2 data-idx="02">Left Brain</h2>
       <!-- <div class="project-section">
         <div class="project-media">
-          <img src="crc2-web.jpg" alt="Maker Profile" loading="lazy" decoding="async" width="1032" height="1112" />
+          <div class="project__media"><img src="crc2-web.jpg" alt="Maker Profile" loading="lazy" decoding="async" width="1032" height="1112" /></div>
         </div>
         <div class="project-copy">
           <h4>MIT MechE & Physics</h4> | HEALS Scholar | SuperUROP Researcher </br>
@@ -131,84 +164,84 @@
       
       <div class="projects">
         <!-- <a href="project1.html" class="project">
-          <img src="hand4.jpg" alt="" loading="lazy" decoding="async" width="1800" height="1634" />
+          <div class="project__media"><img src="hand4.jpg" alt="" loading="lazy" decoding="async" width="1800" height="1634" /></div>
           <div class="caption">Aerial Bionic Hand</div>
         </a> -->
         
         <a href="project2.html" class="project">
-          <img src="drone_small2.jpg" alt="" loading="lazy" decoding="async" width="1350" height="1800" />
-          <div class="caption">Transforming Tricopter Drone</div>
+          <div class="project__media"><img src="drone_small2.jpg" alt="" loading="lazy" decoding="async" width="1350" height="1800" /></div>
+          <div class="caption" data-spec="MISTI France · IEEE · shape-shifting">Transforming Tricopter Drone</div>
         </a>
 
         <a href="quadcopter.html" class="project">
-          <img src="quadcopter2.jpg" alt="" loading="lazy" decoding="async" width="1350" height="1800" />
-          <div class="caption">Custom RX/TX Quadcopter</div>
+          <div class="project__media"><img src="quadcopter2.jpg" alt="" loading="lazy" decoding="async" width="1350" height="1800" /></div>
+          <div class="caption" data-spec="ESP32-C3 · Betaflight · custom frame">Custom RX/TX Quadcopter</div>
         </a>
         <a href="rx_tx.html" class="project">
-          <img src="transmitter2.jpg" alt="" loading="lazy" decoding="async" width="1324" height="802" />
-          <div class="caption">Custom RX/TX System</div>
+          <div class="project__media"><img src="transmitter2.jpg" alt="" loading="lazy" decoding="async" width="1324" height="802" /></div>
+          <div class="caption" data-spec="ESP-NOW · CRSF · ICM-20948 IMU">Custom RX/TX System</div>
         </a>
         <a href="rpicam_servo.html" class="project">
-          <img src="rpicam-servo2.jpg" alt="" loading="lazy" decoding="async" width="1500" height="1800" />
-          <div class="caption">2-DOF Marker Tracker</div>
+          <div class="project__media"><img src="rpicam-servo2.jpg" alt="" loading="lazy" decoding="async" width="1500" height="1800" /></div>
+          <div class="caption" data-spec="Raspberry Pi · OpenCV · 2 DOF">2-DOF Marker Tracker</div>
         </a>
         <a href="bionic_hand.html" class="project">
-          <img src="bionic_hand2.jpg" alt="" loading="lazy" decoding="async" width="1576" height="1800" />
-          <div class="caption">Bionic Hand</div>
+          <div class="project__media"><img src="bionic_hand2.jpg" alt="" loading="lazy" decoding="async" width="1576" height="1800" /></div>
+          <div class="caption" data-spec="servo linkage · flex sensors">Bionic Hand</div>
         </a>
         <a href="fingerboard.html" class="project">
-          <img src="cello-web.jpg" alt="" loading="lazy" decoding="async" width="1349" height="1800" />
-          <div class="caption">LUMI Cello Fingerboard</div>
+          <div class="project__media"><img src="cello-web.jpg" alt="" loading="lazy" decoding="async" width="1349" height="1800" /></div>
+          <div class="caption" data-spec="LED matrix · fingering algorithm">LUMI Cello Fingerboard</div>
         </a>
         <a href="ski_poles.html" class="project">
-          <img src="lathe.gif" alt="" loading="lazy" decoding="async" width="304" height="540" />
-          <div class="caption">Making Ski Poles</div>
+          <div class="project__media"><img src="lathe.gif" alt="" loading="lazy" decoding="async" width="304" height="540" /></div>
+          <div class="caption" data-spec="lathe · aluminium + carbon fibre">Making Ski Poles</div>
         </a>
 
         <!-- <div class="project project--soon" aria-disabled="true">
-          <img src="lamp.png" alt="" loading="lazy" decoding="async" width="1024" height="1024" />
+          <div class="project__media"><img src="lamp.png" alt="" loading="lazy" decoding="async" width="1024" height="1024" /></div>
           <div class="caption">Robotic Object-Following Lamp - In Progress<span class="badge">Coming soon</span></div>
         </div> -->
         
         <a href="superurop.html" class="project">
-          <img src="superurop2.jpg" alt="" loading="lazy" decoding="async" width="1800" height="1350" />
-          <div class="caption">Nano/Bio Engineering</div>
+          <div class="project__media"><img src="superurop2.jpg" alt="" loading="lazy" decoding="async" width="1800" height="1350" /></div>
+          <div class="caption" data-spec="Raman Lab · micro-topography">Nano/Bio Engineering</div>
         </a>
 
          <a href="flashlight.html" class="project">
-          <img src="flash_cover2.jpg" alt="" loading="lazy" decoding="async" width="1635" height="1800" />
-          <div class="caption">Aluminum Flashlight</div>
+          <div class="project__media"><img src="flash_cover2.jpg" alt="" loading="lazy" decoding="async" width="1635" height="1800" /></div>
+          <div class="caption" data-spec="lathe + mill · 6061 aluminium">Aluminum Flashlight</div>
         </a>
         
         <a href="spider_circuit.html" class="project">
-          <img src="circuit_spider2.jpg" alt="" loading="lazy" decoding="async" width="1800" height="1350" />
-          <div class="caption">Spider Discharge Circuit</div>
+          <div class="project__media"><img src="circuit_spider2.jpg" alt="" loading="lazy" decoding="async" width="1800" height="1350" /></div>
+          <div class="caption" data-spec="discharge circuit · PCB">Spider Discharge Circuit</div>
         </a>
         <a href="fingering.html" class="project">
-          <img src="fingering.gif" alt="Fingering Generator interface preview" loading="lazy" decoding="async" width="1536" height="1024" />
-          <div class="caption">Fingering Optimizer Algorithm</div>
+          <div class="project__media"><img src="fingering.gif" alt="Fingering Generator interface preview" loading="lazy" decoding="async" width="1536" height="1024" /></div>
+          <div class="caption" data-spec="published · JSR">Fingering Optimizer Algorithm</div>
         </a>
 
         <a href="intonationaid.html" class="project">
-          <img src="intonation_cover.jpg" alt="" loading="lazy" decoding="async" width="1800" height="1198" />
-          <div class="caption">IntonationAid Program</div>
+          <div class="project__media"><img src="intonation_cover.jpg" alt="" loading="lazy" decoding="async" width="1800" height="1198" /></div>
+          <div class="caption" data-spec="pitch detection · practice tool">IntonationAid Program</div>
         </a>
 
         
         <a href="bowvision.html" class="project">
-          <img
+          <div class="project__media"><img
             src="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20800%20480%27%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%27g%27%20x1%3D%270%25%27%20y1%3D%270%25%27%20x2%3D%27100%25%27%20y2%3D%27100%25%27%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%270%25%27%20stop-color%3D%27%2310204d%27/%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%27100%25%27%20stop-color%3D%27%231d5bff%27/%3E%0A%20%20%20%20%3C/linearGradient%3E%0A%20%20%3C/defs%3E%0A%20%20%3Crect%20width%3D%27800%27%20height%3D%27480%27%20fill%3D%27url%28%23g%29%27/%3E%0A%20%20%3Cg%20fill%3D%27none%27%20stroke%3D%27rgba%28255%2C255%2C255%2C0.35%29%27%20stroke-width%3D%2712%27%3E%0A%20%20%20%20%3Ccircle%20cx%3D%27400%27%20cy%3D%27240%27%20r%3D%27110%27/%3E%0A%20%20%20%20%3Cpath%20d%3D%27M200%20240h400%27/%3E%0A%20%20%3C/g%3E%0A%20%20%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-family%3D%27Helvetica%2C%20Arial%2C%20sans-serif%27%20font-weight%3D%27600%27%20font-size%3D%2772%27%20text-anchor%3D%27middle%27%3EBowVision%3C/text%3E%0A%20%20%3Ctext%20x%3D%2750%25%27%20y%3D%2762%25%27%20fill%3D%27%23cfe0ff%27%20font-family%3D%27Helvetica%2C%20Arial%2C%20sans-serif%27%20font-size%3D%2736%27%20text-anchor%3D%27middle%27%3EWeb%20App%20Preview%3C/text%3E%0A%3C/svg%3E"
             alt="BowVision web app preview"
-          />
-          <div class="caption">BowVision Web App</div>
+          /></div>
+          <div class="caption" data-spec="web app · computer vision">BowVision Web App</div>
         </a>
 
         <div class="project project--soon" aria-disabled="true">
-          <img src="knot.jpg" alt="" loading="lazy" decoding="async" width="1212" height="864" />
+          <div class="project__media"><img src="knot.jpg" alt="" loading="lazy" decoding="async" width="1212" height="864" /></div>
           <div class="caption">Coming Soon! - Math Knots<span class="badge">Coming soon</span></div>
         </div>
         <div class="project project--soon" aria-disabled="true">
-          <img src="bearing.jpg" alt="" loading="lazy" decoding="async" width="1374" height="1004" />
+          <div class="project__media"><img src="bearing.jpg" alt="" loading="lazy" decoding="async" width="1374" height="1004" /></div>
           <div class="caption">Coming Soon! - Ball Bearing<span class="badge">Coming soon</span></div>
         </div>
         <!-- <div class="project project--soon" aria-disabled="true">
@@ -226,7 +259,7 @@
 
     <!-- === RIGHT BRAIN === -->
     <section id="right-brain" class="page">
-      <h2>Right Brain</h2>
+      <h2 data-idx="03">Right Brain</h2>
       <div class="creative-content">
         <img src="dvorakpic.jpeg" alt="Creative Work" class="float-right" loading="lazy" decoding="async" width="1179" height="849" />
         <p>
@@ -248,207 +281,122 @@ Jasper has attended summer programs including Morningside Music Bridge, Music@Me
       <!-- === YouTube Video Grid === -->
       <div class="video-grid">
         <!-- Replace with your YouTube video IDs -->
-        <iframe
-          src="https://www.youtube.com/embed/zupK081erVk"
-          title="Britten"
-          frameborder="0"
-          allowfullscreen loading="lazy"></iframe>
-        <iframe
-          src="https://www.youtube.com/embed/VlcR8Cx_-2w"
-          title="Rach Sonata"
-          frameborder="0"
-          allowfullscreen loading="lazy"></iframe>
-        <iframe
-          src="https://www.youtube.com/embed/FqO-5J4umaw"
-          title="Bach Suite III"
-          frameborder="0"
-          allowfullscreen loading="lazy"></iframe>
-        <iframe
-          src="https://www.youtube.com/embed/ORzaIAaJ6bg"
-          title="Myaskovsky"
-          frameborder="0"
-          allowfullscreen loading="lazy"></iframe>
-        <iframe
-          src="https://www.youtube.com/embed/_t_MBDvVGL0"
-          title="Smetana Piano Trio"
-          frameborder="0"
-          allowfullscreen loading="lazy"></iframe>
-        <iframe
-          src="https://www.youtube.com/embed/6ZXxoSSx9tQ"
-          title="Ghost Trio"
-          frameborder="0"
-          allowfullscreen loading="lazy"></iframe>
-        <iframe
-          src="https://www.youtube.com/embed/thjBS7mDWXA"
-          title="Dvorak Piano trio"
-          frameborder="0"
-          allowfullscreen loading="lazy"></iframe>
-        <iframe
-          src="https://www.youtube.com/embed/lxlcMh5MRLQ"
-          title="Grieg"
-          frameborder="0"
-          allowfullscreen loading="lazy"></iframe>
+        <button class="ytf" type="button" data-yt="zupK081erVk" data-title="Britten">
+          <img src="media/yt/zupK081erVk.jpg" alt="" loading="lazy" decoding="async" width="480" height="270" />
+          <span class="ytf__play" aria-hidden="true"></span>
+          <span class="ytf__label">Britten</span>
+        </button>
+        <button class="ytf" type="button" data-yt="VlcR8Cx_-2w" data-title="Rach Sonata">
+          <img src="media/yt/VlcR8Cx_-2w.jpg" alt="" loading="lazy" decoding="async" width="480" height="270" />
+          <span class="ytf__play" aria-hidden="true"></span>
+          <span class="ytf__label">Rach Sonata</span>
+        </button>
+        <button class="ytf" type="button" data-yt="FqO-5J4umaw" data-title="Bach Suite III">
+          <img src="media/yt/FqO-5J4umaw.jpg" alt="" loading="lazy" decoding="async" width="480" height="270" />
+          <span class="ytf__play" aria-hidden="true"></span>
+          <span class="ytf__label">Bach Suite III</span>
+        </button>
+        <button class="ytf" type="button" data-yt="ORzaIAaJ6bg" data-title="Myaskovsky">
+          <img src="media/yt/ORzaIAaJ6bg.jpg" alt="" loading="lazy" decoding="async" width="480" height="270" />
+          <span class="ytf__play" aria-hidden="true"></span>
+          <span class="ytf__label">Myaskovsky</span>
+        </button>
+        <button class="ytf" type="button" data-yt="_t_MBDvVGL0" data-title="Smetana Piano Trio">
+          <img src="media/yt/_t_MBDvVGL0.jpg" alt="" loading="lazy" decoding="async" width="480" height="270" />
+          <span class="ytf__play" aria-hidden="true"></span>
+          <span class="ytf__label">Smetana Piano Trio</span>
+        </button>
+        <button class="ytf" type="button" data-yt="6ZXxoSSx9tQ" data-title="Ghost Trio">
+          <img src="media/yt/6ZXxoSSx9tQ.jpg" alt="" loading="lazy" decoding="async" width="480" height="270" />
+          <span class="ytf__play" aria-hidden="true"></span>
+          <span class="ytf__label">Ghost Trio</span>
+        </button>
+        <button class="ytf" type="button" data-yt="thjBS7mDWXA" data-title="Dvorak Piano trio">
+          <img src="media/yt/thjBS7mDWXA.jpg" alt="" loading="lazy" decoding="async" width="480" height="270" />
+          <span class="ytf__play" aria-hidden="true"></span>
+          <span class="ytf__label">Dvorak Piano trio</span>
+        </button>
+        <button class="ytf" type="button" data-yt="lxlcMh5MRLQ" data-title="Grieg">
+          <img src="media/yt/lxlcMh5MRLQ.jpg" alt="" loading="lazy" decoding="async" width="480" height="270" />
+          <span class="ytf__play" aria-hidden="true"></span>
+          <span class="ytf__label">Grieg</span>
+        </button>
         
-        <iframe
-          src="https://www.youtube.com/embed/nBBgEOe109w"
-          title="Prokofiev"
-          frameborder="0"
-          allowfullscreen loading="lazy"></iframe>
-        <iframe
-          src="https://www.youtube.com/embed/L2IKDHzffIw"
-          title="Hayden Rider"
-          frameborder="0"
-          allowfullscreen loading="lazy"></iframe>
-        <iframe
-          src="https://www.youtube.com/embed/dQxwrbtbP38"
-          title="Mendy Quartet fmior"
-          frameborder="0"
-          allowfullscreen loading="lazy"></iframe>
-        <iframe
-          src="https://www.youtube.com/embed/87ZJvGDjxJY"
-          title="Prokofiev"
-          frameborder="0"
-          allowfullscreen loading="lazy"></iframe>
-        <iframe
-          src="https://www.youtube.com/embed/OcbwWBQAoQ4"
-          title="Beethoven Quartet Pueri"
-          frameborder="0"
-          allowfullscreen loading="lazy"></iframe>
-        <iframe
-          src="https://www.youtube.com/embed/7POcUOZQhP4"
-          title="bloch trio"
-          frameborder="0"
-          allowfullscreen loading="lazy"></iframe>
-        <iframe
-          src="https://www.youtube.com/embed/UtUlo4MIsfc"
-          title="fairy tale yang trio"
-          frameborder="0"
-          allowfullscreen loading="lazy"></iframe>
-        <iframe
-          src="https://www.youtube.com/embed/N1e9fcLQllw"
-          title="Mendy Octet"
-          frameborder="0"
-          allowfullscreen loading="lazy"></iframe>
-        <iframe
-          src="https://www.youtube.com/embed/d_xAeGKAZws"
-          title="Borodin w/ SFS"
-          frameborder="0"
-          allowfullscreen loading="lazy"></iframe>
-        <iframe
-          src="https://www.youtube.com/embed/jVwnkbXuXAw"
-          title="Beethoven String at MIT"
-          frameborder="0"
-          allowfullscreen loading="lazy"></iframe>
+        <button class="ytf" type="button" data-yt="nBBgEOe109w" data-title="Prokofiev">
+          <img src="media/yt/nBBgEOe109w.jpg" alt="" loading="lazy" decoding="async" width="480" height="270" />
+          <span class="ytf__play" aria-hidden="true"></span>
+          <span class="ytf__label">Prokofiev</span>
+        </button>
+        <button class="ytf" type="button" data-yt="L2IKDHzffIw" data-title="Hayden Rider">
+          <img src="media/yt/L2IKDHzffIw.jpg" alt="" loading="lazy" decoding="async" width="480" height="270" />
+          <span class="ytf__play" aria-hidden="true"></span>
+          <span class="ytf__label">Hayden Rider</span>
+        </button>
+        <button class="ytf" type="button" data-yt="dQxwrbtbP38" data-title="Mendy Quartet fmior">
+          <img src="media/yt/dQxwrbtbP38.jpg" alt="" loading="lazy" decoding="async" width="480" height="270" />
+          <span class="ytf__play" aria-hidden="true"></span>
+          <span class="ytf__label">Mendy Quartet fmior</span>
+        </button>
+        <button class="ytf" type="button" data-yt="87ZJvGDjxJY" data-title="Prokofiev">
+          <img src="media/yt/87ZJvGDjxJY.jpg" alt="" loading="lazy" decoding="async" width="480" height="270" />
+          <span class="ytf__play" aria-hidden="true"></span>
+          <span class="ytf__label">Prokofiev</span>
+        </button>
+        <button class="ytf" type="button" data-yt="OcbwWBQAoQ4" data-title="Beethoven Quartet Pueri">
+          <img src="media/yt/OcbwWBQAoQ4.jpg" alt="" loading="lazy" decoding="async" width="480" height="270" />
+          <span class="ytf__play" aria-hidden="true"></span>
+          <span class="ytf__label">Beethoven Quartet Pueri</span>
+        </button>
+        <button class="ytf" type="button" data-yt="7POcUOZQhP4" data-title="bloch trio">
+          <img src="media/yt/7POcUOZQhP4.jpg" alt="" loading="lazy" decoding="async" width="480" height="270" />
+          <span class="ytf__play" aria-hidden="true"></span>
+          <span class="ytf__label">bloch trio</span>
+        </button>
+        <button class="ytf" type="button" data-yt="UtUlo4MIsfc" data-title="fairy tale yang trio">
+          <img src="media/yt/UtUlo4MIsfc.jpg" alt="" loading="lazy" decoding="async" width="480" height="270" />
+          <span class="ytf__play" aria-hidden="true"></span>
+          <span class="ytf__label">fairy tale yang trio</span>
+        </button>
+        <button class="ytf" type="button" data-yt="N1e9fcLQllw" data-title="Mendy Octet">
+          <img src="media/yt/N1e9fcLQllw.jpg" alt="" loading="lazy" decoding="async" width="480" height="270" />
+          <span class="ytf__play" aria-hidden="true"></span>
+          <span class="ytf__label">Mendy Octet</span>
+        </button>
+        <button class="ytf" type="button" data-yt="d_xAeGKAZws" data-title="Borodin w/ SFS">
+          <img src="media/yt/d_xAeGKAZws.jpg" alt="" loading="lazy" decoding="async" width="480" height="270" />
+          <span class="ytf__play" aria-hidden="true"></span>
+          <span class="ytf__label">Borodin w/ SFS</span>
+        </button>
+        <button class="ytf" type="button" data-yt="jVwnkbXuXAw" data-title="Beethoven String at MIT">
+          <img src="media/yt/jVwnkbXuXAw.jpg" alt="" loading="lazy" decoding="async" width="480" height="270" />
+          <span class="ytf__play" aria-hidden="true"></span>
+          <span class="ytf__label">Beethoven String at MIT</span>
+        </button>
       </div>
     </section>
 
     <!-- === CONTACT === -->
     <section id="contact" class="page">
-      <h2>Contact</h2>
+      <h2 data-idx="04">Contact</h2>
       <p>Email: <a href="mailto:repsaj17@mit.edu">repsaj17@mit.edu</a></p>
       <p>LinkedIn: <a href="https://www.linkedin.com/in/jjasper-llee" rel="noopener" target="_blank">linkedin.com/in/jjasper-llee</a></p>
       <p>GitHub: <a href="https://github.com/jjasper-llee" target="_blank">github.com/jjasper-llee</a></p>
     </section>
   </main>
 
-  <footer>
-    <p>© 2025 Jasper Lee</p>
+    <footer class="titleblock">
+    <dl class="titleblock__grid">
+      <div><dt>Drawn by</dt><dd>J. Lee</dd></div>
+      <div><dt>Subject</dt><dd>Portfolio</dd></div>
+      <div><dt>Scale</dt><dd>1 : 1</dd></div>
+      <div><dt>Rev</dt><dd>2026.07</dd></div>
+      <div><dt>Sheet</dt><dd>1 of 1</dd></div>
+    </dl>
+    <p class="titleblock__sig">&copy; 2026 Jasper Lee &middot; MIT MechE + Physics</p>
   </footer>
 
-  <script src="brain.js?v=20260728" defer></script>
-  <script>
-    // Page switching navigation
-    const navLinks = document.querySelectorAll('nav a');
-    const pages = document.querySelectorAll('.page');
-
-    const navigationEntries =
-      typeof performance.getEntriesByType === 'function'
-        ? performance.getEntriesByType('navigation')
-        : [];
-
-    const isReload = navigationEntries.length
-      ? navigationEntries[0].type === 'reload'
-      : typeof performance !== 'undefined' &&
-        performance.navigation &&
-        performance.navigation.type === performance.navigation.TYPE_RELOAD;
-
-    if (isReload) {
-      history.replaceState(
-        null,
-        '',
-        `${window.location.pathname}${window.location.search}`
-      );
-    }
-
-    function requestBrainHighlight(mode) {
-      if (window.setBrainHighlight) {
-        window.setBrainHighlight(mode);
-      } else {
-        window.pendingBrainHighlight = mode;
-      }
-    }
-
-    function updateBrainHighlight(section) {
-      if (section === 'left-brain') {
-        requestBrainHighlight('left');
-      } else if (section === 'right-brain') {
-        requestBrainHighlight('right');
-      } else {
-        requestBrainHighlight('none');
-      }
-    }
-
-    const sectionIds = new Set(Array.from(pages).map(page => page.id));
-
-    function showSection(section, { scroll = true } = {}) {
-      if (!sectionIds.has(section)) {
-        section = 'about';
-      }
-
-      pages.forEach(page => {
-        page.classList.toggle('visible', page.id === section);
-      });
-
-      navLinks.forEach(link => {
-        link.classList.toggle('active', link.dataset.section === section);
-      });
-
-      updateBrainHighlight(section);
-
-      // retints every accent on the page (nav underline, panel rim, tile glow)
-      document.body.dataset.hemi =
-        section === 'left-brain' ? 'left' : section === 'right-brain' ? 'right' : '';
-
-      if (scroll) {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-    }
-
-    function handleHashChange({ scroll = true } = {}) {
-      const section = window.location.hash.replace('#', '') || 'left-brain';
-      showSection(section, { scroll });
-    }
-
-    navLinks.forEach(link => {
-      link.addEventListener('click', event => {
-        const target = link.dataset.section;
-        if (!target) {
-          return;
-        }
-
-        event.preventDefault();
-
-        if (window.location.hash === `#${target}`) {
-          showSection(target);
-        } else {
-          window.location.hash = target;
-        }
-      });
-    });
-
-    window.addEventListener('hashchange', () => handleHashChange());
-
-    handleHashChange({ scroll: false });
-  </script>
+  <script src="site.js?v=20260801" defer></script>
+  <script src="ambient.js?v=20260801" defer></script>
+  
 </body>
 </html>

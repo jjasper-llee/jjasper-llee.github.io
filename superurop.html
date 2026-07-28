@@ -5,7 +5,7 @@
   <script>document.documentElement.classList.add('js');</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nano/Bio Engineering | Jasper Lee</title>
-  <link rel="stylesheet" href="style.css?v=20260728" />
+  <link rel="stylesheet" href="style.css?v=20260801" />
 
   
 </head>
@@ -33,7 +33,7 @@
   </header>
 
   <main id="main-content" class="project-page">
-    <section class="project-shell">
+    <section class="project-shell ticks">
       <h2>Nano/Bio Engineering</h2>
       <p class="project-tagline">High-throughput manufacturing of in vitro muscle sheets
 to test mobility-restoring therapies.</p>
@@ -116,26 +116,6 @@ actuators via micro-topological patterning) utilizes soft substrates and microgr
   <footer>
     <p>© 2025 Jasper Lee</p>
   </footer>
-
-  <script>
-    (function () {
-      const desiredHighlight = 'left';
-
-      function applyHighlight() {
-        if (window.setBrainHighlight) {
-          window.setBrainHighlight(desiredHighlight);
-        } else {
-          window.pendingBrainHighlight = desiredHighlight;
-        }
-      }
-
-      if (document.readyState === 'complete' || document.readyState === 'interactive') {
-        applyHighlight();
-      } else {
-        document.addEventListener('DOMContentLoaded', applyHighlight);
-      }
-    })();
-  </script>
-  <script src="brain.js?v=20260728" defer></script>
+  <script src="site.js?v=20260801" defer></script>
 </body>
 </html>
