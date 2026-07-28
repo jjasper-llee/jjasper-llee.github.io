@@ -889,3 +889,19 @@ body.project-detail header { display: flex; align-items: center; justify-content
   .page, .project-shell { backdrop-filter: none; }
   html::before, html::after, body::before, body::after { opacity: .18; }
 }
+
+/* Tile whose artwork does not exist yet. Better than a broken <img>. */
+.tile-placeholder {
+  width: 100%; aspect-ratio: 4 / 3;
+  background:
+    radial-gradient(60% 50% at 30% 25%, rgba(79,227,208,.10), transparent 70%),
+    radial-gradient(50% 45% at 75% 70%, rgba(163,123,255,.10), transparent 72%),
+    var(--abyss-700);
+  border-bottom: 1px solid var(--border-hairline);
+}
+
+.credits {
+  margin-top: var(--sp-5);
+  font-size: .9rem; color: var(--text-3);
+  letter-spacing: .01em;
+}
