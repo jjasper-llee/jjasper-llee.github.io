@@ -594,7 +594,11 @@ footer p { margin: 0; max-width: none; color: inherit; }
    The .detail-card / .code-card rules below were duplicated verbatim in the
    <head> of 9 project pages. Hoisted here so theming is a single-file change.
    ============================================================ */
-body.project-detail header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--sp-4) var(--sp-6); }
+/* project-detail pages wrap the nav in the same .nav-left as the homepage, so
+   let it span the header and the shared `.logo { margin-inline-end: auto }`
+   right-aligns the nav identically on every page */
+body.project-detail header { display: flex; align-items: center; flex-wrap: wrap; gap: var(--sp-4) var(--sp-6); }
+body.project-detail .nav-left { flex: 1 1 100%; }
 
 .project-page {
   padding: calc(var(--header-h) + var(--sp-7)) clamp(var(--sp-4), 4vw, var(--sp-6)) var(--sp-9);
