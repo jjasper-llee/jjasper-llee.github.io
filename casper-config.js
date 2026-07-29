@@ -11,7 +11,7 @@ window.CASPER_CONFIG = {
        'https://casper.your-subdomain.workers.dev'
      Leave it empty and Casper runs in scripted mode: the orb still animates
      and the FAQ below still answers. Nothing looks broken either way. */
-  workerUrl: '',
+  workerUrl: 'https://casper.jjasperllee.workers.dev',
 
   lang: 'en-US',
 

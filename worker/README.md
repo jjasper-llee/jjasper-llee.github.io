@@ -66,3 +66,42 @@ redeploying the site.
   details wrong, which is why the panel carries a visible "Casper can be wrong"
   note and why the six most common questions are answered from a scripted FAQ
   *before* the model is ever consulted.
+
+## Check it's working
+
+```bash
+curl -N https://casper.jjasperllee.workers.dev \
+  -H 'content-type: application/json' \
+  -H 'Origin: https://jjasper-llee.github.io' \
+  -d '{"messages":[{"role":"user","content":"What does Jasper study?"}]}'
+```
+
+Good response — `delta` frames streaming in:
+
+```
+data: {"t":"meta","limit":null}
+data: {"t":"delta","v":"He's"}
+data: {"t":"delta","v":" at MIT"}
+...
+data: {"t":"done","reason":"end_turn"}
+```
+
+And the voice:
+
+```bash
+curl -o /tmp/casper.mp3 https://casper.jjasperllee.workers.dev/tts \
+  -H 'content-type: application/json' \
+  -H 'Origin: https://jjasper-llee.github.io' \
+  -d '{"text":"Hi, I am Casper."}' && afplay /tmp/casper.mp3
+```
+
+If that plays a human voice, Aura is live and the site will use it.
+
+### If the chat streams but /tts 404s
+`TTS_ENABLED` is `"1"` by default, but the route was added after the first
+deploy. Re-run `npx wrangler deploy` from this directory.
+
+### Changing the voice
+`TTS_VOICE` in `wrangler.toml`. Deepgram Aura speakers: `angus` (default),
+`asteria`, `luna`, `stella`, `athena`, `hera`, `orion`, `arcas`, `perseus`,
+`orpheus`, `helios`, `zeus`. Change it and redeploy — no site change needed.
