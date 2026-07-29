@@ -110,6 +110,16 @@
     });
   }
 
+  /* Both scripts are deferred and site.js is first, so on a direct load of
+     #left-brain the router's `if (window.setAmbientClip)` call is skipped --
+     this function does not exist yet. Clicking the nav worked; bookmarking the
+     section did not. Resolve the section here at init instead of relying on
+     the router having gone first. */
+  (function initialClip() {
+    var h = (location.hash || '').replace('#', '');
+    if (h === 'left-brain') host.dataset.ambient = 'shop';
+  })();
+
   // Called by the section router so the engineering side gets machinery.
   window.setAmbientClip = function (key) {
     if (!CLIPS[key] || key === currentKey) return;

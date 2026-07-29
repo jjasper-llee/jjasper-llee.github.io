@@ -23,7 +23,7 @@ window.CASPER_CONFIG = {
      to the browser voice automatically. */
   naturalVoice: true,
 
-  rate: 1.0,
+  rate: 1.12,
   pitch: 1.0,
 
   /* Only a tie-breaker. casper.js ranks by QUALITY MARKERS first -- Apple's

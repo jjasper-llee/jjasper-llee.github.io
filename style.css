@@ -145,8 +145,8 @@
   --z-skip:     200;   /* above the orb: a keyboard user must reach skip first */
 
   /* ---- Ambient video dials --------------------------------------------- */
-  --video-gain: .30;   /* brightness() ceiling on the already-graded clip */
-  --video-sat:  .35;
+  --video-gain: .58;   /* brightness() ceiling on the already-graded clip */
+  --video-sat:  .48;
   --video-warm: .16;   /* a little sepia, so it doesn't read as CCTV */
 
   /* ---- Motion ---------------------------------------------------------- */
@@ -432,8 +432,8 @@ nav a.active::before { background: var(--accent); box-shadow: 0 0 0 3px var(--ac
   position: absolute; inset: 0; z-index: var(--z-hero-scrim); pointer-events: none;
   background:
     linear-gradient(180deg,
-      rgba(6,8,10,.78)   0%, rgba(6,8,10,.52) 22%,
-      rgba(6,8,10,.74)  46%, rgba(6,8,10,.74) 62%,
+      rgba(6,8,10,.70)   0%, rgba(6,8,10,.42) 22%,
+      rgba(6,8,10,.60)  46%, rgba(6,8,10,.60) 62%,
       rgba(6,8,10,.58)  80%, rgba(6,8,10,.98) 100%),
     radial-gradient(130% 96% at 50% 44%,
       rgba(6,8,10,0) 0%, rgba(6,8,10,.30) 58%, rgba(6,8,10,.82) 100%);

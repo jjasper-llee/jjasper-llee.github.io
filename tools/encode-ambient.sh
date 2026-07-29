@@ -33,7 +33,7 @@ SHOP="$HOME/Downloads/IMG_7374.MOV"
 DUR=12          # loop length in seconds
 XF=1            # cross-wrap length folded onto the head
 
-# encode <src> <out-base> <crop> <start> <extra-eq>
+# encode <src> <out-base> <crop> <start> <extra-eq> [luma-ceiling]
 encode() {
   local src="$1" out="media/$2" crop="$3" start="$4" eq="$5"
 
@@ -59,7 +59,8 @@ encode() {
   # colorlevels caps the output ceiling at 55%, which is the "luminance ceiling"
   # the CSS then finishes. yuv420p because 10-bit HEVC sources would otherwise
   # produce a file Safari refuses.
-  local chain="${crop},scale=1280:-2:flags=lanczos,fps=24,${eq},colorlevels=romax=0.55:gomax=0.55:bomax=0.55,format=yuv420p"
+  local ceil="${6:-0.55}"
+  local chain="${crop},scale=1280:-2:flags=lanczos,fps=24,${eq},colorlevels=romax=${ceil}:gomax=${ceil}:bomax=${ceil},format=yuv420p"
 
   # No usable tail -> plain encode, no cross-wrap to fake.
   if [ "$xf" -eq 0 ]; then
@@ -120,8 +121,11 @@ encode "$CELLO" "ambient-cello" "crop=620:380:230:330" 6 \
 # Machinery. Source is portrait (rotation -90 metadata); this band catches the
 # arc, the gloves and the fixture table. The arc is blown out by design, so the
 # grade only pulls the room down around it.
+# Ceiling 0.92, not 0.55: this clip is a dark room with one small bright arc.
+# At the default ceiling the arc clipped to the same black as the room and the
+# whole clip read as an empty frame -- which is exactly what happened.
 encode "$SHOP" "ambient-shop" "crop=1080:620:0:520" 46 \
-  "eq=contrast=1.12:saturation=0.26:gamma=0.94"
+  "eq=contrast=1.08:saturation=0.34:gamma=1.10" 0.92
 
 echo
 echo "total committed:"

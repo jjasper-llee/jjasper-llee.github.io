@@ -14,7 +14,7 @@
    a clear "not connected yet" note. Nothing looks broken either way.
    ========================================================================= */
 window.BOWVISION_CONFIG = {
-  publishableKey: '',          // e.g. 'rf_XXXXXXXXXXXXXXXXXXXX'
+  publishableKey: 'rf_R1nDszQu0ghaoEgucFPzmcLgz2Q2',          // e.g. 'rf_XXXXXXXXXXXXXXXXXXXX'
   model: 'bowdetector',
   version: 1,                  // the N in bowdetector/N
 

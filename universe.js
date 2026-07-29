@@ -47,9 +47,9 @@ const TIER = (() => {
   const cores = navigator.hardwareConcurrency || 4;
   const mem = navigator.deviceMemory || 4;
   if (w >= 1100 && cores >= 8 && mem >= 8)
-    return { key:'hi', dpr:1.75, aa:true,  segW:64, segH:48, pSeg:24, aniso:4 };
+    return { key:'hi', dpr:2.0,  aa:true,  segW:128, segH:96, pSeg:48, aniso:8 };
   if (w >= 700)
-    return { key:'md', dpr:1.75, aa:true,  segW:48, segH:32, pSeg:20, aniso:2 };
+    return { key:'md', dpr:2.0,  aa:true,  segW:96,  segH:64, pSeg:32, aniso:8 };
   return   { key:'lo', dpr:1.5,  aa:false, segW:32, segH:24, pSeg:16, aniso:1 };
 })();
 
@@ -79,6 +79,19 @@ const sunLight = new THREE.DirectionalLight(0xfff4e6, 3.4);
 sunLight.position.set(1, 0.15, 0.4);
 scene.add(sunLight);
 scene.add(new THREE.AmbientLight(0x223044, 0.10));
+
+/* The sun light is aimed for the planetary stages. Everything from the cell
+   down had only the dim ambient, so every lit material below Earth rendered
+   near-black -- the myotubes and nucleons were there and invisible. This rig
+   is parented to the CAMERA, so the small scales stay lit from the viewer's
+   side however the user orbits. It is switched off for the planetary stages,
+   where a second light would wash out the terminator. */
+const rimKey  = new THREE.DirectionalLight(0xdfe9ef, 2.6);
+rimKey.position.set(0.4, 0.8, 1);
+const rimFill = new THREE.DirectionalLight(0x7fa8d0, 1.1);
+rimFill.position.set(-0.9, -0.3, 0.5);
+camera.add(rimKey, rimFill);
+const SMALL_STAGES = { human:1, cell:1, dna:1, atom:1, nucleus:1, quark:1 };
 
 function resize() {
   const w = host.clientWidth, h = host.clientHeight;
@@ -478,7 +491,7 @@ function buildEarth() {
   g.add(atmosphere(1.028, 0x2a5fbf, 0x8fb6ff, 3.2));
 
   const moonMat = new THREE.MeshStandardMaterial({ color:0xbdb8ae, roughness:1 });
-  const moon = new THREE.Mesh(new THREE.SphereGeometry(0.27, 24, 18), moonMat);
+  const moon = new THREE.Mesh(new THREE.SphereGeometry(0.27, 48, 36), moonMat);
   moon.position.set(2.6, 0.15, -0.7);
   g.add(moon);
 
@@ -488,12 +501,14 @@ function buildEarth() {
   ];
   g.userData = { mat, clouds, moonMat };
   applyTex.earth = (slot, tex) => {
+    if (slot === 'moon') { moonMat.map = tex; moonMat.color.set(0xffffff); moonMat.needsUpdate = true; return; }
     if (slot === 'clouds') { clouds.material.alphaMap = tex; clouds.material.needsUpdate = true; tweenMeshBase(clouds, 0.92, 700); return; }
     mat.uniforms[slot].value = tex;
     if (slot === 'uNight') tweenUniform(mat.uniforms.uHasNight, 1, 600);
     if (slot === 'uOcean') tweenUniform(mat.uniforms.uHasOcean, 1, 400);
   };
   revert.earth = () => {
+    moonMat.map = null; moonMat.color.set(0xbdb8ae); moonMat.needsUpdate = true;
     mat.uniforms.uDay.value = flat(0x1b3d55);
     mat.uniforms.uHasNight.value = 0; mat.uniforms.uHasOcean.value = 0;
     clouds.material.alphaMap = null; clouds.userData.base = 0; clouds.material.opacity = 0; clouds.material.needsUpdate = true;
@@ -503,89 +518,234 @@ function buildEarth() {
 
 /* ---- small scales ---- */
 function buildHuman() {
-  const g = new THREE.Group(), body = [];
-  for (let i = 0; i <= 200; i++) {
-    const t = i/200, y = -1 + t*1.55;
-    body.push(0.52*(0.62+0.38*Math.sin(t*6.2832+0.4))*(1-0.25*t), y, 0);
+  const g = new THREE.Group();
+  /* The real photograph, on a plane lit from the same key light as everything
+     else. A billboarded photo in a 3D scene normally reads as a sticker; the
+     fix is to give it a frame with depth and let the light fall across it, so
+     it sits IN the scene rather than on top of it. */
+  const mat = new THREE.MeshBasicMaterial({
+    color: 0x2a3138, transparent: true, side: THREE.DoubleSide
+  });
+  const plate = new THREE.Mesh(new THREE.PlaneGeometry(1.62, 2.16), mat);
+  g.add(plate);
+
+  // a thin bezel so the plate has thickness at a grazing angle
+  const bez = new THREE.Mesh(
+    new THREE.BoxGeometry(1.70, 2.24, 0.03),
+    new THREE.MeshBasicMaterial({ color: 0x161d22 }));
+  bez.position.z = -0.022;
+  g.add(bez);
+
+  // measurement ticks, so it reads as a spec plate rather than a photo frame
+  const ticks = [];
+  for (let i = 0; i <= 8; i++) {
+    const y = -1.08 + (i / 8) * 2.16;
+    ticks.push(-0.93, y, 0.02, -0.86, y, 0.02);
   }
-  for (let i = 200; i >= 0; i--) body.push(-body[i*3], body[i*3+1], 0);
-  const bg = new THREE.BufferGeometry();
-  bg.setAttribute('position', new THREE.Float32BufferAttribute(body, 3));
-  g.add(new THREE.Line(bg, new THREE.LineBasicMaterial({ color:AM, transparent:true, opacity:0.9 })));
-  const extra = [0,0.55,0, 0,1.35,0];
-  for (let s = 0; s < 4; s++) { const x = -0.06 + s*0.04; extra.push(x,1.3,0.02, x,-0.7,0.02); }
-  const eg = new THREE.BufferGeometry();
-  eg.setAttribute('position', new THREE.Float32BufferAttribute(extra, 3));
-  g.add(new THREE.LineSegments(eg, new THREE.LineBasicMaterial({ color:WH, transparent:true, opacity:0.5 })));
+  const tg = new THREE.BufferGeometry();
+  tg.setAttribute('position', new THREE.Float32BufferAttribute(ticks, 3));
+  g.add(new THREE.LineSegments(tg, new THREE.LineBasicMaterial({ color: AM, transparent: true, opacity: 0.55 })));
+
+  g.userData = { mat };
+  applyTex.human = (slot, tex) => {
+    if (slot !== 'cello') return;
+    mat.map = tex; mat.color.set(0xffffff); mat.needsUpdate = true;
+  };
+  revert.human = () => { mat.map = null; mat.color.set(0x2a3138); mat.needsUpdate = true; };
   return g;
 }
 
 function buildCell() {
   const g = new THREE.Group();
-  g.add(new THREE.Mesh(new THREE.SphereGeometry(1, 40, 40), new THREE.MeshBasicMaterial({ color:CY, wireframe:true, transparent:true, opacity:0.14 })));
-  g.add(new THREE.Mesh(new THREE.SphereGeometry(0.34, 24, 24), new THREE.MeshBasicMaterial({ color:VI, transparent:true, opacity:0.30 })));
-  const org = [];
-  for (let i = 0; i < 90; i++) {
-    const r = 0.42 + Math.random()*0.48, th = Math.random()*6.2832, ph = Math.acos(rnd(1));
-    org.push(Math.sin(ph)*Math.cos(th)*r, Math.cos(ph)*r, Math.sin(ph)*Math.sin(th)*r);
+  /* C2C12 myotubes -- the mouse myoblast line Jasper's Raman Lab work uses.
+     Myoblasts fuse into long MULTINUCLEATED tubes with visible sarcomere
+     striation, and micro-topography is what makes them grow ALIGNED instead of
+     in a random mesh. So this is drawn as aligned tubes on a grooved substrate,
+     which is literally what the research does. */
+  const GROOVE_N = 14, SPAN = 2.4, FIT = 0.62;   // FIT keeps all five fibres in frame
+
+  // substrate: parallel grooves, the micro-topography itself
+  const sub = [];
+  for (let i = 0; i <= GROOVE_N; i++) {
+    const x = -SPAN/2 + (i/GROOVE_N)*SPAN;
+    sub.push(x, -0.42, -1.3,  x, -0.42, 1.3);
   }
-  g.add(points(org, 0.05, AM, 0.55));
+  const sg = new THREE.BufferGeometry();
+  sg.setAttribute('position', new THREE.Float32BufferAttribute(sub, 3));
+  g.add(new THREE.LineSegments(sg, new THREE.LineBasicMaterial({ color: CY, transparent: true, opacity: 0.30 })));
+
+  const tubeMat = new THREE.MeshBasicMaterial({
+    color: 0x8c4634, transparent: true, opacity: 0.72 });
+  const nucMat = new THREE.MeshBasicMaterial({ color: 0x93a9ee, transparent: true, opacity: 0.98, depthWrite: false });
+
+  for (let t = 0; t < 5; t++) {
+    const z = -0.86 + t * 0.43;
+    const len = 1.9 + Math.random() * 0.5;
+    const r = 0.085 + Math.random() * 0.035;
+
+    // slight sinuous path, aligned to the grooves
+    const pts = [];
+    for (let i = 0; i <= 24; i++) {
+      const u = i/24;
+      pts.push(new THREE.Vector3(-len/2 + u*len, -0.30 + Math.sin(u*3 + t)*0.035, z + Math.sin(u*2.2 + t)*0.05));
+    }
+    const curve = new THREE.CatmullRomCurve3(pts);
+    const tube = new THREE.Mesh(new THREE.TubeGeometry(curve, 64, r, 18, false), tubeMat);
+    g.add(tube);
+    // additive skin over the solid body gives the fibre a lit edge without
+    // depending on any scene light
+    const skin = new THREE.Mesh(new THREE.TubeGeometry(curve, 64, r*1.06, 18, false),
+      new THREE.MeshBasicMaterial({ color:0xff9f7a, transparent:true, opacity:0.16,
+        blending:THREE.AdditiveBlending, depthWrite:false, side:THREE.BackSide }));
+    g.add(skin);
+
+    // sarcomere striation: rings along the tube
+    const striae = [];
+    for (let i = 2; i < 46; i += 2) {
+      const u = i/48;
+      const c = curve.getPoint(u);
+      for (let k = 0; k <= 12; k++) {
+        const a = (k/12)*Math.PI*2, a2 = ((k+1)/12)*Math.PI*2;
+        striae.push(c.x, c.y + Math.cos(a)*r*1.02, c.z + Math.sin(a)*r*1.02,
+                    c.x, c.y + Math.cos(a2)*r*1.02, c.z + Math.sin(a2)*r*1.02);
+      }
+    }
+    const stg = new THREE.BufferGeometry();
+    stg.setAttribute('position', new THREE.Float32BufferAttribute(striae, 3));
+    g.add(new THREE.LineSegments(stg, new THREE.LineBasicMaterial({ color: 0xffd9c9, transparent: true, opacity: 0.34 })));
+
+    // the defining feature: many nuclei in ONE tube
+    const nN = 3 + (t % 3);
+    for (let n = 0; n < nN; n++) {
+      const u = 0.16 + (n + 0.5) / nN * 0.68;
+      const c = curve.getPoint(u);
+      const nuc = new THREE.Mesh(new THREE.SphereGeometry(r * 0.52, 16, 12), nucMat);
+      nuc.position.copy(c);
+      nuc.scale.set(1.5, 0.85, 0.85);
+      nuc.renderOrder = 3;
+      g.add(nuc);
+    }
+  }
+  g.scale.setScalar(FIT);
   return g;
 }
 
 function buildDNA() {
-  const g = new THREE.Group(), a = [], b = [], rung = [];
-  for (let i = 0; i <= 300; i++) {
-    const t = i/300, y = -1.25 + t*2.5, th = t*Math.PI*2*3.2;
-    const x1 = Math.cos(th)*0.34, z1 = Math.sin(th)*0.34;
-    const x2 = Math.cos(th+Math.PI)*0.34, z2 = Math.sin(th+Math.PI)*0.34;
-    a.push(x1,y,z1); b.push(x2,y,z2);
-    if (i % 9 === 0) rung.push(x1,y,z1, x2,y,z2);
+  const g = new THREE.Group();
+  /* Space-filling, not a wireframe. Two things make a helix read as a molecule
+     rather than a diagram: the backbones have VOLUME, and the two strands are
+     offset so the major and minor grooves appear at the right ratio (B-form is
+     ~22A major, ~12A minor -- a symmetric 180-degree offset gives two identical
+     grooves, which is the classic giveaway of a fake helix). */
+  const TURNS = 3.0, N = 260, R = 0.30, OFFSET = 2.36, FIT = 0.68;   // ~135deg, not 180
+  const backMat = [
+    new THREE.MeshBasicMaterial({ color:0x3fb6e8 }),
+    new THREE.MeshBasicMaterial({ color:0xefad46 })
+  ];
+
+  [0, OFFSET].forEach((phase, si) => {
+    const pts = [];
+    for (let i = 0; i <= N; i++) {
+      const t = i/N, y = -1.3 + t*2.6, th = t*Math.PI*2*TURNS + phase;
+      pts.push(new THREE.Vector3(Math.cos(th)*R, y, Math.sin(th)*R));
+    }
+    const curve = new THREE.CatmullRomCurve3(pts);
+    g.add(new THREE.Mesh(new THREE.TubeGeometry(curve, 220, 0.055, 12, false), backMat[si]));
+  });
+
+  // base pairs: real cylinders between the strands, coloured by pair type
+  const PAIR = [0x7fd4a8, 0xd47f9e];
+  for (let i = 6; i < N - 6; i += 7) {
+    const t = i/N, y = -1.3 + t*2.6, th = t*Math.PI*2*TURNS;
+    const a = new THREE.Vector3(Math.cos(th)*R, y, Math.sin(th)*R);
+    const b = new THREE.Vector3(Math.cos(th+OFFSET)*R, y, Math.sin(th+OFFSET)*R);
+    const mid = a.clone().lerp(b, 0.5);
+    const len = a.distanceTo(b);
+    const rung = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.022, 0.022, len, 8),
+      new THREE.MeshBasicMaterial({ color: PAIR[(i/7|0) % 2] }));
+    rung.position.copy(mid);
+    rung.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0), b.clone().sub(a).normalize());
+    g.add(rung);
   }
-  for (const [arr,col] of [[a,CY],[b,AM]]) {
-    const gg = new THREE.BufferGeometry();
-    gg.setAttribute('position', new THREE.Float32BufferAttribute(arr, 3));
-    g.add(new THREE.Line(gg, new THREE.LineBasicMaterial({ color:col, transparent:true, opacity:0.9 })));
-  }
-  const rg = new THREE.BufferGeometry();
-  rg.setAttribute('position', new THREE.Float32BufferAttribute(rung, 3));
-  g.add(new THREE.LineSegments(rg, new THREE.LineBasicMaterial({ color:WH, transparent:true, opacity:0.35 })));
+  g.scale.setScalar(FIT);
   return g;
 }
 
 /* 2p_z orbital: radial part r*exp(-r/2) times cos^2(theta). The node AT the
-   nucleus is the physically interesting feature, and a cos-power fudge does not
-   produce one. */
+   nucleus is the physically interesting feature. Rendered as a dense additive
+   cloud with depth-varying size so it reads as a probability VOLUME rather
+   than a flat spray of dots. */
 function buildAtom() {
   const g = new THREE.Group();
-  g.add(new THREE.Mesh(new THREE.SphereGeometry(0.09, 18, 18), new THREE.MeshBasicMaterial({ color:AM })));
-  const cloud = [];
-  let guard = 0;
-  while (cloud.length < 4200*3 && guard < 400000) {
+  const nuc = new THREE.Mesh(new THREE.SphereGeometry(0.075, 24, 24),
+    new THREE.MeshBasicMaterial({ color:0xffc47a }));
+  g.add(nuc);
+
+  const N = 26000;                       // was 4200 -- density IS the look here
+  const pos = new Float32Array(N*3), col = new Float32Array(N*3), sz = new Float32Array(N);
+  const cA = new THREE.Color(0x6fd3eb), cB = new THREE.Color(0xa37bff);
+  let i = 0, guard = 0;
+  while (i < N && guard < 3000000) {
     guard++;
-    const r = Math.random()*2.6, th = Math.random()*6.2832, ct = rnd(1);
+    const r = Math.random()*3.0, th = Math.random()*6.2832, ct = (Math.random()-0.5)*2;
     const st = Math.sqrt(1-ct*ct);
-    const psi2 = r*r * Math.exp(-r) * ct*ct;     // |psi|^2 * r^2 dr
-    if (Math.random() * 0.55 > psi2) continue;
-    const s = 0.42;
-    cloud.push(st*Math.cos(th)*r*s, ct*r*s, st*Math.sin(th)*r*s);
+    const psi2 = r*r * Math.exp(-r) * ct*ct;
+    if (Math.random()*0.55 > psi2) continue;
+    const sc = 0.40;
+    pos[i*3]   = st*Math.cos(th)*r*sc;
+    pos[i*3+1] = ct*r*sc;
+    pos[i*3+2] = st*Math.sin(th)*r*sc;
+    // colour by radius: hot near the node, cool at the fringe
+    const mix = Math.min(1, r/2.4);
+    const c = cA.clone().lerp(cB, mix);
+    col[i*3] = c.r; col[i*3+1] = c.g; col[i*3+2] = c.b;
+    sz[i] = 0.012 + (1-mix)*0.016;
+    i++;
   }
-  g.add(points(cloud, 0.014, CY, 0.38));
-  g.userData.cloud = g.children[1];
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.Float32BufferAttribute(pos.subarray(0,i*3), 3));
+  geo.setAttribute('color',    new THREE.Float32BufferAttribute(col.subarray(0,i*3), 3));
+  const cloud = new THREE.Points(geo, new THREE.PointsMaterial({
+    size:0.018, vertexColors:true, transparent:true, opacity:0.55,
+    sizeAttenuation:true, depthWrite:false, blending:THREE.AdditiveBlending }));
+  g.add(cloud);
+  g.userData.cloud = cloud;
   return g;
 }
 
 /* Carbon-12: 6 protons, 6 neutrons. Twelve labelled nucleons is a fact;
-   twenty-six unlabelled ones was decoration. */
+   twenty-six unlabelled ones was decoration. Packed close, lit, with the
+   residual strong force drawn as short bonds between touching nucleons. */
 function buildNucleus() {
   const g = new THREE.Group();
+  const R = 0.19, place = [];
+  const protoMat = new THREE.MeshBasicMaterial({ color:0x4fb8e8 });
   for (let i = 0; i < 12; i++) {
-    const r = Math.pow(Math.random(), 0.4)*0.52, th = Math.random()*6.2832, ph = Math.acos(rnd(1));
-    const m = new THREE.Mesh(new THREE.SphereGeometry(0.20, 18, 18),
-      new THREE.MeshStandardMaterial({ color: i < 6 ? CY : AM, roughness:0.75 }));
-    m.position.set(Math.sin(ph)*Math.cos(th)*r, Math.cos(ph)*r, Math.sin(ph)*Math.sin(th)*r);
+    // simple relaxation so they pack instead of overlapping
+    let p, tries = 0;
+    do {
+      const r = Math.pow(Math.random(), 0.38)*0.42, th = Math.random()*6.2832, ph = Math.acos((Math.random()-0.5)*2);
+      p = new THREE.Vector3(Math.sin(ph)*Math.cos(th)*r, Math.cos(ph)*r, Math.sin(ph)*Math.sin(th)*r);
+      tries++;
+    } while (tries < 40 && place.some(q => q.distanceTo(p) < R*1.45));
+    place.push(p);
+    const m = new THREE.Mesh(new THREE.SphereGeometry(R, 28, 22),
+      i < 6 ? protoMat : new THREE.MeshBasicMaterial({ color:0xe0a45c }));
+    m.position.copy(p);
     g.add(m);
   }
+  // residual strong force between neighbours
+  const bond = [];
+  for (let a = 0; a < place.length; a++) for (let b = a+1; b < place.length; b++) {
+    if (place[a].distanceTo(place[b]) < R*2.6) {
+      bond.push(place[a].x,place[a].y,place[a].z, place[b].x,place[b].y,place[b].z);
+    }
+  }
+  const bg = new THREE.BufferGeometry();
+  bg.setAttribute('position', new THREE.Float32BufferAttribute(bond, 3));
+  g.add(new THREE.LineSegments(bg, new THREE.LineBasicMaterial({
+    color:0xdfe9ef, transparent:true, opacity:0.28, blending:THREE.AdditiveBlending })));
   return g;
 }
 
@@ -595,14 +755,15 @@ function buildQuark() {
   const pos = [new THREE.Vector3(0,0.62,0), new THREE.Vector3(-0.58,-0.34,0.14), new THREE.Vector3(0.58,-0.34,-0.14)];
   const qs = [];
   pos.forEach((p,i) => {
-    const m = new THREE.Mesh(new THREE.SphereGeometry(0.105, 20, 20), new THREE.MeshBasicMaterial({ color:cols[i] }));
+    const m = new THREE.Mesh(new THREE.SphereGeometry(0.105, 32, 32),
+      new THREE.MeshBasicMaterial({ color:cols[i] }));
     m.position.copy(p); g.add(m); qs.push(m);
   });
   const tube = new THREE.BufferGeometry();
   // 3 pairs x 40 segments x 2 vertices x 3 components. Sizing this by eye
   // truncated the flux tubes to a single thread.
   tube.setAttribute('position', new THREE.Float32BufferAttribute(new Float32Array(3*40*2*3), 3));
-  g.add(new THREE.LineSegments(tube, new THREE.LineBasicMaterial({ color:WH, transparent:true, opacity:0.75, blending:THREE.AdditiveBlending })));
+  g.add(new THREE.LineSegments(tube, new THREE.LineBasicMaterial({ color:WH, transparent:true, opacity:0.9, blending:THREE.AdditiveBlending })));
   g.userData = { qs, tube };
   return g;
 }
@@ -689,6 +850,10 @@ function paint() {
     renderChips(st.key);
     onStageChange(st);
   }
+  const small = !!SMALL_STAGES[st.key];
+  rimKey.visible = small; rimFill.visible = small;
+  sunLight.visible = !small;
+
   readout.textContent = human(scale);
   readout.dataset.exp = '10^' + scale.toFixed(1) + ' m';
 }
@@ -917,7 +1082,13 @@ function updateStages(now) {
   for (const st of STAGES) {
     const g = groups[st.key];
     const d = Math.abs(scale - st.at);
-    const vis = Math.max(0, 1 - d/2.2);
+    // Asymmetric and wider. A symmetric 2.2-decade span left real gaps between
+    // rungs where nothing was on screen at all, which read as the page going
+    // black. The outgoing stage (further from the camera's current scale) is
+    // held roughly twice as long as the incoming one takes to arrive, so there
+    // is always something visible in the handover.
+    const span = (scale > st.at) ? 3.6 : 2.9;
+    const vis = Math.max(0, 1 - d / span);
     g.visible = vis > 0.004;
 
     if (d < PREFETCH) { st.lastSeen = now; requestStage(st.key); }
@@ -925,7 +1096,9 @@ function updateStages(now) {
       disposeStage(st.key);
     }
     if (!g.visible) continue;
-    setOpacity(g, Math.pow(vis, 1.6));
+    // the nearest stage never dims; neighbours fall off fast enough that two
+    // stages are never superimposed at readable strength
+    setOpacity(g, st.key === shownKey ? Math.max(0.72, Math.pow(vis, 1.1)) : Math.pow(vis, 3.0));
     g.scale.setScalar(Math.pow(2, (st.at - scale) * 0.55));
     g.rotation.y = t * (st.spin === undefined ? 0.05 : st.spin) + (st.at - scale) * 0.02;
     g.rotation.x = st.tilt || 0;

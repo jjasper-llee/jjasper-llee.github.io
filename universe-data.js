@@ -30,11 +30,11 @@ export const STAGES = [
 
   { key:'human', at: 0.2, distMin:2.0, distMax:6.0, name:'Human Scale',
     blurb:'A cello is about 1.2 m. This is the only rung on the ladder our senses evolved for.',
-    prov:['model','Drawn from the maker’s own measurements.'] },
+    prov:['observed','Photographed in the shop. A cello is about 1.2 m end to end.'] },
 
-  { key:'cell', at: -5.0, distMin:2.0, distMax:6.0, name:'Cell',
-    blurb:'~10 µm. Jasper engineers micro-topography at roughly this scale, to steer how muscle tissue grows.',
-    prov:['model','Organelle placement is schematic. A light microscope cannot resolve most of what is drawn here.'] },
+  { key:'cell', at: -5.0, distMin:2.0, distMax:6.0, name:'C2C12 Muscle Cell',
+    blurb:'C2C12 myotubes — the mouse muscle line Jasper works with. Myoblasts fuse into long multinucleated fibres; micro-topography is what makes them grow aligned.',
+    prov:['model','Morphology from published C2C12 differentiation studies: multinucleated tubes, sarcomere striation, contact-guided alignment on a grooved substrate. Not a micrograph.'] },
 
   { key:'dna', at: -8.3, distMin:2.0, distMax:6.0, name:'DNA',
     blurb:'2 nm wide, one full turn every 3.4 nm. Two metres of it is coiled inside almost every cell you have.',
@@ -115,10 +115,12 @@ export const SUN = {
    a slow link the Earth day map is not competing with the clouds. */
 export const TEXTURES = {
   earth: [
-    { slot:'uDay',   file:'earth_day',    sizes:{hi:2048,md:1024,lo:512}, prio:0 },
-    { slot:'uNight', file:'earth_night',  sizes:{hi:2048,md:1024,lo:512}, prio:1 },
+    { slot:'uDay',   file:'earth_day',    sizes:{hi:4096,md:2048,lo:512}, prio:0 },
+    { slot:'uNight', file:'earth_night',  sizes:{hi:4096,md:2048,lo:512}, prio:1 },
     { slot:'clouds', file:'earth_clouds', sizes:{hi:2048,md:1024,lo:0},   prio:2 },
-    { slot:'uOcean', file:'earth_ocean',  sizes:{hi:1024,md:1024,lo:512}, prio:3, data:true }
+    { slot:'uOcean', file:'earth_ocean',  sizes:{hi:1024,md:1024,lo:512}, prio:3, data:true },
+    // The earth stage never requested this, so its Moon stayed a flat sphere.
+    { slot:'moon',   file:'moon',         sizes:{hi:2048,md:1024,lo:512}, prio:4 }
   ],
   solar: [
     { slot:'sun',     file:'sun',     sizes:{hi:1024,md:1024,lo:512}, prio:0 },
@@ -132,7 +134,8 @@ export const TEXTURES = {
     { slot:'neptune', file:'neptune', sizes:{hi:1024,md:1024,lo:512}, prio:8 },
     { slot:'moon',    file:'moon',    sizes:{hi:1024,md:1024,lo:512}, prio:9 }
   ],
-  galaxy: [ { slot:'sky', file:'milkyway', sizes:{hi:2048,md:1024,lo:1024}, prio:0 } ]
+  galaxy: [ { slot:'sky', file:'milkyway', sizes:{hi:2048,md:1024,lo:1024}, prio:0 } ],
+  human:  [ { slot:'cello', file:'cello', sizes:{hi:1400,md:1400,lo:700}, prio:0 } ]
 };
 
 /* Rows for the info panel. Formatting lives here; the data above stays raw. */

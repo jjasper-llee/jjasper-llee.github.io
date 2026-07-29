@@ -49,9 +49,12 @@ fetch() {
 echo "== planet + star maps =="
 
 # Earth is the hero, so it alone gets a 2048 tier.
-fetch earth_day    2k_earth_daymap.jpg        2048 1024 512
-fetch earth_night  2k_earth_nightmap.jpg      2048 1024 512
-fetch earth_clouds 2k_earth_clouds.jpg        2048 1024
+# Earth is the hero and gets a 4K tier. There is NO 4k_* upstream -- Solar
+# System Scope ships 2K and 8K only -- so 4K is downscaled from the 8K master
+# here, exactly like the 1K and 512 tiers.
+fetch earth_day    8k_earth_daymap.jpg        4096 2048 1024 512
+fetch earth_night  8k_earth_nightmap.jpg      4096 2048 1024 512
+fetch earth_clouds 8k_earth_clouds.jpg        4096 2048 1024
 # "specular map" is really a land/water mask. It is DATA, not colour -- it must
 # load as NoColorSpace or the ocean highlight comes out the wrong shape.
 fetch earth_ocean  2k_earth_specular_map.tif  1024  512
