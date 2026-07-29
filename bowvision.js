@@ -81,57 +81,203 @@
     return classColors[cls];
   }
 
-  /* Source dimensions, NOT the CSS box. This is the whole trick to boxes that
-     line up: the canvas backing store matches the source pixel grid, and CSS
-     scales both together. */
-  function sourceSize(src) {
-    if (src === el.video) return { w: el.video.videoWidth, h: el.video.videoHeight };
-    return { w: src.naturalWidth, h: src.naturalHeight };
+  /* Verified against the worker's own buildDetectedObjects(), which emits
+       { class, confidence, bbox: {x, y, width, height}, color }
+     with x/y at the CENTRE of the box, not its corner. The flat-shape and
+     corner-shape branches below are belt-and-braces for a future bundle. */
+  function normalise(p) {
+    if (!p) return null;
+    var b = p.bbox || p;
+    var w = +(b.width  != null ? b.width  : b.w);
+    var h = +(b.height != null ? b.height : b.h);
+    var x = +(b.x != null ? b.x : b.left);
+    var y = +(b.y != null ? b.y : b.top);
+    if (!isFinite(w) || !isFinite(h) || !isFinite(x) || !isFinite(y)) return null;
+    // Heuristic for centre-vs-corner: a corner box can never have its centre
+    // outside the frame, but a centre box read as a corner routinely would.
+    if (b.left == null && b.top == null) { x -= w / 2; y -= h / 2; }
+    var cls = p.class || p.className || p.label || 'object';
+    var conf = +(p.confidence != null ? p.confidence : (p.score != null ? p.score : 0));
+    // The model ships a colour per class; using it keeps the overlay consistent
+    // with how the same classes look in Roboflow itself.
+    var col = /^#[0-9a-f]{6}$/i.test(p.color || '') ? p.color : colorFor(String(cls));
+    return { x: x, y: y, w: w, h: h, cls: String(cls), conf: conf, col: col };
   }
 
-  function draw(src, preds) {
-    var s = sourceSize(src);
-    if (!s.w || !s.h) return;
-    if (el.canvas.width !== s.w || el.canvas.height !== s.h) {
-      el.canvas.width = s.w; el.canvas.height = s.h;
-    }
-    ctx.clearRect(0, 0, s.w, s.h);
-    if (src !== el.video) ctx.drawImage(src, 0, 0, s.w, s.h);
+  /* CVImage's constructor only branches on tf.Tensor / ImageBitmap /
+     HTMLImageElement / HTMLVideoElement -- there is NO canvas branch, so
+     `new CVImage(canvas)` silently stores nothing, bitmap() returns undefined,
+     and infer() then calls postMessage with [undefined] as its transfer list.
+     Hand it the <video> element itself. */
+  function frameReady() {
+    var w = el.video.videoWidth, h = el.video.videoHeight;
+    return (w && h) ? { w: w, h: h } : null;
+  }
 
-    var scale = Math.max(1, s.w / 640);          // keep strokes readable at 4K
-    ctx.lineWidth = 2 * scale;
+  /* A short history of recent boxes, each fading out. Detection is jittery
+     frame to frame, so the trail both looks better and makes an intermittent
+     detection legible instead of a flicker. */
+  var trail = [];
+  var TRAIL_MS = 900;   // long enough for a full bow stroke to show as a path
+
+  function draw(preds, w, h, paint) {
+    if (!w || !h) return;
+    if (el.canvas.width !== w || el.canvas.height !== h) {
+      el.canvas.width = w; el.canvas.height = h;
+    }
+    ctx.clearRect(0, 0, w, h);
+    if (paint) ctx.drawImage(paint, 0, 0, w, h);   // upload mode paints the still
+
+    // The preview is mirrored so it reads like a mirror; the overlay is not, so
+    // the geometry is flipped here instead. Done once at intake, which keeps
+    // the trail consistent with the live boxes.
+    var mirror = (el.stage.dataset.mode === 'cam');
+
+    var now = performance.now();
+    var live = [];
+    for (var i = 0; i < preds.length; i++) {
+      var d = normalise(preds[i]);
+      if (!d) continue;
+      if (mirror) d.x = w - (d.x + d.w);
+      live.push(d);
+      trail.push({ d: d, t: now });
+    }
+    // drop expired
+    while (trail.length && now - trail[0].t > TRAIL_MS) trail.shift();
+    if (trail.length > 240) trail.splice(0, trail.length - 240);
+
+    var scale = Math.max(1, w / 640);
+    ctx.lineJoin = ctx.lineCap = 'round';
     ctx.font = (13 * scale) + 'px "IBM Plex Mono", ui-monospace, monospace';
     ctx.textBaseline = 'top';
 
-    for (var i = 0; i < preds.length; i++) {
-      var p = preds[i];
-      // inferencejs reports the CENTRE plus width/height
-      var x = p.bbox.x - p.bbox.width / 2;
-      var y = p.bbox.y - p.bbox.height / 2;
-      var c = colorFor(p.class);
+    // --- the fading trail -------------------------------------------------
+    // Two parts: ghosts of the recent boxes, and a line through their centres.
+    // The line is the point of it -- a bow sweeps, so its path is the stroke,
+    // and a still box tells you far less than the track it leaves behind.
+    ctx.globalCompositeOperation = 'lighter';
 
-      ctx.strokeStyle = c;
-      ctx.strokeRect(x, y, p.bbox.width, p.bbox.height);
-
-      var label = p.class + '  ' + Math.round(p.confidence * 100) + '%';
-      var tw = ctx.measureText(label).width;
-      ctx.fillStyle = 'rgba(6,8,10,.82)';
-      ctx.fillRect(x, Math.max(0, y - 20 * scale), tw + 10 * scale, 20 * scale);
-      ctx.fillStyle = c;
-      ctx.fillText(label, x + 5 * scale, Math.max(0, y - 18 * scale));
+    for (var k = 0; k < trail.length; k++) {
+      var age = (now - trail[k].t) / TRAIL_MS;
+      if (age >= 1) continue;
+      var a = (1 - age) * (1 - age);          // ease out
+      var t = trail[k].d;
+      ctx.strokeStyle = hexToRgba(t.col, 0.16 * a);
+      ctx.lineWidth = (1 + 2 * a) * scale;
+      ctx.strokeRect(t.x, t.y, t.w, t.h);
     }
-    el.count.textContent = preds.length + (preds.length === 1 ? ' detection' : ' detections');
+
+    // One path per class, so two tracked objects never join into one streak.
+    var byClass = {};
+    for (var m = 0; m < trail.length; m++) {
+      (byClass[trail[m].d.cls] || (byClass[trail[m].d.cls] = [])).push(trail[m]);
+    }
+    var jump = Math.hypot(w, h) * 0.25;        // a bigger hop is a different object
+    for (var cls in byClass) {
+      var pts = byClass[cls];
+      for (var q = 1; q < pts.length; q++) {
+        var A = pts[q - 1], B = pts[q];
+        var ax = A.d.x + A.d.w / 2, ay = A.d.y + A.d.h / 2;
+        var bx = B.d.x + B.d.w / 2, by = B.d.y + B.d.h / 2;
+        if (Math.hypot(bx - ax, by - ay) > jump) continue;
+        var ag = (now - B.t) / TRAIL_MS;
+        if (ag >= 1) continue;
+        var al = (1 - ag) * (1 - ag);
+        ctx.strokeStyle = hexToRgba(B.d.col, 0.85 * al);
+        ctx.lineWidth = (0.6 + 3.4 * al) * scale;
+        ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(bx, by); ctx.stroke();
+      }
+    }
+    ctx.globalCompositeOperation = 'source-over';
+
+    // --- live boxes -------------------------------------------------------
+    for (var j = 0; j < live.length; j++) {
+      var p = live[j], c = p.col;
+      ctx.strokeStyle = c;
+      ctx.lineWidth = 2 * scale;
+      ctx.strokeRect(p.x, p.y, p.w, p.h);
+
+      // corner ticks, matching the drafting language of the rest of the site
+      var t2 = Math.min(p.w, p.h) * 0.18;
+      ctx.lineWidth = 3.5 * scale;
+      var corners = [[p.x,p.y,1,1],[p.x+p.w,p.y,-1,1],[p.x,p.y+p.h,1,-1],[p.x+p.w,p.y+p.h,-1,-1]];
+      for (var ci = 0; ci < 4; ci++) {
+        var cx = corners[ci][0], cy = corners[ci][1], sx = corners[ci][2], sy = corners[ci][3];
+        ctx.beginPath();
+        ctx.moveTo(cx + sx * t2, cy); ctx.lineTo(cx, cy); ctx.lineTo(cx, cy + sy * t2);
+        ctx.stroke();
+      }
+
+      // A box on an edge is the common case here -- a bow enters frame side-on --
+      // so the label has to be clamped on BOTH axes or the confidence is cut off.
+      var label = p.cls + '  ' + Math.round(p.conf * 100) + '%';
+      var tw = ctx.measureText(label).width + 10 * scale;
+      var th = 20 * scale;
+      var lx = p.x, ly = p.y - th;
+      if (ly < 0) ly = p.y + 4 * scale;
+      if (ly + th > h) ly = h - th;
+      if (lx + tw > w) lx = w - tw;
+      if (lx < 0) lx = 0;
+      ctx.fillStyle = 'rgba(6,8,10,.85)';
+      ctx.fillRect(lx, ly, tw, th);
+      ctx.fillStyle = c;
+      ctx.fillText(label, lx + 5 * scale, ly + 2 * scale);
+    }
+
+    el.count.textContent = live.length + (live.length === 1 ? ' detection' : ' detections');
+  }
+
+  function hexToRgba(hex, a) {
+    var n = parseInt(String(hex).replace('#', ''), 16);
+    return 'rgba(' + ((n >> 16) & 255) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + a + ')';
   }
 
   /* ---- inference loop -------------------------------------------------- */
+  /* Two things here are load-bearing, both learned the hard way:
+
+     1. `options` must be an ARRAY. The worker does `model.configure(...options)`,
+        so a plain object spreads to "Spread syntax requires ...iterable", which
+        throws inside the worker's onmessage. It then never posts a reply, and
+        the main-thread promise NEVER SETTLES -- no error, no rejection, just a
+        permanent hang. That is why the camera ran happily and nothing was ever
+        drawn.
+     2. The field names are the model's, not the REST API's: scoreThreshold /
+        iouThreshold / maxNumBoxes. `confidence` / `overlap` / `maxObjects` are
+        silently ignored, so the slider would have done nothing regardless.
+
+     The site's config keeps the friendlier names and they are mapped here. */
+  var INFER_TIMEOUT = 8000;
+  var inferErrs = 0;
+
   function detect(src) {
     if (!model || !engineRef) return Promise.resolve([]);
-    var img = CVImageRef ? new CVImageRef(src) : src;
-    return engineRef.infer(model, img, {
-      confidence: parseFloat(el.conf.value),
-      overlap: CFG.overlap,
-      maxObjects: CFG.maxDetections
-    }).catch(function () { return []; });
+    var img;
+    try { img = CVImageRef ? new CVImageRef(src) : src; }
+    catch (e) { return Promise.resolve([]); }
+
+    var p = engineRef.infer(model, img, [{
+      scoreThreshold: parseFloat(el.conf.value),
+      iouThreshold: CFG.overlap,
+      maxNumBoxes: CFG.maxDetections
+    }]);
+
+    // A hang is a real failure mode of this library, so never await it forever.
+    var guard = new Promise(function (res) {
+      setTimeout(function () { res('__timeout__'); }, INFER_TIMEOUT);
+    });
+
+    return Promise.race([p, guard]).then(function (r) {
+      if (r === '__timeout__') { note('timeout'); return []; }
+      inferErrs = 0;
+      return r || [];
+    }, function (err) { note(err); return []; });
+  }
+
+  function note(err) {
+    if (++inferErrs === 3) {
+      say('Inference is failing — see the console for details.', 'err');
+      console.warn('[bowvision] infer failed', err);
+    }
   }
 
   function loop(now) {
@@ -140,13 +286,30 @@
     if (dt > 0) { fpsAvg = fpsAvg ? fpsAvg * 0.85 + (1000 / dt) * 0.15 : 1000 / dt; }
     el.fps.textContent = fpsAvg.toFixed(0) + ' fps';
 
+    var f = frameReady();
+    if (!f) { raf = requestAnimationFrame(loop); return; }     // wait for frames
+    var w = f.w, h = f.h;
+
     detect(el.video).then(function (preds) {
-      draw(el.video, preds || []);
+      try { draw(preds || [], w, h, null); }
+      catch (err) { if (!loop.warned) { loop.warned = 1; console.warn('[bowvision] draw failed', err); } }
+      // re-queue unconditionally: one bad frame must never stop detection
       if (running) raf = requestAnimationFrame(loop);
-    });
+    }, function () { if (running) raf = requestAnimationFrame(loop); });
   }
 
   /* ---- webcam ---------------------------------------------------------- */
+  function waitForFrame(v) {
+    if (v.videoWidth && v.videoHeight) return Promise.resolve();
+    return new Promise(function (res) {
+      var tries = 0;
+      (function poll() {
+        if ((v.videoWidth && v.videoHeight) || ++tries > 120) return res();
+        requestAnimationFrame(poll);
+      })();
+    });
+  }
+
   function startCam() {
     if (!hasCam) return;
     say('Requesting camera…', 'busy');
@@ -160,6 +323,11 @@
       el.video.hidden = false;
       if (still) { still = null; }
       return el.video.play();
+    }).then(function () {
+      // play() can resolve before videoWidth is populated. Starting the loop
+      // then means every early frame is skipped and, on some browsers, the
+      // first inference is handed a 0x0 source.
+      return waitForFrame(el.video);
     }).then(function () {
       el.stage.dataset.mode = 'cam';
       running = true; lastT = performance.now();
@@ -203,11 +371,12 @@
         say('Detecting', 'busy');
         return detect(img);
       }).then(function (preds) {
-        draw(img, preds || []);
-        say('Done', 'ok');
+        draw(preds || [], img.naturalWidth, img.naturalHeight, img);
+        say((preds && preds.length) ? 'Done' : 'No bow hold found — try another shot.',
+            (preds && preds.length) ? 'ok' : '');
         URL.revokeObjectURL(url);
       }).catch(function () {
-        draw(img, []);                     // still show the picture
+        draw([], img.naturalWidth, img.naturalHeight, img);   // still show the picture
         URL.revokeObjectURL(url);
       });
     };

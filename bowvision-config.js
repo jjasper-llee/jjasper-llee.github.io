@@ -18,7 +18,10 @@ window.BOWVISION_CONFIG = {
   model: 'bowdetector',
   version: 1,                  // the N in bowdetector/N
 
-  confidence: 0.4,             // starting threshold; the slider overrides it
-  overlap: 0.5,
-  maxDetections: 20
+  // Measured on real bow-hold stills, this model scores confident detections
+  // in the 0.08-0.35 band, so the old 0.4 default hid every box even once
+  // inference worked. 0.15 shows the true detections without the noise floor.
+  confidence: 0.15,            // starting threshold; the slider overrides it
+  overlap: 0.5,                // -> iouThreshold
+  maxDetections: 20            // -> maxNumBoxes
 };
