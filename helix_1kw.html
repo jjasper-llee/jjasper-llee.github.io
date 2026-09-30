@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <script>document.documentElement.classList.add('js');</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1 kW Electrochemical Test Rack | Jasper Lee</title>
+  <link rel="stylesheet" href="style.css?v=20260930" />
+</head>
+<body class="brain-theme project-detail">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <canvas id="brain-canvas" aria-hidden="true"></canvas>
+
+  <header>
+    <div class="nav-left">
+      <a class="logo" href="index.html">Jasper Lee</a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+      </button>
+      <nav id="site-nav" class="site-nav">
+        <a href="index.html#about">About</a>
+        <a href="index.html#left-brain" class="active">Left Brain</a>
+        <a href="index.html#right-brain">Right Brain</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content" class="project-page">
+    <section class="project-shell ticks">
+      <h2 data-drawing="JL-71" data-rev="A">1 kW Electrochemical Test Rack</h2>
+      <p class="project-tagline">Helix Carbon (The Engine, MIT) · Summer 2026. I designed and built a 1 kW electrochemical test rack, from a hand-drawn P&amp;ID to a working system.</p>
+
+      <div class="project-section">
+        <div class="project-media">
+          <img src="helix/1kw_stack.jpg" alt="Jasper with the completed 1 kW electrochemical test rack in the lab" loading="lazy" decoding="async" width="1800" height="1350" />
+        </div>
+        <div class="project-copy">
+          <h3>Overview</h3>
+          <p>
+            The 1 kW rack is a benchtop test system for Helix Carbon’s electrolyzer cells. It circulates KOH electrolyte
+            through the stack under controlled flow, pressure and temperature while the cell is running, so the team can
+            test reactor hardware at a meaningful scale without tying up the production system.
+          </p>
+          <p>
+            I owned it end to end: the process design, component selection, framing, sensor integration and
+            the controls that run it.
+          </p>
+        </div>
+      </div>
+
+      <div class="project-section reverse">
+        <div class="project-media">
+          <img src="helix/1kw_pid.jpg" alt="Hand-drawn P&amp;ID of the 1 kW system showing the cell, humidifier, back-pressure regulators, heat exchanger, flow sensor, dampener, pump, KOH reservoir and control wiring" loading="lazy" decoding="async" width="1188" height="716" />
+        </div>
+        <div class="project-copy">
+          <h3>From P&amp;ID to Hardware</h3>
+          <p>
+            The system started as a hand-drawn piping and instrumentation diagram. It shows the gas feed through a mass-flow
+            controller and humidifier into the cell, and a liquid loop from the KOH reservoir through the pump, pulsation
+            dampener, flow sensor, heat exchanger and pressure/temperature sensors, with back-pressure regulators setting
+            the operating pressure. The orange lines are the sensor and control wiring back to the controller, motor driver,
+            E-stop and display.
+          </p>
+          <ul>
+            <li>Characterized pump flow rate against motor-controller PWM to calibrate the liquid loop</li>
+            <li>Selected a KOH-compatible pulsation dampener and back-pressure regulator (BPR)</li>
+            <li>Integrated pressure, temperature and flow sensors with the control electronics</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="project-section">
+        <div class="project-media">
+          <img src="helix/1kw_rack.jpg" alt="The finished 1 kW rack: electrolyzer stack, KOH column, pressure gauge, dampener, filters, Alicat controllers and control electronics on an 80/20 frame" loading="lazy" decoding="async" width="1050" height="816" />
+        </div>
+        <div class="project-copy">
+          <h3>The Finished Rack</h3>
+          <p>
+            I built the rack on an 80/20 frame, with custom 3D-printed mounts holding the sensors, fittings and electronics
+            in place. The stack sits on the left, the gas/liquid separation column rises through the middle, and the
+            pressure regulation, dampener, filtration and Alicat flow controllers sit next to the control board on the right.
+            That keeps the fluid path short and every gauge and connection easy to reach.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2026 Jasper Lee</p>
+  </footer>
+  <script src="site.js?v=20260801" defer></script>
+  <script src="casper-config.js?v=20260801" defer></script>
+  <script src="casper.js?v=20260801" defer></script>
+</body>
+</html>

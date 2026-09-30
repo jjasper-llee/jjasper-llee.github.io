@@ -1349,3 +1349,11 @@ body.nav-open .casper { opacity: 0; pointer-events: none; transform: translate3d
 .bv__note code {
   font-family: var(--font-mono); font-size: .86em; color: var(--accent);
 }
+
+/* Several figures side by side inside one project section (e.g. a CFD set). */
+.project-figs {
+  flex: 1 1 100%; display: grid; gap: var(--sp-5);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+.project-figs .project-media { min-width: 0; }
+.project-section > .project-copy.full { flex-basis: 100%; }

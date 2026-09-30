@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <script>document.documentElement.classList.add('js');</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>10 kW CO₂ Electrolyzer System | Jasper Lee</title>
+  <link rel="stylesheet" href="style.css?v=20260930" />
+</head>
+<body class="brain-theme project-detail">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <canvas id="brain-canvas" aria-hidden="true"></canvas>
+
+  <header>
+    <div class="nav-left">
+      <a class="logo" href="index.html">Jasper Lee</a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+      </button>
+      <nav id="site-nav" class="site-nav">
+        <a href="index.html#about">About</a>
+        <a href="index.html#left-brain" class="active">Left Brain</a>
+        <a href="index.html#right-brain">Right Brain</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content" class="project-page">
+    <section class="project-shell ticks">
+      <h2 data-drawing="JL-70" data-rev="A">10 kW CO₂ Electrolyzer System</h2>
+      <p class="project-tagline">Helix Carbon (The Engine, MIT) · Summer 2026. I led mechanical integration of Helix Carbon’s 10 kW production electrolyzer system, from the walk-in frame to the enclosure and routing of every line inside it.</p>
+
+      <div class="project-section">
+        <div class="project-media">
+          <img src="helix/10kw_stack.jpg" alt="The assembled 10 kW electrolyzer system with gas cylinders, humidifier, stack rack, gas chromatograph, power supply and chiller" loading="lazy" decoding="async" width="1484" height="1060" />
+        </div>
+        <div class="project-copy">
+          <h3>Overview</h3>
+          <p>
+            At Helix Carbon I worked as a Mechanical Design &amp; Manufacturing Intern on hardware for CO₂ electrolysis:
+            electrochemical reactors that use electricity to turn captured CO₂ into useful products. The 10 kW system
+            is the company’s production-scale rig. It brings the electrolyzer stack, gas supply, humidification, liquid
+            handling, thermal control, power and a gas chromatograph for product analysis together into one serviceable unit.
+          </p>
+          <p>
+            I led its mechanical integration. The job was to get hundreds of components into one frame so they could be
+            assembled, plumbed, inspected and kept safe, without the layout getting in the way of the chemistry.
+          </p>
+        </div>
+      </div>
+
+      <div class="project-section reverse">
+        <div class="project-media">
+          <img src="helix/10kw_cad.jpg" alt="Onshape CAD of the 10 kW system: cylinders, walk-in 80/20 frame with pegboard-mounted components, humidifier, gas chromatograph shelf and chiller" loading="lazy" decoding="async" width="1110" height="754" />
+        </div>
+        <div class="project-copy">
+          <h3>Frame &amp; Enclosure Design</h3>
+          <p>
+            I designed the system in Onshape around a walk-in 80/20 aluminium frame with a polycarbonate enclosure. I chose
+            the structural extrusions and the door layout so the stack, pump, reservoir and instrumentation stay reachable
+            for maintenance, while everything wet and everything pressurized stays inside the enclosure.
+          </p>
+          <ul>
+            <li>Walk-in 80/20 frame: I chose the extrusion sizes and structure for the stack and hanging components</li>
+            <li>Polycarbonate enclosure and door architecture designed for access and visibility</li>
+            <li>Hundreds of components packaged: valves, regulators, sensors, filters, tanks, pump and stack</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="project-section">
+        <div class="project-media">
+          <img src="helix/10kw_cad_fumehood.jpg" alt="Full-room CAD layout of the 10 kW system next to the laboratory fume hood and gas cylinders" loading="lazy" decoding="async" width="1470" height="818" />
+        </div>
+        <div class="project-copy">
+          <h3>Tubing Automation &amp; Ventilation</h3>
+          <p>
+            With so many components, routing the tubing by hand in CAD would have been slow and hard to update after
+            every layout change. I wrote a custom Onshape FeatureScript that routes the tubing automatically, so the
+            plumbing regenerates whenever a component moves.
+          </p>
+          <p>
+            I also modelled the rig in the context of the full lab, including the fume hood and gas cylinders, and sized the
+            enclosure exhaust so the enclosure stays under negative pressure. That way any leak is drawn into the exhaust
+            instead of spreading into the room.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2026 Jasper Lee</p>
+  </footer>
+  <script src="site.js?v=20260801" defer></script>
+  <script src="casper-config.js?v=20260801" defer></script>
+  <script src="casper.js?v=20260801" defer></script>
+</body>
+</html>

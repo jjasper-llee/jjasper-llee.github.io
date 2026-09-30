@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <script>document.documentElement.classList.add('js');</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Machined Electrochemical Reactor | Jasper Lee</title>
+  <link rel="stylesheet" href="style.css?v=20260930" />
+</head>
+<body class="brain-theme project-detail">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <canvas id="brain-canvas" aria-hidden="true"></canvas>
+
+  <header>
+    <div class="nav-left">
+      <a class="logo" href="index.html">Jasper Lee</a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+      </button>
+      <nav id="site-nav" class="site-nav">
+        <a href="index.html#about">About</a>
+        <a href="index.html#left-brain" class="active">Left Brain</a>
+        <a href="index.html#right-brain">Right Brain</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content" class="project-page">
+    <section class="project-shell ticks">
+      <h2 data-drawing="JL-72" data-rev="A">Machined Electrochemical Reactor</h2>
+      <p class="project-tagline">Helix Carbon (The Engine, MIT) · Summer 2026. I owned CO₂ electrolyzer flow-field development end to end: parametric geometry, CFD, CAM, and CNC machining on a Haas Super Mini Mill.</p>
+
+      <div class="project-section">
+        <div class="project-media">
+          <img src="helix/reactor_haas.jpg" alt="Jasper holding a freshly machined aluminium reactor plate in front of the Haas Super Mini Mill" loading="lazy" decoding="async" width="1600" height="1200" />
+        </div>
+        <div class="project-copy">
+          <h3>Overview</h3>
+          <p>
+            The flow field is the pattern of channels machined into a reactor plate. It carries reactants across the active
+            area of the cell, and its geometry sets how evenly they are spread, how much pressure is lost, and how well
+            products and bubbles are cleared. I owned the flow-field development process from start to finish:
+          </p>
+          <ul>
+            <li>Generated parametric serpentine geometries in Python</li>
+            <li>Converted the designs to CAD and evaluated them in SolidWorks Flow Simulation</li>
+            <li>Programmed the toolpaths in Fusion 360 CAM</li>
+            <li>Waterjet-cut and CNC-machined the reactors on a Haas Super Mini Mill</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="project-section">
+        <div class="project-copy full">
+          <h3>CFD: Finding the Optimal Geometry</h3>
+          <p>
+            Before cutting any metal, I ran each candidate geometry through CFD in SolidWorks Flow Simulation. Here are the
+            velocity, pressure and vorticity fields for a sinusoidal serpentine channel. The velocity plot checks that flow
+            stays fast and uniform along the whole path, with no dead zones in the bends. The pressure plot shows a smooth,
+            nearly linear drop from inlet to outlet (about 1 mbar across the field). The vorticity plot shows where the wavy
+            walls stir the flow, which improves mixing and transport toward the electrode.
+          </p>
+          <p>
+            To iterate faster, I worked with Google engineers to deploy an RTX PRO 6000 GPU compute node on Google Cloud.
+            It cut CFD turnaround by 5×, so I could design, simulate and revise geometries on the same day.
+          </p>
+        </div>
+        <div class="project-figs">
+          <div class="project-media">
+            <img src="helix/cfd_velocity.jpg" alt="SolidWorks Flow Simulation velocity contours in the sinusoidal serpentine channel" loading="lazy" decoding="async" width="738" height="480" />
+          </div>
+          <div class="project-media">
+            <img src="helix/cfd_pressure.jpg" alt="Pressure contours showing a steady pressure drop from inlet to outlet along the serpentine" loading="lazy" decoding="async" width="726" height="478" />
+          </div>
+          <div class="project-media">
+            <img src="helix/cfd_vorticity.jpg" alt="Vorticity contours along the wavy channel walls" loading="lazy" decoding="async" width="788" height="576" />
+          </div>
+        </div>
+      </div>
+
+      <div class="project-section">
+        <div class="project-copy full">
+          <h3>Machined Plates</h3>
+          <p>
+            The chosen geometries were programmed in Fusion 360 CAM and machined from aluminium on the Haas Super Mini Mill.
+            On the left is the sinusoidal serpentine flow field and in the middle a straight serpentine. On the right, the back
+            of a plate shows the counterbored inlet and outlet ports.
+          </p>
+        </div>
+        <div class="project-figs">
+          <div class="project-media">
+            <img src="helix/reactor_sine.jpg" alt="Machined plate with a sinusoidal serpentine flow field" loading="lazy" decoding="async" width="1202" height="1070" />
+          </div>
+          <div class="project-media">
+            <img src="helix/reactor_serp.jpg" alt="Machined plate with a straight serpentine flow field" loading="lazy" decoding="async" width="572" height="576" />
+          </div>
+          <div class="project-media">
+            <img src="helix/reactor_back.jpg" alt="Back side of a machined reactor plate showing the inlet and outlet ports" loading="lazy" decoding="async" width="580" height="570" />
+          </div>
+        </div>
+      </div>
+
+      <div class="project-section">
+        <div class="project-copy full">
+          <h3>Sealing &amp; Stack-Up</h3>
+          <p>
+            A flow field only works if the cell seals and compresses evenly. I validated sealing and stack-up with Fujifilm
+            pressure-indicating paper and custom laser-cut gaskets. I also developed a nickel-foam compression model that
+            relates bolt preload, clamping pressure, foam porosity and plastic collapse. We used it to set the gasket groove
+            depth and the clamping force for the assembled reactor.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2026 Jasper Lee</p>
+  </footer>
+  <script src="site.js?v=20260801" defer></script>
+  <script src="casper-config.js?v=20260801" defer></script>
+  <script src="casper.js?v=20260801" defer></script>
+</body>
+</html>
