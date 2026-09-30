@@ -1380,3 +1380,4 @@ body.nav-open .casper { opacity: 0; pointer-events: none; transform: translate3d
 }
 .lock button:hover { background: var(--accent-bright); }
 .lock__msg { min-height: 1.2em; margin: var(--sp-3) 0 0; font: var(--type-mono-xs); color: var(--text-3); }
+#lb-gate[hidden] { display: none; }

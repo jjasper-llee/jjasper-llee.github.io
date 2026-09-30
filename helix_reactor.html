@@ -5,7 +5,7 @@
   <script>document.documentElement.classList.add('js');</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Machined Electrochemical Reactor | Jasper Lee</title>
-  <link rel="stylesheet" href="style.css?v=20260930" />
+  <link rel="stylesheet" href="style.css?v=20260930b" />
 </head>
 <body class="brain-theme project-detail">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -29,97 +29,27 @@
   </header>
 
   <main id="main-content" class="project-page">
-    <section class="project-shell ticks">
-      <h2 data-drawing="JL-72" data-rev="A">Machined Electrochemical Reactor</h2>
-      <p class="project-tagline">Helix Carbon (The Engine, MIT) · Summer 2026. I owned CO₂ electrolyzer flow-field development end to end: parametric geometry, CFD, CAM, and CNC machining on a Haas Super Mini Mill.</p>
-
-      <div class="project-section">
-        <div class="project-media">
-          <img src="helix/reactor_haas.jpg" alt="Jasper holding a freshly machined aluminium reactor plate in front of the Haas Super Mini Mill" loading="lazy" decoding="async" width="1600" height="1200" />
+    <!-- LB-VAULT:START Machined Electrochemical Reactor -->
+    <section class="project-shell ticks" id="lb-gate">
+      <h2 data-drawing="HC-00" data-rev="A">Machined Electrochemical Reactor</h2>
+      <form class="lock" id="lb-lock" autocomplete="off">
+        <p class="lock__label">Confidential &middot; Helix Carbon &middot; enter password to view</p>
+        <div class="lock__row">
+          <input id="lb-pass" type="password" inputmode="numeric" aria-label="Password" placeholder="Password" required />
+          <button type="submit">Unlock</button>
         </div>
-        <div class="project-copy">
-          <h3>Overview</h3>
-          <p>
-            The flow field is the pattern of channels machined into a reactor plate. It carries reactants across the active
-            area of the cell, and its geometry sets how evenly they are spread, how much pressure is lost, and how well
-            products and bubbles are cleared. I owned the flow-field development process from start to finish:
-          </p>
-          <ul>
-            <li>Generated parametric serpentine geometries in Python</li>
-            <li>Converted the designs to CAD and evaluated them in SolidWorks Flow Simulation</li>
-            <li>Programmed the toolpaths in Fusion 360 CAM</li>
-            <li>Waterjet-cut and CNC-machined the reactors on a Haas Super Mini Mill</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="project-section">
-        <div class="project-copy full">
-          <h3>CFD: Finding the Optimal Geometry</h3>
-          <p>
-            Before cutting any metal, I ran each candidate geometry through CFD in SolidWorks Flow Simulation. Here are the
-            velocity, pressure and vorticity fields for a sinusoidal serpentine channel. The velocity plot checks that flow
-            stays fast and uniform along the whole path, with no dead zones in the bends. The pressure plot shows a smooth,
-            nearly linear drop from inlet to outlet (about 1 mbar across the field). The vorticity plot shows where the wavy
-            walls stir the flow, which improves mixing and transport toward the electrode.
-          </p>
-          <p>
-            To iterate faster, I worked with Google engineers to deploy an RTX PRO 6000 GPU compute node on Google Cloud.
-            It cut CFD turnaround by 5×, so I could design, simulate and revise geometries on the same day.
-          </p>
-        </div>
-        <div class="project-figs">
-          <div class="project-media">
-            <img src="helix/cfd_velocity.jpg" alt="SolidWorks Flow Simulation velocity contours in the sinusoidal serpentine channel" loading="lazy" decoding="async" width="738" height="480" />
-          </div>
-          <div class="project-media">
-            <img src="helix/cfd_pressure.jpg" alt="Pressure contours showing a steady pressure drop from inlet to outlet along the serpentine" loading="lazy" decoding="async" width="726" height="478" />
-          </div>
-          <div class="project-media">
-            <img src="helix/cfd_vorticity.jpg" alt="Vorticity contours along the wavy channel walls" loading="lazy" decoding="async" width="788" height="576" />
-          </div>
-        </div>
-      </div>
-
-      <div class="project-section">
-        <div class="project-copy full">
-          <h3>Machined Plates</h3>
-          <p>
-            The chosen geometries were programmed in Fusion 360 CAM and machined from aluminium on the Haas Super Mini Mill.
-            On the left is the sinusoidal serpentine flow field and in the middle a straight serpentine. On the right, the back
-            of a plate shows the counterbored inlet and outlet ports.
-          </p>
-        </div>
-        <div class="project-figs">
-          <div class="project-media">
-            <img src="helix/reactor_sine.jpg" alt="Machined plate with a sinusoidal serpentine flow field" loading="lazy" decoding="async" width="1202" height="1070" />
-          </div>
-          <div class="project-media">
-            <img src="helix/reactor_serp.jpg" alt="Machined plate with a straight serpentine flow field" loading="lazy" decoding="async" width="572" height="576" />
-          </div>
-          <div class="project-media">
-            <img src="helix/reactor_back.jpg" alt="Back side of a machined reactor plate showing the inlet and outlet ports" loading="lazy" decoding="async" width="580" height="570" />
-          </div>
-        </div>
-      </div>
-
-      <div class="project-section">
-        <div class="project-copy full">
-          <h3>Sealing &amp; Stack-Up</h3>
-          <p>
-            A flow field only works if the cell seals and compresses evenly. I validated sealing and stack-up with Fujifilm
-            pressure-indicating paper and custom laser-cut gaskets. I also developed a nickel-foam compression model that
-            relates bolt preload, clamping pressure, foam porosity and plastic collapse. We used it to set the gasket groove
-            depth and the clamping force for the assembled reactor.
-          </p>
-        </div>
-      </div>
+        <p class="lock__msg" id="lb-msg" role="status" aria-live="polite"></p>
+      </form>
     </section>
+    <div id="lb-content"></div>
+    <script type="application/json" id="lb-vault">{"iter": 600000, "salt": "8brUsU/Nw5eMK7C0jht6tA==", "iv": "XI8IwH33ssPSN3+f", "ct": "R5wKCGig6QVU2VIpvbIlyAXDwlLbbtNPtbgY8+fhUEwVUa1VOBgN4U8FKlGSHykUVIHUcBRMT0nIaz/k9dsQAu5xcpSs8cTsA7tiqaWB2eurryizYu9jJUzqLKMKOwAfylS4qE5ibtPZycyKngBG8p75amzJY2ssTlevaxhwe82Vkx8bMLbspjuRKWeeTETflStjbSh8xJvVPNWjEimWTS3rjTRenuuB8trqmFoYTVnv/7WYTbcQxF0zCY/VYey6d4/1IPH2uZYEW/wkFbR2fPFvubCvvtLh/kxzdP2eX9b12uPzNIadxUHrpbQ+ChqsjeTwtrs4sf7LuPvcPRmVPjI3eDLOLk2tMApOAeMQYLY72MQbzFHJr1lqyIA1Bqw/7YsobU6hr7NhcAsiAm7fhTKPMcn74tufklmgH0r4LDFeLsUfwQoEwNWmz6iJQmGy7uh59nIxh8pt7uNApYn0ViDAaz2t88RxLHFjYaD/ZR5GXdLBpiDUL3S4kWK9amAWsoTajubEOtnop8cYeSsXHFmxgFTjhWpBsMqvOnSAZFxu9tRwXncR3WABLVa11w70laTwtex+QQqBvSQ6MXXtmEAjZpRQjQ08kuvDeY7tU7FxFfrakpel6EkzYj0MW+2MFxaEOR6qMT97y5XTVWfSMjaAmdfZATZpBDGAYS4S3XgS8wF3TOSLftSZDKaP9/Qtr8VJCoAYiqgDLxmRATFttmvS8t2f14CqGzcQ457QLB6q1jHzlz0HoLi4Tty4imrwsN459q1T6Q1B+jsba5ZaxjqdKmgsETOlly/jhv4fQop8A4Ez0CZL3DU+QH8egIsKjok2MYWDRjA/ZeMk1B7Kr9TmeHGMOCDXTPH3oB7xWI2cq9+nMEVIGbsW4DHZvcEX042T3gLtgNeft23Y/VAxHejzgGsaZG1qf5fIhiEvdW/HLK2ABuKvwQPKN9wvjAtS7rRU5Ya5riDcFswxQ/YouztXiUfUPz6n16ADRPKvir3FW9jX3tAHYTIHHKQ8PbYi8kGwPv/cjXJq3pn4a6Rb/VpPzG8qzfwQwzLlDtfeDr6dmMZCMCZSTSJWUA+Yh9O1sl4AgCG/koKL+mFY/VEeU1hcMlY2eSPwQWWEXexFAQa0dORFZJ0cHPNimGVyHszoMqI9yOLMuk348gUWloadRhG6p9ptimpJ7/kvQt2tyQbsoiZvXOENZo9TmstnZr3AVP2um2c328eEL7+EKKxPJLgjA5w2onqSMq6pl7okwwbYLMMA4rqDSyfwxr4o439PpgY+5A/Y5Rxj+v5kkCokmCtGWBVROI+IEhppsOZQ6FKd6Nw0xm6oexNA06Q+eHQGWSBCvL59yUBZo/7AWq+gHGR3pSz7Y+41MH2m2jEohvukyQPmqr7yi9EzTmuX9A3iurJRrhX05OFz5bN0v+ZxQCxPB8PSg17iw5GdC3ZuyAbPKU3LQYEDifaBjCfmMTh+C106dDlCuXd82XlZiLrDD28AZzzENS6ls0fvcYVRxlfLGp57bJOiN2ET34i0+JHwrMk4o2zDozSd1qWan8Bm7NysF8zAINTBz+A3/Uxc1F90rJAsovpV201TCkx5vT4jb3KB/xG0Nc02SdbLt1VpenyY49REQ/vJhzBlprRYh1QrCiU1THta73roQR9oiBtBSdETeiiRv77KKUKckH4U4CdtXSlK0ixpU1TppC8ZPvJfujFZH3EMwB8A5h0Sz6TrjSGu2SbQX91tnof+h3ib94v9yESxu5cHCJ9sn12oR8ifRqzSst8SobWSw7RfR03dtwZEX4j9gxl+3garlob3Sp/NTdhOue8dFEyju+aAneeTxMtZuRXOtDLeOi2pUougn1wnhKWZug8+BBetBzcShVzi+NLz1KQmLlRwcdBuF978o9wvbygC33GN81U1iUsIfqnmcd1ZhtnlJe/SsapJd9WQVYB39ApA8Ag5+HNWwY5ffv7F7jpQDpFSgYaUcyl6BKmDJEl6dwXj4laU749XrmPZorOFJ9kuuC0nYpI6rDipWXyc6g8sWrxTO/t6nGtNZvjHVMA0JbA4aa+UDgYQqtl7qIVNjPy8h6FMzKomJCfa9uEmWEinG/K0Htx9sfJY/Yrk43lWAW4aBgoQ2QKow1cOF4uhm3d84Ls+VPG10sI+s5ClN8gV/jthT+3wI//y6Iv11ZBNj1Ev7feyqhVMUHdq33fRjS6l9GEbknGtZaPc7UTRNyPiPS6xZLU94KOWqIbirJqrUVk7HyrRnv2idEs216x2YlZ2xPO+AXI45fyVu8squoIH0De74TmFczY+0qJZt5WGL09eEeXDR7805aeSpgyNZ6zzuJwFPst6Trg26AaDj87J3s2qicr2/m2MoV99fNWNcd/VF5NrZrzhfF5hiRmcqeb730kg79sR2HncNj8h4mJcTde0/V4W2bdfY/4s+MlE0Z+LC7N8ptQanPVO6BDCp26yag9TNq+oFely0MOwVzaNScQPkxPqmWUTC5wuxqeGTaW5g8skQIc4ctjya6UBTQBftYHpqdXivRy2KJDwwnrDoX1KRhc86Q3EvgL/IzVqT8qt89AhGTMzN53+yD9nuN1OHroV/B9n57GAuuaRqHWKjJtthp8GOMp0sUNJMOoFJenQiJW/uE7ggKrwS+Y6b3fzg+tXmZseeZftq5dtDVWQd1A8JMk11SRgScK1b6Dw4ExQt9JRml+aRQ6oVT8jRxuKQ6BipP4e/iNtuxgpByA/J77Iyuodm+3ZCkI5EQECdbuf4fCQjEPPCJt+CYn4mHE4kF7wNctkYiuV7uz4LpLKfzjMAxf+CBl9AWO2rSWQCVS3jATd53zh4ljpDe3XY6B+8Aw1ZpFQyrLUmvs6W+iz5NUGGUmgW1G/OZ4NxXREJIdB0Pc2S2Lfxuao4wt/Sdor3eV9PBzmGlSUw5+SWu2higXTr6Znj9bISBRm5RN22zR4Sg0at8bXxeAV8iUWRfPX75NTCdZulMqPoukwb/uEVc+dtMb/o2LnatYId/OlmrXMfbBhFmsErLoS3Nz0HdQAqOPwOSk4+o4HaFGfdKvzt6KdlM9qarfSuqxyxd1Og3pdbsLoeTLuix839wmZAniGiZmfAHPiLuVgy7d7dwj6J0V0elPMBvlUu+xHSto4F+rgko3nhLVIU8hSrNjmcFKB7Q5c3loOlj6psuHJz6uAUlA6VxJRryEmNGlW2N3TLozKnqeIKn3I0RhGa1gT9jrRV4PgwEo88u/UjcdYYF58Gq+uTWsxWuOZF5c0vl07LIF+kIkdfEQ8S/jN2+K2jasY1NxreRaO4/Y8GGh0lobF0kBjy8f3Juw3QWj1SRzI6PMfWYbBsLUnKjkQWa1qF//HLEsQDoL8ahIW0yp4B+20Sw8ygmKqo0RbsIXjnPTfqN1Zs5hksNH/ZmdlJtN+dNt6UvELvuRKzsF/VDh/2kiOeynCoiwKwJ2TxChx4oSTW3wCCT/DGl3gzC/WAimAan5U8Gj+gOgcM2mg+wT3JXOqSix2Ay7Hjjrrfm/Q8wHTrv97cmlhGrxGhzOx8TfMwKCCHFsHYAVyrhJCTdH7X/v58Fi0FiH31NAEhfs5VGhxMq7MO/nK702jKWjUJl7Nx+/4bMwl0k3HJYkW1hng5R1BO93EB3wTFKSYQbqNPiSE8vhdbXNqwLQIwbfZlLoU+W5qnrO/+fFONmkZx9ILrst42MIgODwcRTfanvvAaCY7086kWMG4B4vBwWM+IHyW1c+pdrEDyB9NGwfZTfWcUoxnjcMwEmCttQd2aRWfcdXv3VKxL2zaEZ6U0TGrB+pAphQHxEIPIP/k1AHVVIKfy5Q9PQQFCuioUw8/6CFEYa+DsaQ/Tlbdk0qwWvYEhqndJzmz7VWnve6MBEal/ZA5ZPtsLs2ScG9w4LKZCegF1+901cfQ7ocwNR/yDfRSmDMMPQb6BQ7lpdq3N0aPT7ShvOZmVkYnVidtEUIl7NFRAQ5QN6lLUH8jkfAvpfhfZ8diacx2YYs1MQqYDQ5/GeYSxzGwZkvy/cR3ehe5hrYWQVghwH/2AYazrSkczldKuKO6bVRw6iEJgjQF8T/kXa8EqGiI9ALbZi11YNS6VbaGB8rzF8tR4h3vy4gQSXYEmzXs6JYlwpW/xfKPpySrNoisfstU50Vz0Z+utKPlwCfftsejS+VeFnuU5jzafTM/fUbib2C5iTYM0LhdgI4rmSDfeCz2nLLytu0lHFryQA9yQQY+uicJ/ecAD4I9oBp9tyT4uuLfSqPVCQKcSrSDbnYoR8u65zkCtIC2V1ykampVnuv6lK69PtEBaMJ1QCdBjWXfzWVRI8Df0p4p9P/JzzENiIx1ZSzpRPYrbVvnZz+qRa+PqXafft+mo9Fm4guT9Y5uB1zP+1fHeB1OIY1svsb2Ycn/mBtyO3DkAjncW+tQkrwBbqkIrFMJ5MwJFvbUxTBwCcD/DjExL3cYIOPcG2gNf8EGWna7ZkAkKFvpvmJM7D8TEjEvbMAJsIs3sqL36ZQZmlI8QfVxyogMgIe+HdXzskTS45Wei6AX8MPvP1LpVNvyEliyE+aj/cq/YvTuCdW0U5dt++JUE6PI1r1WbISxmH8CjV0i4mDimoSIUFOSGkKqOJYz3sAaMzv/Bbyq8t3DeY6tbG+lX5hMGBB3VpOTACP9FGu5yPxkqCIS49VhUXlscKjD8OwXGrlmhBt5/dTY2S/SEpvHbv+55i2misfFaAfec036Kw+NU0Gdpwik0qyJwpdl41J16ydd9hsSGrdtS96h/BLqJ/+eyrPxVatQzj9tvNDbwYZbr+VWj+cwTZplmOFD/7A8MHb4WlEcNf5ASI0SEQxGn4JWwCQNCfKxY8tZnuLDkc+69ZNiUNwBASOMiwLOwOiw3slCxkCx4EGjlJcm5MBBOWXWnFEq9Hx1lYoDosZjcDjmB2rcVptDT6I7YbWmf9aDpRhWWz/2hFe3KBl3S3c+hvpSf87XUEU5C0sgOyJkPjTjygE9ohFouYV6Xx5upCC1SD4Fa1GcuX+VPI4kqAhoKBuUWKdABzCDtcOtZzDTtvWoEednU5+w1M8lsTJrWpibc77iuOnGX5CFHfLFO59ccvByhFSVbr+28dQg6i2EdWHfIvTPdt/2QN+57+vxsJ9Iy8ywtwpDiUMPxmlCtxgmcZp1Kz90fsaCDxvU8+TX8w4KrqdFkyhUYG8FNkSilDMrbn6udglwpfE4hRtYQfFeXecYb1Zk4i6a1JCan7lWP7cIs2UIR8vV7lHeEx9QYgDSPat+T4h/630+mXcNlbzukcGbOqI4n7uarNRzdKcM1+U3+vGEF9/L98E4FuAI1BXUfz89zsHuOJEaVIbWUYuRBUsXUrlfzkzIlg8mWWAySxLRXHE52GPV9NVuMJ7gAU5ne9OgSWfB+Ewn+DE5dWtB3Y1uPVyc3ihsMGt2JE4/R47W5oTXChYlGohrbEYWXOHSHq0bJ9bvGxDleilZgD5fHwbPfZqgXZO4+v7JyDHEzgHzUc0CUBLILnxeajo6oMdvGkC5d7gb+pIQNivqwloumPhV/2Gw+4A5LpPpXaCqeE7crfAKRCymOuvjsJPSD3d+Zf6Uma2w4JoP3J5uC8BkvHB1w8eAjb8z1ZMk3/kE8G78Po7tjB1XpvV5t4pcEoelscyE7Sdg6Sp0A2lCJdDdb7FUWXGukQUQ1pUCiizWQkFE3Wl2GJKpmEXo3QW5j6UiMTYP2HkhRudHG3emoW8dN+JIiq/vCiTBJke7akR4r2ERhEjfdq0d4c7XuUOFePhIJJqHTP9wjqMHAfjDhLuk2e31zyIKtI13bcs3RFan1xJraR1m588yEnlgJ2jSzqyJ9lUIJyoOCYGIxzTw7yL7jNEx8GPeTASpzeT8/dZj6pvYFyyZ754iPSb8d16tQLe3qNIgLvVWYWRlf5t9ZRfmRs/OPTRonMsSeaifmN01Ok/zWyqT3n9s2M83J4zC8UA0hSocxBfz44nUH/BzUlTyvEQUbOMkGh+P8IR8UJQYmAkxAYmGR1im4/J1UNEeU8GD0mQ+krmx5J1V0o9sHXguzz0tTjAWzC5Rq4+byxB6sZww2DlQTV1yiCWKhgv/+/yhgvbQ0mtJpN8dRCmwaZVoWMfCGsbNlcglRzr4F1krVwOv3upEK2OqVKjmDejOq1FBFz/NDfzEXzF4rYXfDoPQY8JNuKfbZfsS8bS9xGANjI2kA6YmzYGTfb0GC6ftLGLasTOKg0NOgmriY2w0W6i5K8JRGpVcxyryf1ULTQCd2b2r2M8tEkMfAYjeypqlp+NNCevkcFWllUf87wn4VKDwmQPsOqCetXVWm3GO+YBLwMVa/nRKDEp1XzLCqU4jTD46Wo6kaMZQLcxsRB9LdJFuCDHkdJTsup1yg9Vv5QJeQ5YpNSI3ug3qC8nW8N/aiBPq4PrOpJP/wJimFEUQv31/gEGoLA7kVjha75pRk1hCYFSeYwurrZQEOhWS3OUkAASuAvTXRPJL0kkPOiMAuNSzmvfHzOOxZGP2kTKMJhoYPjHj+TL5YBr/3xjAAonzo4G9IgUNUjS31AEoLxxRn2lo6FFmWempgI2I3rtYCRs8RCQLQkUhz1cl9NxTlh54NhMU6WBYV08Uf4SVrh4WV82OmqYcPhUQKp/SzoXu2YXXOGRwNSnjshCV/lIBR8vw2ZMu1EYmV4nQrrt1Pl2FY4tMCW33sYXTOGp7tZ9yqmVHpHSwcJ1CHKJlGWWId/te85IX1CTzIa+8BxeTibGmKcOHchSaBB8eXdqrqNp3nucyiYJChBqtx6Is6pEBsHiFjQxFPVwDaRKUjNs6wnB9xct8gkqttL3YW0Jx+LFzGa2s65kgUjvW5VJlG7/34rJGCfJu6wTaupG8"}</script>
+    <!-- LB-VAULT:END -->
   </main>
 
   <footer>
     <p>© 2026 Jasper Lee</p>
   </footer>
+  <script src="lock.js?v=20260930" defer></script>
   <script src="site.js?v=20260801" defer></script>
   <script src="casper-config.js?v=20260801" defer></script>
   <script src="casper.js?v=20260801" defer></script>

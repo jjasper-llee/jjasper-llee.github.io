@@ -5,7 +5,7 @@
   <script>document.documentElement.classList.add('js');</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>10 kW CO₂ Electrolyzer System | Jasper Lee</title>
-  <link rel="stylesheet" href="style.css?v=20260930" />
+  <link rel="stylesheet" href="style.css?v=20260930b" />
 </head>
 <body class="brain-theme project-detail">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -29,72 +29,27 @@
   </header>
 
   <main id="main-content" class="project-page">
-    <section class="project-shell ticks">
-      <h2 data-drawing="JL-70" data-rev="A">10 kW CO₂ Electrolyzer System</h2>
-      <p class="project-tagline">Helix Carbon (The Engine, MIT) · Summer 2026. I led mechanical integration of Helix Carbon’s 10 kW electrolyzer system, from the walk-in frame to the enclosure and routing of every line inside it.</p>
-
-      <div class="project-section">
-        <div class="project-media">
-          <img src="helix/10kw_stack.jpg" alt="The assembled 10 kW electrolyzer system with gas cylinders, humidifier, stack rack, gas chromatograph, power supply and chiller" loading="lazy" decoding="async" width="1484" height="1060" />
+    <!-- LB-VAULT:START 10 kW CO₂ Electrolyzer System -->
+    <section class="project-shell ticks" id="lb-gate">
+      <h2 data-drawing="HC-00" data-rev="A">10 kW CO₂ Electrolyzer System</h2>
+      <form class="lock" id="lb-lock" autocomplete="off">
+        <p class="lock__label">Confidential &middot; Helix Carbon &middot; enter password to view</p>
+        <div class="lock__row">
+          <input id="lb-pass" type="password" inputmode="numeric" aria-label="Password" placeholder="Password" required />
+          <button type="submit">Unlock</button>
         </div>
-        <div class="project-copy">
-          <h3>Overview</h3>
-          <p>
-            At Helix Carbon I worked as a Mechanical Design &amp; Manufacturing Intern on hardware for CO₂ electrolysis:
-            electrochemical reactors that use electricity to turn captured CO₂ into useful products. The 10 kW system
-            brings the electrolyzer stack, gas supply, humidification, liquid
-            handling, thermal control, power and a gas chromatograph for product analysis together into one serviceable unit.
-          </p>
-          <p>
-            I led its mechanical integration. The job was to get hundreds of components into one frame so they could be
-            assembled, plumbed, inspected and kept safe, without the layout getting in the way of the chemistry.
-          </p>
-        </div>
-      </div>
-
-      <div class="project-section reverse">
-        <div class="project-media">
-          <img src="helix/10kw_cad.jpg" alt="Onshape CAD of the 10 kW system: cylinders, walk-in 80/20 frame with pegboard-mounted components, humidifier, gas chromatograph shelf and chiller" loading="lazy" decoding="async" width="1110" height="754" />
-        </div>
-        <div class="project-copy">
-          <h3>Frame &amp; Enclosure Design</h3>
-          <p>
-            I designed the system in Onshape around a walk-in 80/20 aluminium frame with a polycarbonate enclosure. I chose
-            the structural extrusions and the door layout so the stack, pump, reservoir and instrumentation stay reachable
-            for maintenance, while everything wet and everything pressurized stays inside the enclosure.
-          </p>
-          <ul>
-            <li>Walk-in 80/20 frame: I chose the extrusion sizes and structure for the stack and hanging components</li>
-            <li>Polycarbonate enclosure and door architecture designed for access and visibility</li>
-            <li>Hundreds of components packaged: valves, regulators, sensors, filters, tanks, pump and stack</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="project-section">
-        <div class="project-media">
-          <img src="helix/10kw_cad_fumehood.jpg" alt="Full-room CAD layout of the 10 kW system next to the laboratory fume hood and gas cylinders" loading="lazy" decoding="async" width="1470" height="818" />
-        </div>
-        <div class="project-copy">
-          <h3>Tubing Automation &amp; Ventilation</h3>
-          <p>
-            With so many components, routing the tubing by hand in CAD would have been slow and hard to update after
-            every layout change. I wrote a custom Onshape FeatureScript that routes the tubing automatically, so the
-            plumbing regenerates whenever a component moves.
-          </p>
-          <p>
-            I also modelled the rig in the context of the full lab, including the fume hood and gas cylinders, and sized the
-            enclosure exhaust so the enclosure stays under negative pressure. That way any leak is drawn into the exhaust
-            instead of spreading into the room.
-          </p>
-        </div>
-      </div>
+        <p class="lock__msg" id="lb-msg" role="status" aria-live="polite"></p>
+      </form>
     </section>
+    <div id="lb-content"></div>
+    <script type="application/json" id="lb-vault">{"iter": 600000, "salt": "CjDCY7XumUstkUumbFDJpw==", "iv": "1bJW3xZYbOtxGSGs", "ct": "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"}</script>
+    <!-- LB-VAULT:END -->
   </main>
 
   <footer>
     <p>© 2026 Jasper Lee</p>
   </footer>
+  <script src="lock.js?v=20260930" defer></script>
   <script src="site.js?v=20260801" defer></script>
   <script src="casper-config.js?v=20260801" defer></script>
   <script src="casper.js?v=20260801" defer></script>

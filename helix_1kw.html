@@ -5,7 +5,7 @@
   <script>document.documentElement.classList.add('js');</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>1 kW Electrochemical Test Rack | Jasper Lee</title>
-  <link rel="stylesheet" href="style.css?v=20260930" />
+  <link rel="stylesheet" href="style.css?v=20260930b" />
 </head>
 <body class="brain-theme project-detail">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -29,69 +29,27 @@
   </header>
 
   <main id="main-content" class="project-page">
-    <section class="project-shell ticks">
-      <h2 data-drawing="JL-71" data-rev="A">1 kW Electrochemical Test Rack</h2>
-      <p class="project-tagline">Helix Carbon (The Engine, MIT) · Summer 2026. I designed and built a 1 kW electrochemical test rack, from a hand-drawn P&amp;ID to a working system.</p>
-
-      <div class="project-section">
-        <div class="project-media">
-          <img src="helix/1kw_stack.jpg" alt="Jasper with the completed 1 kW electrochemical test rack in the lab" loading="lazy" decoding="async" width="1800" height="1350" />
+    <!-- LB-VAULT:START 1 kW Electrochemical Test Rack -->
+    <section class="project-shell ticks" id="lb-gate">
+      <h2 data-drawing="HC-00" data-rev="A">1 kW Electrochemical Test Rack</h2>
+      <form class="lock" id="lb-lock" autocomplete="off">
+        <p class="lock__label">Confidential &middot; Helix Carbon &middot; enter password to view</p>
+        <div class="lock__row">
+          <input id="lb-pass" type="password" inputmode="numeric" aria-label="Password" placeholder="Password" required />
+          <button type="submit">Unlock</button>
         </div>
-        <div class="project-copy">
-          <h3>Overview</h3>
-          <p>
-            The 1 kW rack is a benchtop test system for Helix Carbon’s electrolyzer cells. It circulates KOH electrolyte
-            through the stack under controlled flow, pressure and temperature while the cell is running, so the team can
-            test reactor hardware at a meaningful scale without tying up the 10 kW system.
-          </p>
-          <p>
-            I owned it end to end: the process design, component selection, framing, sensor integration and
-            the controls that run it.
-          </p>
-        </div>
-      </div>
-
-      <div class="project-section reverse">
-        <div class="project-media">
-          <img src="helix/1kw_pid.jpg" alt="Hand-drawn P&amp;ID of the 1 kW system showing the cell, humidifier, back-pressure regulators, heat exchanger, flow sensor, dampener, pump, KOH reservoir and control wiring" loading="lazy" decoding="async" width="1188" height="716" />
-        </div>
-        <div class="project-copy">
-          <h3>From P&amp;ID to Hardware</h3>
-          <p>
-            The system started as a hand-drawn piping and instrumentation diagram. It shows the gas feed through a mass-flow
-            controller and humidifier into the cell, and a liquid loop from the KOH reservoir through the pump, pulsation
-            dampener, flow sensor, heat exchanger and pressure/temperature sensors, with back-pressure regulators setting
-            the operating pressure. The orange lines are the sensor and control wiring back to the controller, motor driver,
-            E-stop and display.
-          </p>
-          <ul>
-            <li>Characterized pump flow rate against motor-controller PWM to calibrate the liquid loop</li>
-            <li>Selected a KOH-compatible pulsation dampener and back-pressure regulator (BPR)</li>
-            <li>Integrated pressure, temperature and flow sensors with the control electronics</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="project-section">
-        <div class="project-media">
-          <img src="helix/1kw_rack.jpg" alt="The finished 1 kW rack: electrolyzer stack, KOH column, pressure gauge, dampener, filters, Alicat controllers and control electronics on an 80/20 frame" loading="lazy" decoding="async" width="1050" height="816" />
-        </div>
-        <div class="project-copy">
-          <h3>The Finished Rack</h3>
-          <p>
-            I built the rack on an 80/20 frame, with custom 3D-printed mounts holding the sensors, fittings and electronics
-            in place. The stack sits on the left, the gas/liquid separation column rises through the middle, and the
-            pressure regulation, dampener, filtration and Alicat flow controllers sit next to the control board on the right.
-            That keeps the fluid path short and every gauge and connection easy to reach.
-          </p>
-        </div>
-      </div>
+        <p class="lock__msg" id="lb-msg" role="status" aria-live="polite"></p>
+      </form>
     </section>
+    <div id="lb-content"></div>
+    <script type="application/json" id="lb-vault">{"iter": 600000, "salt": "Ej4P40Q4jdOlUiWsuAn/wA==", "iv": "cTo1ycj4A4ClQ82J", "ct": "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"}</script>
+    <!-- LB-VAULT:END -->
   </main>
 
   <footer>
     <p>© 2026 Jasper Lee</p>
   </footer>
+  <script src="lock.js?v=20260930" defer></script>
   <script src="site.js?v=20260801" defer></script>
   <script src="casper-config.js?v=20260801" defer></script>
   <script src="casper.js?v=20260801" defer></script>

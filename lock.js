@@ -1,4 +1,4 @@
-/* Left Brain gate. The section body ships AES-GCM encrypted (see
+/* Password gate (Helix Carbon pages). The page body ships AES-GCM encrypted (see
    .private/build_lock.py, kept out of the repo); the password derives the key,
    so the projects are not in the page source until it is entered. */
 (function () {
@@ -24,7 +24,7 @@
       .then(function (key) { return crypto.subtle.decrypt({ name: 'AES-GCM', iv: bytes(vault.iv) }, key, bytes(vault.ct)); })
       .then(function (buf) {
         out.innerHTML = new TextDecoder().decode(buf);
-        form.hidden = true;
+        (document.getElementById('lb-gate') || form).hidden = true;
         try { sessionStorage.setItem(KEY, pw); } catch (e) {}
       });
   }
