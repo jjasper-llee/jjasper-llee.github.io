@@ -8,7 +8,7 @@
   <meta name="description" content="Jasper Lee — MIT Mechanical Engineering and Physics. Drones, bionics, RF, machining, nano/bio research, and cello." />
   <link rel="preload" href="fonts/plex-sans-400.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="fonts/plex-mono-500.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="style.css?v=20260802" />
+  <link rel="stylesheet" href="style.css?v=20260930" />
 </head>
 <body class="brain-theme">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -121,149 +121,18 @@
     <!-- === LEFT BRAIN === -->
     <section id="left-brain" class="page">
       <h2 data-idx="02">Left Brain</h2>
-      <!-- <div class="project-section">
-        <div class="project-media">
-          <div class="project__media"><img src="crc2-web.jpg" alt="Maker Profile" loading="lazy" decoding="async" width="1032" height="1112" /></div>
+      <!-- LB-VAULT:START -->
+      <form class="lock" id="lb-lock" autocomplete="off">
+        <p class="lock__label">Restricted &middot; enter password to view engineering projects</p>
+        <div class="lock__row">
+          <input id="lb-pass" type="password" inputmode="numeric" aria-label="Password" placeholder="Password" required />
+          <button type="submit">Unlock</button>
         </div>
-        <div class="project-copy">
-          <h4>MIT MechE & Physics</h4> | HEALS Scholar | SuperUROP Researcher </br>
-            MIT Electronics Research Society Keyholder| SHED Makerspace Mentor | Combat Robotics Club</h3>
-          <p>
-        </div>
-      </div> -->
-      <!-- <div class="creative-content"> -->
-        <img src="IMG_7376.jpg" alt="Jasper Lee" class="float-right" loading="lazy" decoding="async" width="832" height="1400" />
-        <p>
-           
-          <!-- Jasper Lee is a sophomore at MIT double majoring Mechanical Engineering and Physics. His past research 
-          includes developing the first cello-fingering optimization algorithm and building an LED-powered 
-          fingerboard, along with designing, fabricating, and flying a shape-shifting tricopter drone in 
-          France through MIT’s MISTI program. As a SuperUROP researcher and HEALS Initiative Scholar in 
-          MIT’s Raman Lab, he engineers micro-topography structures for tissue regeneration to help treat 
-          neuromuscular diseases. Beyond research, Jasper is an Emerson Harris Music Scholar. He’s also active in Club Tennis, 
-          MIT Electronic Research Society, and Combat Robotics. In his free time, he enjoys playing music, 
-          racket sports, running, swimming, and spending time in makerspaces. -->
-
-          Jasper Lee is an undergraduate at MIT double majoring in Mechanical Engineering and Physics, with interests in robotics, mechatronics, and intelligent physical systems. He enjoys taking ideas from first principles to working hardware through modeling, simulation, mechanical design, fabrication, electronics, controls, and testing.
-
-His work spans robotics, energy, and bioengineering. He developed TriMorph, a shape-shifting tricopter with over 3× geometric expansion and 2.9× inertia modulation, and is first author of the resulting paper accepted to IMAV 2026. As a SuperUROP researcher in MIT’s Raman Lab, he developed micro-patterning systems for engineered muscle, increasing fabrication throughput by 4×. Most recently, at Helix Carbon, he developed CO₂ electrolyzer hardware and flow fields, built a 1 kW electrochemical test system, and led mechanical integration of a 10 kW production system.
-
-Beyond research, Jasper builds robotic and mechatronic systems ranging from custom aerial robots and embedded control systems to combat robots. He is particularly interested in developing new mechanisms and intelligent machines that bridge mechanical design, computation, and the physical world.
-        </p>
-        <p class="credits">
-          MIT MechE &amp; Physics &middot; HEALS Scholar &middot; SuperUROP Researcher &middot; Raman Lab &middot;
-          MIT Electronics Research Society &middot; SHED Makerspace Mentor &middot; Combat Robotics Club
-
-          
-        </p>
-      <!-- </div> -->
-      
-      <div class="projects">
-        <!-- <a href="project1.html" class="project">
-          <div class="project__media"><img src="hand4.jpg" alt="" loading="lazy" decoding="async" width="1800" height="1634" /></div>
-          <div class="caption">Aerial Bionic Hand</div>
-        </a> -->
-
-        <a href="helix_10kw.html" class="project">
-          <div class="project__media"><img src="helix/10kw_stack.jpg" alt="" loading="lazy" decoding="async" width="1484" height="1060" /></div>
-          <div class="caption" data-spec="Helix Carbon · Onshape · 80/20 enclosure">10 kW CO₂ Electrolyzer System</div>
-        </a>
-        <a href="helix_1kw.html" class="project">
-          <div class="project__media"><img src="helix/1kw_stack.jpg" alt="" loading="lazy" decoding="async" width="1800" height="1350" /></div>
-          <div class="caption" data-spec="Helix Carbon · P&amp;ID · KOH loop">1 kW Electrochemical Test Rack</div>
-        </a>
-        <a href="helix_reactor.html" class="project">
-          <div class="project__media"><img src="helix/reactor_serp.jpg" alt="" loading="lazy" decoding="async" width="572" height="576" /></div>
-          <div class="caption" data-spec="Helix Carbon · CFD · Haas CNC">Machined Electrochemical Reactor</div>
-        </a>
-
-        <a href="project2.html" class="project">
-          <div class="project__media"><img src="drone_small2.jpg" alt="" loading="lazy" decoding="async" width="1350" height="1800" /></div>
-          <div class="caption" data-spec="MISTI France · IEEE · shape-shifting">Transforming Tricopter Drone</div>
-        </a>
-
-        <a href="quadcopter.html" class="project">
-          <div class="project__media"><img src="quadcopter2.jpg" alt="" loading="lazy" decoding="async" width="1350" height="1800" /></div>
-          <div class="caption" data-spec="ESP32-C3 · Betaflight · custom frame">Custom RX/TX Quadcopter</div>
-        </a>
-        <a href="rx_tx.html" class="project">
-          <div class="project__media"><img src="transmitter2.jpg" alt="" loading="lazy" decoding="async" width="1324" height="802" /></div>
-          <div class="caption" data-spec="ESP-NOW · CRSF · ICM-20948 IMU">Custom RX/TX System</div>
-        </a>
-        <a href="rpicam_servo.html" class="project">
-          <div class="project__media"><img src="rpicam-servo2.jpg" alt="" loading="lazy" decoding="async" width="1500" height="1800" /></div>
-          <div class="caption" data-spec="Raspberry Pi · OpenCV · 2 DOF">2-DOF Marker Tracker</div>
-        </a>
-        <a href="bionic_hand.html" class="project">
-          <div class="project__media"><img src="bionic_hand2.jpg" alt="" loading="lazy" decoding="async" width="1576" height="1800" /></div>
-          <div class="caption" data-spec="servo linkage · flex sensors">Bionic Hand</div>
-        </a>
-        <a href="fingerboard.html" class="project">
-          <div class="project__media"><img src="cello-web.jpg" alt="" loading="lazy" decoding="async" width="1349" height="1800" /></div>
-          <div class="caption" data-spec="LED matrix · fingering algorithm">LUMI Cello Fingerboard</div>
-        </a>
-        <a href="ski_poles.html" class="project">
-          <div class="project__media"><img src="lathe.gif" alt="" loading="lazy" decoding="async" width="304" height="540" /></div>
-          <div class="caption" data-spec="lathe · aluminium + carbon fibre">Making Ski Poles</div>
-        </a>
-
-        <!-- <div class="project project--soon" aria-disabled="true">
-          <div class="project__media"><img src="lamp.png" alt="" loading="lazy" decoding="async" width="1024" height="1024" /></div>
-          <div class="caption">Robotic Object-Following Lamp - In Progress<span class="badge">Coming soon</span></div>
-        </div> -->
-        
-        <a href="superurop.html" class="project">
-          <div class="project__media"><img src="superurop2.jpg" alt="" loading="lazy" decoding="async" width="1800" height="1350" /></div>
-          <div class="caption" data-spec="Raman Lab · micro-topography">Nano/Bio Engineering</div>
-        </a>
-
-         <a href="flashlight.html" class="project">
-          <div class="project__media"><img src="flash_cover2.jpg" alt="" loading="lazy" decoding="async" width="1635" height="1800" /></div>
-          <div class="caption" data-spec="lathe + mill · 6061 aluminium">Aluminum Flashlight</div>
-        </a>
-        
-        <a href="spider_circuit.html" class="project">
-          <div class="project__media"><img src="circuit_spider2.jpg" alt="" loading="lazy" decoding="async" width="1800" height="1350" /></div>
-          <div class="caption" data-spec="discharge circuit · PCB">Spider Discharge Circuit</div>
-        </a>
-        <a href="fingering.html" class="project">
-          <div class="project__media"><img src="fingering.gif" alt="Fingering Generator interface preview" loading="lazy" decoding="async" width="1536" height="1024" /></div>
-          <div class="caption" data-spec="published · JSR">Fingering Optimizer Algorithm</div>
-        </a>
-
-        <a href="intonationaid.html" class="project">
-          <div class="project__media"><img src="intonation_cover.jpg" alt="" loading="lazy" decoding="async" width="1800" height="1198" /></div>
-          <div class="caption" data-spec="pitch detection · practice tool">IntonationAid Program</div>
-        </a>
-
-        
-        <a href="bowvision.html" class="project">
-          <div class="project__media"><img
-            src="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20800%20480%27%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%27g%27%20x1%3D%270%25%27%20y1%3D%270%25%27%20x2%3D%27100%25%27%20y2%3D%27100%25%27%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%270%25%27%20stop-color%3D%27%2310204d%27/%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%27100%25%27%20stop-color%3D%27%231d5bff%27/%3E%0A%20%20%20%20%3C/linearGradient%3E%0A%20%20%3C/defs%3E%0A%20%20%3Crect%20width%3D%27800%27%20height%3D%27480%27%20fill%3D%27url%28%23g%29%27/%3E%0A%20%20%3Cg%20fill%3D%27none%27%20stroke%3D%27rgba%28255%2C255%2C255%2C0.35%29%27%20stroke-width%3D%2712%27%3E%0A%20%20%20%20%3Ccircle%20cx%3D%27400%27%20cy%3D%27240%27%20r%3D%27110%27/%3E%0A%20%20%20%20%3Cpath%20d%3D%27M200%20240h400%27/%3E%0A%20%20%3C/g%3E%0A%20%20%3Ctext%20x%3D%2750%25%27%20y%3D%2750%25%27%20fill%3D%27%23ffffff%27%20font-family%3D%27Helvetica%2C%20Arial%2C%20sans-serif%27%20font-weight%3D%27600%27%20font-size%3D%2772%27%20text-anchor%3D%27middle%27%3EBowVision%3C/text%3E%0A%20%20%3Ctext%20x%3D%2750%25%27%20y%3D%2762%25%27%20fill%3D%27%23cfe0ff%27%20font-family%3D%27Helvetica%2C%20Arial%2C%20sans-serif%27%20font-size%3D%2736%27%20text-anchor%3D%27middle%27%3EWeb%20App%20Preview%3C/text%3E%0A%3C/svg%3E"
-            alt="BowVision web app preview"
-          /></div>
-          <div class="caption" data-spec="web app · computer vision">BowVision Web App</div>
-        </a>
-
-        <div class="project project--soon" aria-disabled="true">
-          <div class="project__media"><img src="knot.jpg" alt="" loading="lazy" decoding="async" width="1212" height="864" /></div>
-          <div class="caption">Coming Soon! - Math Knots<span class="badge">Coming soon</span></div>
-        </div>
-        <div class="project project--soon" aria-disabled="true">
-          <div class="project__media"><img src="bearing.jpg" alt="" loading="lazy" decoding="async" width="1374" height="1004" /></div>
-          <div class="caption">Coming Soon! - Ball Bearing<span class="badge">Coming soon</span></div>
-        </div>
-        <!-- <div class="project project--soon" aria-disabled="true">
-          <div class="tile-placeholder" aria-hidden="true"></div>
-          <div class="caption">Coming Soon! - Smart Cello Rockstop<span class="badge">Coming soon</span></div>
-        </div> -->
-        
-        
-        <!-- <div class="project project--soon" aria-disabled="true">
-          <div class="tile-placeholder" aria-hidden="true"></div>
-          <div class="caption">Coming Soon! - Bow Speed and the Vibrating String Model<span class="badge">Coming soon</span></div>
-        </div> -->
-      </div>
+        <p class="lock__msg" id="lb-msg" role="status" aria-live="polite"></p>
+      </form>
+      <div id="lb-content"></div>
+      <script type="application/json" id="lb-vault">{"iter": 600000, "salt": "5Q39k0Y+16OF7opCiFqWYw==", "iv": "hTH+VAAQ1jcRc/j0", "ct": "lhIb5IYqVFKfxwFnknPWqlthjX46vy72DQ9yPyybAgP0qj9AbJKWLIDoUxqahg5epSGVBNVnEBOtTTKEHKreBJjMekfZ3pbfnfUF9vaqR+hvsJkClDMUjBS0EkoWy3gZdEYA9OL1Vfl9W8AgvmrpEdyVMWL72ZCDZsr+GB0rm7dI0LukG0cM+ps95xKoMwKzD4RH53cXzD6/eBW0ktJI9s2xLBh+uGq1vY9GeVIEkXlM+svn66yhTYY+nR9kucSl8Wvsfh2tUZGmRVhy1ja/8SZysxlzsS/58DXqP9InV7eXlBDWWpIbhVKuqWzuWehE6OsUpSJ8rNk11m1NorxRG45uA3dM1rHAEpgzeKarrmzsHFgwWKE36UmYMAFiY0niwWgz6za565YwWi9aLA+XEdAneYUZY93pk4s4B0ORToJTahZHuyaXlAzNkPXy1Sx/bcPI9NzagxrHLjq/S3R8XCIx9KVhfnNgKlhfW5ma418pveJNeQBNStz9iElJiHMC70dbLJyh4T+s0PEVg8HbJf1tE6mH9UB+pr5K7Aksh6XsTmBfD8QJ1HjdY3iN33N1JeTjGcBafeBfWHpfIsm+KaETW5HmyiQ66KvV2dLv2MyjBGi8P60qCEVM7g+7qwo6R4oRSoqSwQO/fYjov8eZvFGFhSQlS9QhYhNXV5/XFKqPdZIDPHj8QVSVe3Obkv6YUgzfkKnroWYc3cvm/s7N1j6blsA7z8SL8jh3DQWzbxD/oFfbX+M4SRug80RqlMGEVio3GI1T+80pTLyMRYtwzewoZq2Qc+7Au81IvvBZW48eXz9SK//2D5FXdT/YaxyKT4Rer4DyoCCEVnsC7ju3hsMJgTtlbMxBIb/w/nWxHm+3cEzUHVxDCdU/9w45uYdIPfuVv2x8ninqGQJYZsQk5RBR2Nu12E6/QbhvKeTVPeLlC6J1jV2nu2IecUeuAIsXR3Yklt0IA+JdskRBstGchbqQTmG1XWiiNCIsekeICiHqP+tueOE5voXW47redi5U641KSHk8DgCV8GBWW1WsEdwarUZDdyvkgB+4AwAhiYSgoZosM3twnzdP26Jwhbqg0MPDuw3BRNLPu94ADe4WxXv07QYdp/zp/Hc/QuKo2nItBmUAPKBG1yIcxR8ki0lwxaVl+CX75MHn2ZiQaTCW5gnMWbwlDkm1szQnkishmAeXipUhF73lM7IvtYJ0Q2gvRhZpfqo04nDkkNXF1OXMCR2aqbXfP9wKBZKZ9ntP4I5ooj85l8My7eDizeldqIthAlnQSzxEiAzwVgLm60xrSPhrEaCuxCEdc60uwbLQKEmzQChFgH7F0ghPMlyyt4liQlXusnztRWi4HFNcUpcCxVSU9NB5hqOfWjiU6nSxGNVX5qBnPD0G0Fv5ce4jL/8p3eWjDa/KNKVHcplFZW1znDaDbcIaDrgVkIhDgjOIVDVUTneAn/XLnHgmppqf3PcWqA5M4diP5+36tiadppOqkWwvhuwMZUdjeQ4bOpVBG+x8FdA4LFlzlqmBgL1+bWcWc43jovhKsOnUpaS3CVUcqAkZtBZmEO4tPMeyolUhjTpGjNuLvqnUCe2vPmYqdvRcc47wUtxRATZD4ai/f0T+QlnkSJs0bjx2UT5LkCxri3VVig0DeNg/HKRJXSzLO9Yw3TanCg7mbuunYgo2oRQHladWyhgWWx7Z93LQLTC1X+v0lZDivM2+rAWaErVwfTpCsOV0JdpT8yk7dvWA9OEZsFO0UwV+tOCW6Akwo/yVNO9kabgAqkNxPnZkcSypYZpIaYmvgDvC/9gZGzvJg4XbjDSyHhmMCElRDFHf8If6hwuiuHYr+mbi2nih0zdM3SA4x3P11oLcoEd3Tq1JCOqIptfr3iX4k8Q6LU2rAzNc3oPczli1eLIwChU2qQKU7d6alv2T0mR9WwRthlKYrOXNfccPatuGWVV7dgUPnrqFcHAadR+oTsMM8gdCJG1FEVUWTVKi1BdAHtWlKU09RSaXxNGHFK5OQso1x+dkPkjnRAipB74P+KUqxZ/Wf+YCiOYOunycoG35j3Zhcb3Yb+wwFdqQqUQs5keFc4DsOBECYeaa98nHM0dN9cz7GslDHxx3RFqQc1I6BwQJNv3EWRvxOfCaMldgMTiP4QDM6VrXri0IgjhwhWwwX8W5Ua/c/1CtJjQkDjaVC/ij4Xd7quv1+3XbBBb8XDjnhiWIgGjP5Fzyt65KkpQlUlCpLZt4C3u5VP0kK6NVTrKGMv1FDyvBjm2ARntaXPOSY3wwrojkStEiCzvVMccvuInKYD/XgHyNG7DrEhBoIOQEh2l0pJLXs/2bdNFx1CJXM4XZ7fjOGCdMDAqcmg4vM1qks8s68BEAoZOyCPn5u6UxxMthHfwik3TMcvDxulmDeXG4rT0WoDMIAkf6ATEYEOPeXqn6knUwDz59tWL0JcL64ftVjCYDN2CcYbG5AqZxR49jy1GjV1lzRZVul1veCslcxSZvfGtOh6OsfQQKCs0tmmhWynPiduti83fTtE0Wt/8GXgl/diOQ7690nmapcCdjmV2e1dTeftn0re/kmQuVogI+sbbYx+iW6mWoWRqrr/55PZtPti5hrIKvFNeWBdTVMw8Sr8g/p5/EjiYHCGLk6E9qCRT4r0OxyIvA0OPeGyuMndsz1EN8VcOPvUcit6Nukc/1ZVdx3a4FHrNTGBCd16Kxk071x3EqhiNF25QDp3VLMFMYUQsnflVMk9PtILNxXzGp6f5xeiSO6eCE1mIvY/jyXnk2It2FtxnmYwVVb1NvDz1XrZjZRMkEuZx+rfzpitI7WFjVtxYb//XeZMBwYRfWstsIZJEcKiDLHum5clfV26w/ISGXdTi9nUli/3IJym9o3oHXzMlHuFTLuLnmHhlYeUgbtN1x34z7/T9ndRKBHCWRMymxQb+nULC7fO0+LXmxIHhw9vAsPhcBqaganXbDzhPw+SUf3AQMUCDptrlNo0XNPd7OOeBhyqaGoo/GwUInSOa2TN5fNFcg/31tORzA2vOFIh6/tgfGVAKEbvRWxX44U/1SRORAHqtAZU/DG760LHfRrBA3lJXrMSVp4tMB8Ph9Zgdm2xuMwBGUDjlMfjis527ZyaB2TxSjt+NxTZdlISQoFJ4VKotKXMbjZvnhS9Cv8HWOaO0G1w4SdGc2z14+bjNvHE0aFPahzhzC6TLxXTizroqlftt5gCA+i3+W0VCk47i7na8ravwhQ9f79NHWBdDD3tDgXTZ6o4rwTSjX21fKdCrAZAP0bck8n7TAfYl0fdXLZJ5wSp3q9bnaA8XS+YyEUppcYcF8EVrNYC9LE2lxIUPZEJlOgf6G3gsJjSaEeL21dL60mdIEgYQL6KgsS/CpfLW48AfL3AP76iwFACyLJIc9DnE4NIsKMwymuF4fKTAZJsKZBeB+xXYoDD7VwlSKFNykVnc91CPMimfcW/yYpHeZx9zvW7CCWEgyT+Erz95p+c901UYb2vdOXjvspQuGhplFmvM8QBwfpkNFehAcgx4sY9675TTzlgIY1x8/p/jvfVmpfj/zfsxhveNEP7Verq98R0dbkJIv9/dIbHfTcR0VWKdYNBXdhhME7KuA2WrJ9R/tZovKe2pJmqWHa2mi1BhbrmTTJ1b14XsfWd9vzvbFD3ewEz/zISJkWGMJlQufJnNBf/TWymClVQw/khSnlkri2Qu/Dwc8o93FPYJ4CEGQEzA2edu/Dpwzl0wprco12b4Qfzk10Sf+IUl7K55ILHCK5JNTIfTG2b1wkSMso6F7FRiCxAo5heHfB8IGRWjLzCtP3uKAZwpiK9mzU+4eWa37asNGCxdKsoepnIeye5b0oZEWiDVZocrXQfafSw3vRpMpOdtaDa6yxzfle5W7lCe9bz7AlLrRoCorgmvETPIbOyEJLdk5qcexrrmsustoibxSORF/yEnFrjGKv7BQ7/Pw2jiOhTaqdL3g58x6LR7vaTh28R0sWFKSG76WsLh+T9+n6GtXPmRt9wyfZIr3xlYF/EoaGUdicaXBCfAYrILjUmFH0cwLn+mlCPd+P03Yvk5ulifa/zOMzQcG1b7997NuXJNj5uOZ/Brq1+F4XRTVOtLWikvkCAnlRfqi5GF2yOwWUyiZDsqbpo+ZZIvXVFvx73xe86xfJEi5bSWhF5reAy0RordfNSEbRFwiKfEMNQm7ii+103tE7IqYEOnythS/21r2YYnK0HstwuzDJnohu0sFmRVk13poNEMAmsp8IYWdrKptb/fRukzeuURQzgVnwOF5Z/2EWGOBX/wWZaThggQJoEiMB8K8nnHJyufYNN/yd35d4Dm3FWHfGse44tPZsgZ1rEwESWLDs5zaYAgVGIPjPv5J+v9asJsV24hSkP1GCdTMfpyCxlQSg0Dw8VkiDUCm7BoVYyhFnzzKpulGBesTaNyFkhnc9usFx1F9mvapruq1UA7lrIs5BdI/4rxteFFmFurqBJrQ1A0ttjBbRK2fBhCxd04WVH5VlEpqzlbVbiTy+SCiC2wk7ahcTFks3LOjSSucG3ARnrkTbRGY7MquiG5AvNSn4jKEPaheSA6e/7pBVKy4KNUFndsY7nkI9vq/p7noU63Ip07ez1cnOHDzX+xakjyvCwSTGsgQQNBYjBafQhOkNwkhrPqqowQSCQX985MHK/arAsEDnmAJcU1Cpqq6FBmmd+u7Sn+v5gVhkmwRFzF5ejLgUW/q0MLgzWkj01hhce5GqA+TabbWYVWA35kPIUgwFtXtYni9I/qHXUP4H7cnHvl51keMm2WGVZWQQ8Jrm6WhQ7asxOe2FZAX07KOH4CHeKZs1OPVLv9i1iErdWUuy/TcrMzeKn0LZaejDFeZz+X/OJOgl+ORnh3LdNnm8aizB4sLZhSfFxsQSEOhGyBal1qhV+dUhtbTl62gvqprFAHVjolX6jmpiCr/DUCQmC/xeyLqt7wuOHaxERg9Od+1y5V+1eGgBvgyCVH3XB3xYCx34pa6mCO/LfcRZNO/spfFlivauCJmV65QUE7sZMo13tUbDzoEHF71AEERVQC9oKZsji5AGRw42nPPkEQYLb/wvzuWsayJQNsKtLDcz0czQGs8swgUjQpS7zWtQ70fCcBxhdVmlZ4UfA8TCnktfHnCHumVKDkOEtgEVQIs6G4ETTSN2DtYyllVugm8C5DiBsJWs4RkmAgrhjAabqoie/ZYEz1Ewmj2CHc9LVcu8bud63YnMOn2DwG5Q71msAfzVSZmRsRJTXQrnRuUfg2LSD3cfP7qgLSt62uaFodgZA7/A2+fWuqiTbt+OHfLeoDfEbiAt49LNtOGvb3hIUTCYAncP5MwU02CwJLzGtImxJbOtVzXD/VPYtPFWBGMKO0QMU01IP3Jq7ZDdDhCc9k5RT6JePY125ZeudQRjhW5Qxs9yrQshD9yMh7WIbax28tQgfEktma0mVlvDpMGH62iy70+J6LJEkFs8R+bVwizss7reua6kdeQyvrmMrrXnbbNjNUsS0xkgSundyrStt87S/T6pIYPpLqGFIPQaPdDYlvYwK1d3BXtqe+qZO9zLGm1BapiC1dMV+c778/FaxylhXtiNdUsYsQyC1yn1IFU7CM8EiqxBNkrPiATS+Q/n9kD1x8pW2B9pJrNf+80nG8TNeb1NS0XmT7T/v00rnjATL9wVoGQof/G4hcqACP3f+Lzn51hLwIOFuLyupj0HSgLktut7frjrZNm0SgH3os7TrFcUOEyC+iwVs+RuSwdajrPCLB24UlhTtXeJ6QwR2g41swOShU2wdRow/aiJKqfrkK9nGlCHWD0oI3knhrUr6cHse+9p+ntMdxlV3HblW+sPrdsjVfBGbcUTfPt8gWqdWqqhCWT2HeWQjyi13w8Wo9SuhU77rK2E6YVI1pJYPuTxZsrOl+JuF8ecHZf6ZFFhBF/mrHvYOJaCGJx8D0CJefRMAXqfNd01e50xQ88CAzAPpNPFyCr5aMpXmYUuPels4JFelbegJR9uoAIIV6/cjKqFbBJGD2QhnLKGsyaokQEoB+QtXNFBsAOge9ij7eDJZp1LyLOijqeT71eMExsOaA9dWkRZOjyH3NVwHVzMLAWnPxtuCWBH9nxm56imD2Ee8Rwpzr4lwJQQEek+NovbnzoQrXN376ihJYMK7zWMxtCQaRgWGwD+CYBnPnSBHz/GSKotnDGMz5Ov3vv4emUlH2EWPG6iPyTgZ/Gbu+yAOqdjRNNiyIesIxS2X8PYL6nyhjFXv0nC4ee4U+GrhdJH1aeSqStpIWAXs846x3WYKJ9ZhyOmQHhTncd6KSz/V5Xog9hrBFtHAYROmApVo9lGukxJa8BLhj4qhjeUUPbsunvJU/C+Z+eJGouWpQ4J/VOGA9KXS++PaJNEZUahjUmLIKUxKzjHr1kZj+MACxr6m5iUBayk8coUKIG3Q+alzIpfyjDWiih7aghJfcHsMAOUnrT1RdYotdlH0+ped9KLJN+tnkgarbTv1/R+YUHBqpj35yxyfcZtvaHoyiV3023Jd6taNW0SPs4kD9bYcbnsUGnA9LkjQxmQtlMGIGhnzCEN6qWlg0NRdtltdDsSyp0QuNlwgnDTq6ftM6sIeHSLgJ/zGQ0xtve8qU3O+2QQHqejdtO7m9hGhg6z5lELvSNza7SIuGF2FgSrMK6WTDkH+bwQhB7pBouPoYyXmAq6C02IflMVqkcvLHWv9c5UsHV1u6X3MF7Y0/uXowst60jLplRfwH1mKhg13CiVw10vOQQIEGsVgBNhiexx5TNVyPNgQFgA3obgRnG0NnZSajYIk+IhxZQTWZyMPEdVNscn4iUsqV8qEeS/F5W1mmh/exdsvveriOK2cv53M3wY8lDRUWg2yC19kdPHLgJ8kfHOAJukPI3WHdCtPutfsjN8xeJRiATfzXEUeIhyB5hJ8J9nXN+wJJvcbWwNptHHuuoOgZfMXljKwOb3srm43P9nydTmgayX/4RpYfrew/U0gibo7nJzcWdE5zIoI0FBTEvI++72IgRrIDQRL4PUsxiDwmACAYMwtX/xc7AjY6lB7BTW0Qpwk1vT6yI5rsZuEy0pC/AzgKUlSk2aOKq+wB+m71hoOyKDKIn9YSOv5CYjetUcwCF/Sm9ZL1RWb1myA8grqy4XwuE++kK0VPrdgaRcowv6RHnURqg+QM4GoSrwnPL8dyC3BMtqXcVbFPgXe/rRbq48N900/MLaZEtb32G62qv6tVoNxxyZhJhinSPVKKDgeHcy4+vVHy+/9GnAIFOtyvrRL1dBQPbw+nLmuPqYNeNyvazm0Z3kRWNM07esNFXjo+r3ZR33t3l02LY0saEPjHjw6SVyYUfHy4j2ecsAYVO4daRJLJI0XKVxb1f+H944vJ8cETiPc8pNIPXBFK4q9zCmlGt7KrAfVsOdPN/AiCCQyZkZ92oa6wf+u4BUwzlXMr10VJ2I9feCoW0DrPlAYpTfffdPCoU5kdZe0b03sIlwxWK3COYF6fizrakSAm3r/MzCWxzoXhy0/HQmaKoVp7qAL/aL3A9j7wzGkeiu/82HNdiKEZKBoDKS+XyTWO9JauAjFqRU6Ib0Fl9eJzSfaSPE8YmaKXr6AviLU65pxJS5ZGoU+dabrJdSnRn8lp9r2fHUD9SVSHVVZf0WVipZG2L4aeRooEdh8B/z9VIF/d528oKI4J3XsbMxvWFQmuYpj2A6XmmagOWBJ4sYR/3jMjmCd7rihz6Cz5ejOFdGzuRSgB8eP56I0HWUDNmD2yN/VkY4HWfFVRAIzqhFqgshlK6p6qurCZVewfPXt3qkfINKLlqaRRCvYLJtGLqbpS9f3M2S7YqXfPOU+/6xb2KAdoquVOD3co2cg7Ja+ddatq1At1vGEH8+LHOMZ/+BaJD0+tZxzY2jcdL26tRXXwaz06Bq+b33//wGDLDtNcm3KyMo8PhmasWTkJFE6YvjgecKpMyMAOzn1ghmsgtc6gvV6NS/uYWzDfhIV9u6WfDsO+q4rlmousU/BmZiXGHUx8hTFpnC6nU7AY0S9vIPothshoSt7piy1j45Jw8zvDD2Jy/MV3N34Nbs7oBvDvjkTRnk+1hk8/3O8VtSO36+/5a91tfFXGLB0glKXxUzU0QM/9UW8YIIsVyvj7zlVygpTBFYvytitp2dtawjEKIVNN9G4DJ6uTqqdCrJstPCgYmzQei8gP74+2l2bF0YRAxfW6f+27ODJz/blonyz9qtUdSsBsr+FJsc6EHsp5fG6G9vbhqJW+jVAF7KpigmZTgijAwhuVDKUQnPpoiaK+Ux9g7NQPLok+isJGVmCeyMC9k7EkWniCWkbXdyUGkKzIZLTCGOi4eavDfdNA/umHi29s0FWjUYWlTLxLqXei2BFq5+5U3S/p8CeTHCksuT5qdkfDdAU84th8eDrzdCZ6uMAiuM3zBymgpi6xzY+yLpO/MnhNWg3a4f5NG38DSUkYohod5kNH9vrTb3thbPP1jU/Eb61pqLv8Yq3ci8LknbwxNt0U+Halmjfx3GeJNzN+oxehaNfKcXdnTsoPODSjwNyA7i7hF6u5A0fgkVniySsxEmna+I7lU4bCvFncDtXIfGw0jBEBPQt1iEN4w07+lVG7N0kWnfop+gwoURS/c+vQ6AUNYRPIXV7Wk982W269fXhTvw5ci9oBTOWUgTbPCQYp9jmdKcRIBgFsXdd55u62rSlyCHitdDO6hq4HOTKRhY/NNBRJvJPwSC4PZOI9maKLJYnn3+PrByJUK1AgUtFrxspqrf1hOieBLh6NeHahdB2DzzjR+mnJRXBkO2ocDABfGuKQn4l6dWQWbC0zQZU2h/0a1XVyG4FJ9kC57Cn+w35hf6WsvOIECWSbPZsSKDPtlASzL5HAzXIJsaEpgUJVu9ZOoXGv9Wh++XflX0tgSaCR6mSyB6qhq/HURkUONGD584DrDQHV3jRiXO3Wxv5n4+dLaCCUX6vKr0V27w3qHCxc2MXUOKqWeEll7cWwxMZwwqCkhBGrg0XXna8M71L0wmrNM33AslyDhwLUFqY94WfLybxL8xPZe4jG97b4qE6x7T6RVgUPq09RGs8JnvpiDpfHs6WSU/pcsVFHMKd0IiZ1wCMtaF2b7oCVrZNOphDgQAySypMsCtgwnslUO3JA8Had4SFbONNIOMKhJP3vgG41Vd4u7GwjqIP1pP3fd6bAn0aC/9zVxJxZU+2cdoXmjkhS3KjRJSGxRP5YTHfCekhuh9AA0b+x0Yl16sikveVke24nB9b2cmgHZGRJe7yvhjgZfX8tpVWBDEk/Oe7fUbiR4v+A0u5y9x0H3QfT49MKBMa+YjbgiMu6oDuUbmo+mCkPnR3v25jWRRAyMabOGfEQOv0CF6Ux/2Ql68xyRsCqSEFTuiWW4VtIa26GDJnGgwA+2l0kH0Ie5pnYubJY9hoEyFXYc8GxmA2yoqzD/kIfk0dZMIGkD7LWtP4YKde8sE8LRhXmRos3dhK3ijK85NpQ+9z7F9S1/dZ3igdRSNd14CSZcn6bpo5Qob6wmUF9Kudzus2NL7BXUOPFAdyagG4HH2lDG7/YmWg3sHbZdbut2mP2SbxQS6CR7Qqk2JMPS7bSX/ysX69RDg4jEjuzHver92egvIO9KNnpwc8+OF2HFMISc4BSGIdSPnygl6a4nDPy7Dr0Fu4sfZJHRFOyiXhpU4yJfoj4q+PrsWNyAIkkHwOD0K19h2LyYRanqRoSX47DQ+h1zl3m3iMR3D5GU2hgMNqMkjhbMfmZvQ+DddIRvqzrnLFXqN6hOmqfY9skGdtMuuXtpuGmxesamYATJ8qu/tE13TrEjlo67mlutbufMuRuDQvx4DFjJ1RLG7ZIle/eBzyKnD6JOjBkS3OAbRny5YSn+XEUIf5zaWfflFkmCgTc1mNNW0nFDdY4AlavSbkcYtGCE4SMQrAh1mrKSORiefczhsusn5IBM+JINmh79LnptGwgzdrZpQBLLS7YIuFzTsN3MXbLKl8iPC5bUkQuyCnIS/H7tk8WD9c5j2peC8dmKBN2iM1n0/kzF+UYAjjo5SkMB+NTQgTElE+igz40zHN4ZkhAWAIuejMe9v7POoeTu4Vm3ReAqSlVNkuAhm9pbxp7C2jpHhWtYZCo1m9jM3c1V7K8PcL5XWnLISc9/DFWInNpDUkrPAR9hRqvGCubNuzyBlwMZsqXxSYnDhn4iFJY7/asrzQCznSYzLMaUaMLoOVFoJU1+AyE6U+oiYGZ0zT5jj+K+q/+1pVUurchmc3QvAU7TPxhS2k/08aotomnN0jHj22Z+Q+S3Pk1gBl3u3YhufQu15b1L6rcVZg3WnSfTN03V0iG5fWldrVcIIR1o65PqjlvAeIyR+hfnlSTBM3ZB2rCy09Z7zkyco+a73JjkUQXwEJxnASFTyOfEcQ1nzbwLMJYW1XZ1lpN290IAZKP6jYCNMBegvg1N2Uh651uqO2tlFfvdsIVorw5NS7HXQ+OBGXUNI7Mucyq3bA7p5hw8eUQyFq6bvbGQGqjWbpVDLNE/8tQq0/O4oHVa2CdAOrj+1k61XG32xAlJ43oo6N+PfP5Vf07DliqqE1sJOrKzCbh20c8kZIQpJn+uzvy35v/gkl1A6xnrVBqr71kmrmQlKhTl4Thw7jrvVpSubXhT02eLgOsuIhQ/Jg6nCodXpJcbHNvdjceydoF4U/AZGJkylvNtHrglI9H7hz3sZTSsMMtS27tTTOtewzPeAn4Gj9TfXmqbSVfr0G0rgIeH6i7szHMhnBvtW6OuHzU7jrW/HMWXq4RpFoTZVogGDRSOyuPLPckIeyytWDbv0rLz8akRmRmreb5Y2nvnPvW6P9oSXcyiPFMMSig0EevajsGIE+9fUx0SHpqrInxKK9YsZayBMIOqgotYq8YP46YcYnfm9hBZE/XvsbkJgNKIUH/Qn+DkfP/gD6fFcLJx7lj7K12gOWT5gDY6h9rfXaTJocNUcxgvHJfkKPGQmSgmk+04ve09U4CqW1AFEY524tB+/fnzExHxtYcbYB6JgI7sOvqG77BtEONZ4UI/qAV7WZtuHlP7zXRcNtHwrdNXmNUFF+afhhYJ24KUBObRBeavd3Vx3oKW4FCKS5HOHChXgp8MuSoQCEanS0QjzxMdysj+35veBEOVObfrcyYsaiE2ADjBvd+cpqEHoC/mHJY9Ogni8ovj/q2XPrkj4cicb+85/2j4EzdzYKFFyPJr8KyHv4uW63vNc4uGbA5qz6ggXjhdbU2EBPQbos60shOQCFp7/IY+BM+gVDoBo0Ha8hj+wi4AeVv+kp/xphK/AKohae/YG1DbA6Z1mA+hQJbnpcCxaPLuOXC2dxQ2Zbz/duQpmiS9c5tShjvoaWCQniNATubkME7BxpSEnSkq+ZIOLMWUdV5t1R10vJrAvvXhRuKLwN8GUYHvfFGhcVxcNr9v4sZ6prxmFrpvNvt9qWSXMMUUyAQuHIHtYRN3slv6Gk/wzwQe4y8xqvM30amqAEH+BxHk6X448pfuKmQ+6S3/nsh0n2xklzcvLXeCVpOYoWM4YKdKEmXsjCSr0m2iqEaXadABs1RXpQpcvv60VtyIwqCf81FFZdzMe1oPYW/r1BJFSSIJyUk1yok6Mlw3UYOyIj/2uonI6XVfJAVK2LdYcW0/l5iqELhacgHewnArA1WfrOR7rdQ/cFtf7+4VHD3Jy/mZla+8AaFt4oGKLAqMHFQ0mtcImrrObDY0yRyq0iArgfv2x4vNK6b+ifCn3lM95vB3FZ3s390Yq/4PtoaYBV99YAl+YQJ1AN6tsvw1FqWOZ91SyYrut0c+wABDk9bqVwqN9/CVgYtCiEzUIYbEiyZqvVD+Yx3/Y7z+FrYzd2sBiWFXBtsxu97FYaqDaTVS9xUD7fNHqR8947B2Autve0jf3tdLVGrNgq2MnrbxuJwztYDD6k8LFPQ1SYgannXLPJWIEadsCdrfPq9OTNW31u8WrhJykaO16oXCFWk+/87uJpNhsMlLRqyJjGUytXNIhtESJ7MdwSfbOe3YtKMsFGfdRHV8PgZqUuiF4SWTu3i2fp58sPkSY5MrR9E9sAOwpL72xtYZPTu+dSM54eCbgAgH00CLO8xKVHqf89CdHf6FBILWc75ekv7L7Mj9KM4X0XulzQQpiFPIV18IN13F3fXkP1xpmhIvRTYx4Fxn/sYchjvawM8UMwT5FOKxnENCrpUdPpIy8oa46LbAuJO4DSYQmn1vIHZ2ffiIWtDKzBbPREXvXpWWiegJa3dmDOa/TBLpXXJYkRecM5a8umpAZ0LCBK4Kth0bI9mgY9ZRO/Zfda1r2tGvK1UlvHY7AsCUzo2QLPpfWPWq7vC7wr2ADqVtxhSJ5AEc96HPTs7jfX2h0nymO6zF4d7b8Zv//9CxujPuNXkwk1Y9RM4EfShxB34a2/Ln9rZDLLkipOgKjEDrUWwx6j2zPuc2SkIZlEtz4ukLm8Y/eremMY0eXXvMx7oYkKHTMSrunscpJYH5wDHDljR32/TjF6HZAQ7sUqr4Aza3JGQnp6QTDQvF3mZAuf9wDim6CdTvANQyB5kwxbwyH4Q5WzJDpimbLwObH5+r7FlT21+510wCjlBOJgonf+AZU+rDUfwiZkSrBGOoWEOE8+bCLL7h0Li2ShzhfGse4akA6aVwMesVh2YDTCiUX//A9CxdfJt7xSh5oPa0wfOopGfgsobqyMxG6o+wXcQVvSHAXhXcX8vZuj8xuUhkW0JmQmG4nG31vqiN3eK9UMm8pwlifTXtJxafBWOU2hWriiFzf87hIdVw0T8RiNFPJIYfYHJ1fycz+Z5uD/aDIjlg0Ew/26spGUN6qrjmEJLhizn2jLXLE0PoLfFovWZIIDqElDVSEAa0NDLypSu7xM6kNOpttCvZDorG5FPTet7huFHDqm7s7koSws3w+A74OSpuusP+L7/u1j8g/NimsSK2PEy9QKGr+l/AGM2KkZaGanY/s7D6/QyGUOJt6FNRgPym8xTjRps4989xJIWPDgfG7Cq00vAaJad1LqnEUGUP6TvbjIFIwGVjG7tl1gfZ3d8SFl8QQIcQ22cjovsHorAHtfDRGxZcOHrPO33+9L7YdjLs4kc6IErwIARk4rQ2SDrIVp97QY4vrfX9QMmHyh/4zA9lpSuPlk89a4Na5WJQ13LF1+Jao3ForjgygR46pwMw/gYqZrJcS2G7q2d827uwTa6xbwFvse6tY94418ytgfzymBqKu3EPD1zAkyVpXBunPsh/V+PpPTYFKy5qB5yhQ2H9gYaXbvHSPas61c0fqaafhuG/KMoVmmWfbZrBHorHfQdpuHfjFUyuqIAUbdUxUcHFHc+79Xd93uUeAZiKsMbeHZzIBUOUxJD67TWcF7l8F0to4Be64/VgzK+T00au0432FPz/W5Larwzb5EDceWEaPrjTZwQO9FQtfqjQAMPB39/QPeGlEzjqAULKW3UvwRkVcttJBuGmo+vHTkFcbzIMn1M2CAhGkhkE9cSyWAztDxLSuQjxKRwOJB79s3OWqLg0Hj4jdUW3NhKAEKfPTqTaqd5PA1+ePu8znNMQpgJtHT8EetZzw6rdxWR0Wz0K084vaof6NRCJqJtPrAyo0wdM4rHrpDNzLN4pX+nlNxMS4GMC5QxAzA5D8ZVXJeEcBUrxpB9MZPi6QGRnew/k7rp1UocUjFuEm9lFOegUJWnFuqFQdxlWt8eyaD62LrossWk5Ll1U7mLKxmHN9gRCNzekPqULB6iBaOusw4XCQ4MG3wF6oOuJvbRUhBwkjvH/QsXMUaE9ZB0veX6a3RE4MVZ1ZaTXjShFSphS0HX9A+3ZlEBUL4/tpJ96WPy59Mr1MRQF2RXv3DEfkFpLGBP1A0c1tK137SSmYIj3fuY6+vMdjPJYebe8lehGmY+p+AJ/V7mbD5USSfL4tHzw4qoqV4T2ywk9c7g6ntf8cW2UC+yF6VEakXhT8yiXU58KnxvrFmNgEVkhW6Bhlb/QL6/96708AQClQEJKntOx8Ce051EuXJsrkRDt1PzJujsUFskMSSvyNu05LpdQIP5OTCijgpEj48x3a6UZUoZ3a71Mgc+OUeC5KD5L1Uzf2XDie/2LAFgLiLumNEPK0UEtxvpbWOVpGS/Z1s+E+n2YyoQkrHYEACYp9YLgKPvhtkTvgc3B0MD8oxcTeSBLvXqMMAw+n0F4Y0aH+Bv3PjzDlJfZIUAxcoxWSgJ8AKogSEzp2Bk+4dqIe4YbaWtCciZUbpO55TzMwUB4ipQvgE7Qhkm4aQX9ihLYjk+JNUlvvep+hzpMHvKoARCpth1VAOn02WB4Z61nbvp60mxi8IGHVJoeQ68XMZpDMc7YZjAaPWAMToHTBJmfWmLt6u89p3gylruKoE8xbiUcmLJSd6QsP0S7lCCU/mZIWvgdMPQVVeuOFBQ+yZ1yFxychgbuw10Xs4nmI7JhuFswIMGccBKgXKeigH2ehtA/trIozIK0ecWSA0OqAsXii+SqXfI5nJfk+i3tsupRPui0PNm4icgxw57NwszDY5rHtm0usPiuZJoAQ890NwC2/pwo2nMxmEgoLLUfD5PIue8RZHk7VEo1mK0x1hyeoD2Db556haFkyHjaJe/FIObUBcDnbpnCCnH8o9bOWFXrY7bbhll5JJXDIdEOczi6VoinoinGxX7vjxGI0Q+wWydcQtujifr63R1aNkvsh05QPMdC+4N/Zlh9HCpIoSBKWahGdxaG4lQsxlgMxeKsgLeQDL9IGc7vNE27K0xXwbQMt3f9ZsMx2VUm8PmfGb7b6U90MVkpQeXwbnV63mGsxgaE9rKkKQO9owRRudbZQKiU30XQXYvDUCuBFF3bTuHP8lkTGYE+CvCEjDxhOokUyfzzFlVDImJku/+2GAXKNfqv52KEIp3ycPFcgKSjXyRqj6UVIj48RGYlS7lxMh8H5eEr8x/t9JT5pCiwY1ygp5QKTZKSneblk+Q7RGXKE0uCgRShQ3E8TGn+V1Eh/uxfNvmFPJEnEmW2vIrqMl7bt6Pr40AFla/CHCfFh9h4nK3zWk28ikaxgUVruNaFQdykBPjKfN0QLy4fuO2Y"}</script>
+      <!-- LB-VAULT:END -->
     </section>
 
     <!-- === RIGHT BRAIN === -->
@@ -404,6 +273,7 @@ Jasper has attended summer programs including Morningside Music Bridge, Music@Me
     <p class="titleblock__sig">&copy; 2026 Jasper Lee &middot; MIT MechE + Physics</p>
   </footer>
 
+  <script src="lock.js?v=20260930" defer></script>
   <script src="site.js?v=20260801" defer></script>
   <script src="casper-config.js?v=20260801" defer></script>
   <script src="casper.js?v=20260801" defer></script>

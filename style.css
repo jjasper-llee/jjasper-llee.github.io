@@ -717,6 +717,9 @@ main {
 .project--soon:hover { transform: none; border-color: var(--rule-faint); background: var(--surface-tile); }
 .project--soon::before { display: none; }
 a.project--soon { pointer-events: none; }
+/* About: coming-soon tiles show the photo as-is; only the badge marks them. */
+#about .project--soon .project__media::after { display: none; }
+#about .project--soon img { opacity: 1; filter: none; }
 
 .tile-placeholder {
   width: 100%; aspect-ratio: 4 / 3;
@@ -1357,3 +1360,23 @@ body.nav-open .casper { opacity: 0; pointer-events: none; transform: translate3d
 }
 .project-figs .project-media { min-width: 0; }
 .project-section > .project-copy.full { flex-basis: 100%; }
+
+/* Left Brain password gate (lock.js). */
+.lock {
+  max-width: 420px; margin: var(--sp-5) 0; padding: var(--sp-5);
+  border: 1px solid var(--rule); border-radius: var(--r-md); background: var(--surface-panel);
+}
+.lock[hidden] { display: none; }
+.lock__label { font: var(--type-mono-xs); letter-spacing: var(--track-mono); color: var(--text-2); text-transform: uppercase; margin: 0 0 var(--sp-4); }
+.lock__row { display: flex; gap: var(--sp-3); }
+.lock input {
+  flex: 1; min-width: 0; padding: .6rem .8rem; font: inherit; color: var(--text-1);
+  background: var(--surface-sunken); border: 1px solid var(--rule); border-radius: var(--r-xs);
+}
+.lock input:focus-visible { outline: none; border-color: var(--accent); box-shadow: var(--ring-accent); }
+.lock button {
+  padding: .6rem 1.1rem; font: var(--type-mono-sm); letter-spacing: var(--track-mono); cursor: pointer;
+  color: var(--text-on-accent); background: var(--accent); border: 0; border-radius: var(--r-xs);
+}
+.lock button:hover { background: var(--accent-bright); }
+.lock__msg { min-height: 1.2em; margin: var(--sp-3) 0 0; font: var(--type-mono-xs); color: var(--text-3); }
