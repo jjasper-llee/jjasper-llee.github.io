@@ -120,7 +120,13 @@
     });
   }
 
-  window.addEventListener('hashchange', function () { handleHash(); });
+  window.addEventListener('hashchange', function () {
+    handleHash();
+    // Sections are hash views, not page loads; log each switch as its own path.
+    if (window.goatcounter && window.goatcounter.count) {
+      window.goatcounter.count({ path: '/#' + (window.location.hash.replace('#', '') || 'about') });
+    }
+  });
   handleHash({ scroll: false });
 })();
 
